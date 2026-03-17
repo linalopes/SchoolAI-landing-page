@@ -112,6 +112,86 @@
     background: var(--turquoise);
     color: var(--deep-purple);
   }
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    z-index: 101;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 24px;
+    height: 1.5px;
+    background: var(--white);
+    transition: all 0.3s ease;
+  }
+  .nav-mobile-menu {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: rgba(34,17,62,0.97);
+    backdrop-filter: blur(16px);
+    z-index: 200;
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    transform: translateY(-100%);
+    transition: transform 0.4s ease;
+    border-bottom: 1px solid rgba(234,125,255,0.2);
+  }
+  .nav-mobile-menu.open {
+    transform: translateY(0);
+  }
+  .nav-mobile-close {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    color: var(--pink);
+    font-size: 32px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    margin-bottom: var(--space-3);
+  }
+  .nav-mobile-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .nav-mobile-link {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: 28px;
+    color: var(--white);
+    letter-spacing: -0.01em;
+    opacity: 0.85;
+    transition: opacity 0.2s, color 0.2s;
+    text-decoration: none;
+    display: block;
+  }
+  .nav-mobile-link:hover { opacity: 1; color: var(--pink); }
+  .nav-mobile-cta {
+    display: inline-block;
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    color: var(--turquoise);
+    border: 1px solid var(--turquoise);
+    padding: 12px 24px;
+    border-radius: var(--radius);
+    margin-top: var(--space-3);
+    transition: background 0.2s, color 0.2s;
+    text-decoration: none;
+    align-self: flex-start;
+  }
+  .nav-mobile-cta:hover {
+    background: var(--turquoise);
+    color: var(--deep-purple);
+  }
 
   /* ── HERO ── */
   #hero {
@@ -128,7 +208,7 @@
   .hero-pattern {
     position: absolute;
     inset: 0;
-    background-image: url('https://linalopes.github.io/patterns/pattern-4.png');
+    background-image: url('https://raw.githubusercontent.com/linalopes/SchoolAI-brand-kit/main/patterns/pattern-4.png');
     background-size: cover;
     background-position: center;
     opacity: 0.18;
@@ -329,7 +409,7 @@
     top: 0; right: -100px;
     width: 480px;
     height: 100%;
-    background-image: url('https://linalopes.github.io/patterns/pattern-1.png');
+    background-image: url('https://raw.githubusercontent.com/linalopes/SchoolAI-brand-kit/main/patterns/pattern-1.png');
     background-size: cover;
     opacity: 0.07;
     pointer-events: none;
@@ -411,7 +491,7 @@
   .workshops-pattern {
     position: absolute;
     inset: 0;
-    background-image: url('https://linalopes.github.io/patterns/pattern-5.png');
+    background-image: url('https://raw.githubusercontent.com/linalopes/SchoolAI-brand-kit/main/patterns/pattern-5.png');
     background-size: cover;
     opacity: 0.06;
     pointer-events: none;
@@ -627,6 +707,14 @@
     padding-top: var(--space-4);
     border-top: 1px solid rgba(34,17,62,0.08);
   }
+  .overlay-section-label::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 2px;
+    background: var(--pink);
+    margin-top: 8px;
+  }
   .overlay-learn-list {
     list-style: none;
     padding: 0;
@@ -689,7 +777,7 @@
     bottom: 0; left: 0;
     width: 400px;
     height: 400px;
-    background-image: url('https://linalopes.github.io/patterns/pattern-2.png');
+    background-image: url('https://raw.githubusercontent.com/linalopes/SchoolAI-brand-kit/main/patterns/pattern-2.png');
     background-size: cover;
     opacity: 0.12;
     pointer-events: none;
@@ -995,7 +1083,7 @@
   .faq-pattern {
     position: absolute;
     inset: 0;
-    background-image: url('https://linalopes.github.io/patterns/pattern-2.png');
+    background-image: url('https://raw.githubusercontent.com/linalopes/SchoolAI-brand-kit/main/patterns/pattern-2.png');
     background-size: cover;
     opacity: 0.07;
     pointer-events: none;
@@ -1070,7 +1158,7 @@
     top: 0; left: -80px;
     width: 360px;
     height: 100%;
-    background-image: url('https://linalopes.github.io/patterns/pattern-4.png');
+    background-image: url('https://raw.githubusercontent.com/linalopes/SchoolAI-brand-kit/main/patterns/pattern-4.png');
     background-size: cover;
     opacity: 0.06;
     pointer-events: none;
@@ -1182,7 +1270,7 @@
   .quote-break-pattern {
     position: absolute;
     inset: 0;
-    background-image: url('https://linalopes.github.io/patterns/pattern-6.png');
+    background-image: url('https://raw.githubusercontent.com/linalopes/SchoolAI-brand-kit/main/patterns/pattern-6.png');
     background-size: cover;
     opacity: 0.08;
     pointer-events: none;
@@ -1287,7 +1375,7 @@
   .footer-pattern {
     position: absolute;
     inset: 0;
-    background-image: url('https://linalopes.github.io/patterns/pattern-6.png');
+    background-image: url('https://raw.githubusercontent.com/linalopes/SchoolAI-brand-kit/main/patterns/pattern-6.png');
     background-size: cover;
     opacity: 1;
     pointer-events: none;
@@ -1344,6 +1432,9 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
+    nav {
+      grid-template-columns: 1fr auto;
+    }
     nav { padding: 4px var(--space-4); }
     section { padding: 72px var(--space-4); }
     .manifesto-grid,
@@ -1353,6 +1444,8 @@
     footer { flex-direction: column; align-items: flex-start; }
     .events-item { grid-template-columns: 92px 1fr auto; }
     .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+    .nav-cta { display: none; }
     .hero-title { font-size: clamp(42px, 10vw, 72px); }
   }
 </style>
@@ -1373,6 +1466,22 @@
     <li><a href="#faq">FAQ</a></li>
     <li><a href="https://blog.linalopes.info/schoolai.html" target="_blank">Blog ↗</a></li>
   </ul>
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-mobile-menu" id="nav-mobile-menu">
+    <button class="nav-mobile-close" id="nav-mobile-close" aria-label="Close menu">×</button>
+    <ul class="nav-mobile-links">
+      <li><a href="#manifesto" class="nav-mobile-link">About</a></li>
+      <li><a href="#workshops" class="nav-mobile-link">Workshops</a></li>
+      <li><a href="#upcoming-events" class="nav-mobile-link">Events</a></li>
+      <li><a href="#location" class="nav-mobile-link">Location</a></li>
+      <li><a href="#host" class="nav-mobile-link">Host</a></li>
+      <li><a href="#faq" class="nav-mobile-link">FAQ</a></li>
+      <li><a href="https://blog.linalopes.info/schoolai.html" target="_blank" class="nav-mobile-link">Blog ↗</a></li>
+    </ul>
+    <a href="#contact" class="nav-mobile-cta">Get in touch</a>
+  </div>
   <a href="#contact" class="nav-cta">Get in touch</a>
 </nav>
 
@@ -1644,7 +1753,7 @@
 
 <!-- ── CONTACT / NEWSLETTER ── -->
 <section id="contact" style="background: var(--deep-purple); position:relative; overflow:hidden;">
-  <div style="position:absolute;inset:0;background-image:url('https://linalopes.github.io/patterns/pattern-6.png');background-size:cover;opacity:0.07;pointer-events:none;"></div>
+  <div style="position:absolute;inset:0;background-image:url('https://raw.githubusercontent.com/linalopes/SchoolAI-brand-kit/main/patterns/pattern-6.png');background-size:cover;opacity:0.07;pointer-events:none;"></div>
   <div class="contact-inner fade-up" style="position:relative;z-index:1;">
     <p class="t-label" style="color:var(--turquoise); margin-bottom: var(--space-4);">07 · Stay connected</p>
     <h2 class="contact-title" style="color:var(--white);">
@@ -2027,6 +2136,27 @@
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeWorkshop(); });
 
   initWorkshops();
+
+  const hamburger = document.getElementById('nav-hamburger');
+  const mobileMenu = document.getElementById('nav-mobile-menu');
+  const mobileClose = document.getElementById('nav-mobile-close');
+
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+
+  mobileClose.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+
+  document.querySelectorAll('.nav-mobile-link, .nav-mobile-cta').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
 </script>
 </body>
 </html>
