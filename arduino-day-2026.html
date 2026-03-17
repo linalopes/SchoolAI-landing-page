@@ -583,6 +583,13 @@
       align-items: center;
       justify-content: space-between;
       gap: 20px;
+      transition: color 0.2s;
+    }
+    .faq-question:hover { color: var(--deep-purple); }
+    .faq-question:hover .faq-question-text {
+      text-decoration: underline;
+      text-decoration-color: var(--pink);
+      text-underline-offset: 4px;
     }
     .faq-question::after {
       content: '+';
@@ -663,25 +670,88 @@
     footer {
       background: var(--deep-purple);
       border-top: 1px solid rgba(255,255,255,0.08);
-      padding: 28px 0;
+      padding: 36px 0 28px;
       color: var(--gray-green);
+      position: relative;
+      overflow: hidden;
+    }
+    .footer-pattern {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://raw.githubusercontent.com/linalopes/SchoolAI-brand-kit/main/patterns/pattern-3.png');
+      background-size: cover;
+      opacity: 0.05;
+      pointer-events: none;
     }
     .footer-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 28px;
+      align-items: start;
+    }
+    .footer-program {
       display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .footer-program-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 300;
+      font-size: 18px;
+      color: var(--white);
+      letter-spacing: -0.01em;
+      opacity: 0.75;
+    }
+    .footer-program-sub {
+      font-family: 'Courier Prime', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gray-green);
+      opacity: 0.55;
+    }
+    .footer-venue {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .footer-venue p {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--gray-green);
+      opacity: 0.72;
+    }
+    .footer-social {
+      display: flex;
+      gap: 18px;
       align-items: center;
     }
-    .footer-copy,
-    .footer-link {
+    .footer-social-link {
+      color: var(--white);
+      opacity: 0.4;
+      transition: opacity 0.2s, color 0.2s;
+      display: flex;
+      align-items: center;
+    }
+    .footer-social-link:hover {
+      opacity: 1;
+      color: var(--pink);
+    }
+    .footer-secondary {
+      position: relative;
+      z-index: 1;
+      margin-top: 22px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.08);
       font-family: 'Courier Prime', monospace;
       font-size: 11px;
       letter-spacing: 0.06em;
       text-transform: uppercase;
+      color: var(--gray-green);
       opacity: 0.7;
     }
-    .footer-link:hover { color: var(--turquoise); }
 
     .fade-up {
       opacity: 0;
@@ -720,6 +790,11 @@
       .info-list li { grid-template-columns: 1fr; gap: 4px; }
       .container { width: min(calc(100% - 28px), var(--max-width)); }
       section { padding: 72px 0; }
+      .footer-inner {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+      .footer-social { padding-top: 6px; }
     }
   </style>
 </head>
@@ -1034,22 +1109,22 @@
 
       <div class="faq-list">
         <div class="faq-item fade-up">
-          <button class="faq-question">Is the event free?</button>
+          <button class="faq-question"><span class="faq-question-text">Is the event free?</span></button>
           <div class="faq-answer"><p>Yes. The page is structured as a free hybrid event with open access for online viewers and a welcoming in-person format.</p></div>
         </div>
 
         <div class="faq-item fade-up">
-          <button class="faq-question">Do I need Arduino experience?</button>
+          <button class="faq-question"><span class="faq-question-text">Do I need Arduino experience?</span></button>
           <div class="faq-answer"><p>No. The emphasis is on simple electronics, material experimentation, and learning through observation and prototyping.</p></div>
         </div>
 
         <div class="faq-item fade-up">
-          <button class="faq-question">Can I just watch online?</button>
+          <button class="faq-question"><span class="faq-question-text">Can I just watch online?</span></button>
           <div class="faq-answer"><p>Yes. The event is designed to work both as an in-person micro-lab and as a live Twitch session for remote viewers.</p></div>
         </div>
 
         <div class="faq-item fade-up">
-          <button class="faq-question">Will the prototype be finished?</button>
+          <button class="faq-question"><span class="faq-question-text">Will the prototype be finished?</span></button>
           <div class="faq-answer"><p>Maybe, maybe not. The value of the session is precisely that it happens in public, with room for iteration, detours, and productive failure.</p></div>
         </div>
       </div>
@@ -1074,9 +1149,44 @@
   </section>
 
   <footer>
+    <div class="footer-pattern"></div>
     <div class="container footer-inner">
-      <div class="footer-copy">© 2026 Lina Lopes · School of Tomorrow’s AI</div>
-      <a class="footer-link" href="index.html">Return to main page</a>
+      <div class="footer-program">
+        <div class="footer-program-title">Paper as Interface</div>
+        <div class="footer-program-sub">Arduino Day 2026</div>
+      </div>
+      <div class="footer-venue">
+        <p>School of Tomorrow’s AI</p>
+        <p>Schönaustrasse 13, 8620, Wetzikon, Zurich, Switzerland</p>
+        <p>Hybrid event — on-site + Twitch livestream</p>
+      </div>
+      <div class="footer-social">
+        <a href="https://instagram.com/school.of.tomorrows.ai" target="_blank" rel="noopener" aria-label="Instagram" class="footer-social-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/>
+          </svg>
+        </a>
+        <a href="https://youtube.com/@lina_lopes" target="_blank" rel="noopener" aria-label="YouTube" class="footer-social-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="5" width="20" height="14" rx="4"/>
+            <polygon points="10,9 16,12 10,15" fill="currentColor" stroke="none"/>
+          </svg>
+        </a>
+        <a href="https://linkedin.com/in/linalopes" target="_blank" rel="noopener" aria-label="LinkedIn" class="footer-social-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="4"/>
+            <line x1="8" y1="11" x2="8" y2="16"/>
+            <line x1="8" y1="8" x2="8" y2="8.5"/>
+            <path d="M12 16v-5"/>
+            <path d="M12 11c0-1 1-2 2.5-2s2.5 1 2.5 3v4"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="container footer-secondary">
+      Free and open to curious makers, artists, educators, and beginners.
     </div>
   </footer>
 
