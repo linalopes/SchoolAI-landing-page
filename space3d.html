@@ -70,6 +70,37 @@
   }
 }
 </script>
+<script type="module">
+import { parseGIF, decompressFrames } from 'https://esm.sh/gifuct-js@2.1.2';
+window._loadGifTexture = async function(url, THREE) {
+  const resp = await fetch(url);
+  const buffer = await resp.arrayBuffer();
+  const gif = parseGIF(buffer);
+  const frames = decompressFrames(gif, true);
+  const canvas = document.createElement('canvas');
+  canvas.width  = frames[0].dims.width;
+  canvas.height = frames[0].dims.height;
+  const ctx = canvas.getContext('2d');
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.minFilter = THREE.LinearFilter;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  let fi = 0;
+  function drawFrame() {
+    const f = frames[fi];
+    const imageData = ctx.createImageData(f.dims.width, f.dims.height);
+    imageData.data.set(f.patch);
+    ctx.putImageData(imageData, f.dims.left, f.dims.top);
+    tex.needsUpdate = true;
+    fi = (fi + 1) % frames.length;
+    setTimeout(drawFrame, f.delay || 100);
+  }
+  drawFrame();
+  const aspect = canvas.width / canvas.height;
+  const ph = 5.2;
+  const pw = ph * aspect;
+  return { tex, pw, ph };
+};
+</script>
 </head>
 <body>
 
@@ -239,6 +270,10 @@ function placeholder(label, desc) {
 
 // ── LOAD TEXTURE ──
 function loadTex(node, cb) {
+  if (node.photo.toLowerCase().endsWith('.gif') && window._loadGifTexture) {
+    window._loadGifTexture(node.photo, THREE).then(({tex, pw, ph}) => cb(tex, pw, ph));
+    return;
+  }
   const img = document.createElement('img');
   img.style.display='none'; document.body.appendChild(img);
   img.onload = () => {
@@ -246,7 +281,13 @@ function loadTex(node, cb) {
     t.minFilter = THREE.LinearFilter;
     t.colorSpace = THREE.SRGBColorSpace;
     t.needsUpdate = true;
-    document.body.removeChild(img); cb(t);
+    document.body.removeChild(img);
+    // Adjust plane to image aspect ratio
+    const aspect = img.naturalWidth / img.naturalHeight;
+    const planeHeight = 5.2;
+    const planeWidth = planeHeight * aspect;
+    const objs = Object.values(roomObjects).find(o => o.plane.material && !o.plane.material.map);
+    cb(t, planeWidth, planeHeight);
   };
   img.onerror = () => { document.body.removeChild(img); cb(placeholder(node.label, node.desc)); };
   img.src = node.photo;
@@ -297,10 +338,9 @@ function buildScene() {
     roomObjects[id] = { plane, sphere };
 
     // Load texture
-    loadTex(node, (tex) => {
-      plane.material = new THREE.MeshBasicMaterial({
-        map: tex, side: THREE.DoubleSide, transparent: true, opacity: 0
-      });
+    loadTex(node, (tex, pw, ph) => {
+      plane.material = new THREE.MeshBasicMaterial({map:tex, side:THREE.DoubleSide, transparent:true, opacity:0});
+      if (pw && ph) plane.geometry = new THREE.PlaneGeometry(pw, ph);
     });
   });
 }
