@@ -1359,6 +1359,31 @@
     opacity: 0.35;
     letter-spacing: 0.06em;
   }
+  .contact-divider {
+    width: 40px;
+    height: 1px;
+    background: rgba(202,216,216,0.2);
+    margin: var(--space-5) 0;
+  }
+  .contact-direct {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 1.8;
+    opacity: 0.6;
+  }
+  .contact-email {
+    color: var(--turquoise);
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .contact-email:hover {
+    border-bottom-color: var(--pink);
+    color: var(--pink);
+  }
 
   /* ── FOOTER ── */
   footer {
@@ -1751,22 +1776,42 @@
   </div>
 </section>
 
-<!-- ── CONTACT / NEWSLETTER ── -->
+<!-- ── CONTACT ── -->
 <section id="contact" style="background: var(--deep-purple); position:relative; overflow:hidden;">
   <div style="position:absolute;inset:0;background-image:url('https://raw.githubusercontent.com/linalopes/SchoolAI-brand-kit/main/patterns/pattern-6.png');background-size:cover;opacity:0.07;pointer-events:none;"></div>
   <div class="contact-inner fade-up" style="position:relative;z-index:1;">
     <p class="t-label" style="color:var(--turquoise); margin-bottom: var(--space-4);">07 · Stay connected</p>
     <h2 class="contact-title" style="color:var(--white);">
-      Be the first to<br>know when<br>registrations <em>open.</em>
+      Stay close to<br>the next <em>room</em>.
     </h2>
     <p class="contact-sub" style="color:var(--gray-green);">
-      Join the list. No noise — just workshop announcements, open calls, and occasional dispatches from the studio.
+      Leave your email to hear first when new workshops and registrations open.
     </p>
-    <div class="newsletter-form">
-      <input type="email" placeholder="your@email.com" style="border-color: rgba(202,216,216,0.3); color:var(--white);">
-      <button class="btn-accent" type="submit" onclick="this.textContent='✓ Subscribed!'; this.style.background='var(--gray-green)';">Subscribe</button>
-    </div>
-    <p class="form-note" style="color:var(--gray-green);">No spam. Unsubscribe at any time.</p>
+    <form
+      id="newsletter-form"
+      action="https://formspree.io/f/mvgbznoe"
+      method="POST"
+    >
+      <div class="newsletter-form">
+        <input
+          type="email"
+          name="email"
+          placeholder="your@email.com"
+          required
+          style="border-color: rgba(202,216,216,0.3); color:var(--white);"
+        >
+        <button class="btn-accent" type="submit">Keep me posted</button>
+      </div>
+      <input type="hidden" name="_subject" value="New interest — Room for Interaction">
+    </form>
+    <p id="newsletter-success" style="display:none; font-family:'Courier Prime',monospace; font-size:13px; color:var(--turquoise); margin-top:12px;">
+      ✓ You're on the list. Talk soon.
+    </p>
+    <div class="contact-divider"></div>
+    <p class="contact-direct" style="color:var(--gray-green);">
+      For questions, partnerships, or group inquiries, write directly to:<br>
+      <a href="mailto:lilothink.science@gmail.com" class="contact-email">lilothink.science@gmail.com</a>
+    </p>
   </div>
 </section>
 
@@ -2156,6 +2201,32 @@
       mobileMenu.classList.remove('open');
       document.body.style.overflow = '';
     });
+  });
+
+  document.getElementById('newsletter-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector('button[type="submit"]');
+    const success = document.getElementById('newsletter-success');
+    btn.textContent = '...';
+    btn.disabled = true;
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        form.style.display = 'none';
+        success.style.display = 'block';
+      } else {
+        btn.textContent = 'Keep me posted';
+        btn.disabled = false;
+      }
+    } catch {
+      btn.textContent = 'Keep me posted';
+      btn.disabled = false;
+    }
   });
 </script>
 </body>

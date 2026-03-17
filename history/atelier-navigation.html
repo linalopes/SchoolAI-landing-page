@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atelier Photo Navigation Prototype</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background: #ff4fcf;
+    }
+
+    #app {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hud {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.92);
+      color: #111;
+      padding: 12px 14px;
+      border-radius: 12px;
+      max-width: 340px;
+      line-height: 1.35;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .hud h1 {
+      margin: 0 0 8px 0;
+      font-size: 15px;
+    }
+
+    .hud p {
+      margin: 0 0 8px 0;
+      font-size: 13px;
+    }
+
+    .hud code {
+      font-size: 12px;
+      background: rgba(0, 0, 0, 0.06);
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    .legend {
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.92);
+      color: #111;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .status {
+      position: absolute;
+      left: 16px;
+      bottom: 16px;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.72);
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      max-width: 360px;
+      line-height: 1.35;
+    }
+
+    .status.ok {
+      background: rgba(20, 120, 40, 0.78);
+    }
+
+    .status.error {
+      background: rgba(160, 35, 35, 0.86);
+    }
+  </style>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.161.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.161.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="app">
+    <div class="hud">
+      <h1>Atelier navigation prototype</h1>
+      <p>Click a white hotspot to move to the next position.</p>
+      <p>Drag to look around. Mouse wheel to zoom a little.</p>
+      <p>This version uses generated placeholders instead of real images, so you can evaluate the frames and navigation first.</p>
+    </div>
+    <div class="legend">Vanilla HTML + Three.js · placeholder frames + hotspots</div>
+    <div id="status" class="status">Loading scene…</div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    const app = document.getElementById('app');
+    const statusEl = document.getElementById('status');
+
+    function setStatus(message, mode = 'ok') {
+      statusEl.textContent = message;
+      statusEl.className = `status ${mode}`;
+    }
+
+    function assert(condition, message) {
+      if (!condition) {
+        throw new Error(message);
+      }
+    }
+
+    const photoNodes = {
+      door: {
+        label: '01 · door',
+        camPos: [0, 1.6, 8],
+        lookAt: [0, 1.6, 0],
+        photoPos: [0, 2.2, -4],
+        photoRotY: 0,
+        scale: [8, 5.2],
+        accent: '#ffffff',
+        links: [
+          { to: 'center', pos: [0, 1.2, 1], label: 'Go inside' }
+        ]
+      },
+      center: {
+        label: '02 · center',
+        camPos: [0, 1.6, 0],
+        lookAt: [0, 1.6, -4],
+        photoPos: [0, 2.2, -4],
+        photoRotY: 0,
+        scale: [8, 5.2],
+        accent: '#ffe066',
+        links: [
+          { to: 'left-wall', pos: [-3, 1.2, -1], label: 'Left wall' },
+          { to: 'right-wall', pos: [3, 1.2, -1], label: 'Right wall' },
+          { to: 'table', pos: [0, 1.1, -2], label: 'Table' },
+          { to: 'door', pos: [0, 1.2, 4], label: 'Back to door' }
+        ]
+      },
+      'left-wall': {
+        label: '03 · left wall',
+        camPos: [-3.5, 1.6, -1],
+        lookAt: [-5, 1.6, -3],
+        photoPos: [-6, 2.2, -3],
+        photoRotY: 0.45,
+        scale: [7, 4.8],
+        accent: '#7cf29a',
+        links: [
+          { to: 'center', pos: [1.8, 1.2, 0.8], label: 'Center' },
+          { to: 'shelf', pos: [-1.5, 1.2, -2.8], label: 'Shelf' }
+        ]
+      },
+      'right-wall': {
+        label: '04 · right wall',
+        camPos: [3.5, 1.6, -1],
+        lookAt: [5, 1.6, -3],
+        photoPos: [6, 2.2, -3],
+        photoRotY: -0.45,
+        scale: [7, 4.8],
+        accent: '#7fd7ff',
+        links: [
+          { to: 'center', pos: [-1.8, 1.2, 0.8], label: 'Center' },
+          { to: 'window', pos: [1.5, 1.2, -2.4], label: 'Window' }
+        ]
+      },
+      table: {
+        label: '05 · table',
+        camPos: [0, 1.6, -2.5],
+        lookAt: [0, 1.2, -5],
+        photoPos: [0, 2.0, -6],
+        photoRotY: 0,
+        scale: [8.5, 5.5],
+        accent: '#ffb86b',
+        links: [
+          { to: 'center', pos: [0, 1.2, 3], label: 'Center' },
+          { to: 'shelf', pos: [-2.2, 1.1, -1.2], label: 'Shelf' },
+          { to: 'window', pos: [2.2, 1.1, -1.2], label: 'Window' }
+        ]
+      },
+      shelf: {
+        label: '06 · shelf',
+        camPos: [-4.8, 1.6, -3.2],
+        lookAt: [-6.3, 1.8, -4.8],
+        photoPos: [-7.2, 2.3, -5.0],
+        photoRotY: 0.5,
+        scale: [7.4, 4.8],
+        accent: '#d8a7ff',
+        links: [
+          { to: 'left-wall', pos: [2.4, 1.2, 1.2], label: 'Left wall' },
+          { to: 'table', pos: [4.2, 1.2, 0.2], label: 'Table' }
+        ]
+      },
+      window: {
+        label: '07 · window',
+        camPos: [4.8, 1.6, -3.2],
+        lookAt: [6.3, 1.8, -4.8],
+        photoPos: [7.2, 2.3, -5.0],
+        photoRotY: -0.5,
+        scale: [7.4, 4.8],
+        accent: '#ff9fd2',
+        links: [
+          { to: 'right-wall', pos: [-2.4, 1.2, 1.2], label: 'Right wall' },
+          { to: 'table', pos: [-4.2, 1.2, 0.2], label: 'Table' }
+        ]
+      }
+    };
+
+    function validateNodes(nodes) {
+      const ids = Object.keys(nodes);
+      assert(ids.length > 0, 'photoNodes must contain at least one node.');
+
+      ids.forEach((nodeId) => {
+        const node = nodes[nodeId];
+        assert(typeof node.label === 'string' && node.label.length > 0, `Node "${nodeId}" must have a label string.`);
+        assert(Array.isArray(node.camPos) && node.camPos.length === 3, `Node "${nodeId}" must have camPos [x, y, z].`);
+        assert(Array.isArray(node.lookAt) && node.lookAt.length === 3, `Node "${nodeId}" must have lookAt [x, y, z].`);
+        assert(Array.isArray(node.photoPos) && node.photoPos.length === 3, `Node "${nodeId}" must have photoPos [x, y, z].`);
+        assert(Array.isArray(node.scale) && node.scale.length === 2, `Node "${nodeId}" must have scale [w, h].`);
+        assert(Array.isArray(node.links), `Node "${nodeId}" must have a links array.`);
+
+        node.links.forEach((link, index) => {
+          assert(typeof link.to === 'string' && link.to.length > 0, `Link ${index} in node "${nodeId}" must have a target id.`);
+          assert(nodes[link.to], `Link ${index} in node "${nodeId}" points to missing node "${link.to}".`);
+          assert(Array.isArray(link.pos) && link.pos.length === 3, `Link ${index} in node "${nodeId}" must have pos [x, y, z].`);
+        });
+      });
+
+      assert(nodes.door, 'Expected test node "door" to exist.');
+      assert(nodes.center, 'Expected test node "center" to exist.');
+      assert(nodes.door.links.some((link) => link.to === 'center'), 'Expected "door" to link to "center".');
+      assert(nodes.center.links.some((link) => link.to === 'door'), 'Expected "center" to link back to "door".');
+    }
+
+    try {
+      validateNodes(photoNodes);
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color('#ff4fcf');
+
+      const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
+      camera.position.set(0, 1.6, 8);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      app.appendChild(renderer.domElement);
+
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.enablePan = false;
+      controls.minDistance = 2;
+      controls.maxDistance = 20;
+      controls.target.set(0, 1.6, 0);
+
+      const ambient = new THREE.AmbientLight(0xffffff, 1.2);
+      scene.add(ambient);
+
+      const dir = new THREE.DirectionalLight(0xffffff, 0.6);
+      dir.position.set(5, 10, 8);
+      scene.add(dir);
+
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2();
+
+      const hotspotMeshes = [];
+      const photoGroup = new THREE.Group();
+      const hotspotGroup = new THREE.Group();
+      scene.add(photoGroup);
+      scene.add(hotspotGroup);
+
+      let currentNodeId = 'door';
+      let moveStart = null;
+      let moveEnd = null;
+      let moveT = 1;
+      const moveDuration = 0.9;
+
+      function clearGroup(group) {
+        while (group.children.length > 0) {
+          const child = group.children[0];
+          group.remove(child);
+
+          if (child.geometry) {
+            child.geometry.dispose();
+          }
+
+          if (child.material) {
+            if (Array.isArray(child.material)) {
+              child.material.forEach((material) => {
+                if (material.map) material.map.dispose();
+                material.dispose();
+              });
+            } else {
+              if (child.material.map) child.material.map.dispose();
+              child.material.dispose();
+            }
+          }
+        }
+      }
+
+      function makeHotspot(link) {
+        const geometry = new THREE.CircleGeometry(0.18, 32);
+        const material = new THREE.MeshBasicMaterial({
+          color: 0xffffff,
+          transparent: true,
+          opacity: 0.95
+        });
+
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.position.set(...link.pos);
+        mesh.userData.to = link.to;
+        mesh.userData.label = link.label;
+        hotspotGroup.add(mesh);
+        hotspotMeshes.push(mesh);
+        return mesh;
+      }
+
+      function createPlaceholderTexture(node) {
+        const width = 1200;
+        const height = 800;
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+
+        ctx.fillStyle = 'rgba(255,255,255,0.08)';
+        ctx.fillRect(0, 0, width, height);
+
+        const gradient = ctx.createLinearGradient(0, 0, width, height);
+        gradient.addColorStop(0, 'rgba(255,255,255,0.16)');
+        gradient.addColorStop(1, 'rgba(0,0,0,0.08)');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.strokeStyle = node.accent || '#ffffff';
+        ctx.lineWidth = 16;
+        ctx.strokeRect(38, 38, width - 76, height - 76);
+
+        ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([14, 10]);
+        ctx.strokeRect(86, 86, width - 172, height - 172);
+        ctx.setLineDash([]);
+
+        ctx.beginPath();
+        ctx.moveTo(width / 2, 110);
+        ctx.lineTo(width / 2, height - 110);
+        ctx.moveTo(110, height / 2);
+        ctx.lineTo(width - 110, height / 2);
+        ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = 'rgba(255,255,255,0.95)';
+        ctx.textAlign = 'center';
+        ctx.font = 'bold 56px Arial';
+        ctx.fillText(node.label, width / 2, height / 2 - 18);
+
+        ctx.fillStyle = 'rgba(255,255,255,0.72)';
+        ctx.font = '28px Arial';
+        ctx.fillText('placeholder frame', width / 2, height / 2 + 34);
+
+        ctx.fillStyle = 'rgba(255,255,255,0.68)';
+        ctx.font = '22px Arial';
+        ctx.fillText('replace later with your real studio photo', width / 2, height / 2 + 88);
+
+        const texture = new THREE.CanvasTexture(canvas);
+        texture.colorSpace = THREE.SRGBColorSpace;
+        return texture;
+      }
+
+      function renderNode(nodeId) {
+        const node = photoNodes[nodeId];
+        assert(node, `Tried to render missing node "${nodeId}".`);
+        currentNodeId = nodeId;
+
+        clearGroup(photoGroup);
+        clearGroup(hotspotGroup);
+        hotspotMeshes.length = 0;
+
+        const texture = createPlaceholderTexture(node);
+        const geometry = new THREE.PlaneGeometry(node.scale[0], node.scale[1]);
+        const material = new THREE.MeshBasicMaterial({
+          map: texture,
+          side: THREE.DoubleSide,
+          transparent: true
+        });
+        const plane = new THREE.Mesh(geometry, material);
+        plane.position.set(...node.photoPos);
+        plane.rotation.y = node.photoRotY;
+        photoGroup.add(plane);
+
+        for (const link of node.links) {
+          makeHotspot(link);
+        }
+
+        camera.position.set(...node.camPos);
+        controls.target.set(...node.lookAt);
+        controls.update();
+        setStatus(`Loaded placeholder node: ${nodeId}`, 'ok');
+      }
+
+      function moveToNode(nextId) {
+        const next = photoNodes[nextId];
+        assert(next, `Cannot move to missing node "${nextId}".`);
+
+        moveStart = {
+          camPos: camera.position.clone(),
+          target: controls.target.clone()
+        };
+
+        moveEnd = {
+          camPos: new THREE.Vector3(...next.camPos),
+          target: new THREE.Vector3(...next.lookAt)
+        };
+
+        moveT = 0;
+        renderNode(nextId);
+      }
+
+      renderer.domElement.addEventListener('pointerdown', (event) => {
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        raycaster.setFromCamera(mouse, camera);
+        const hits = raycaster.intersectObjects(hotspotMeshes, false);
+
+        if (hits.length > 0) {
+          moveToNode(hits[0].object.userData.to);
+        }
+      });
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      renderNode(currentNodeId);
+
+      const clock = new THREE.Clock();
+
+      function animate() {
+        requestAnimationFrame(animate);
+
+        const dt = clock.getDelta();
+
+        if (moveT < 1 && moveStart && moveEnd) {
+          moveT += dt / moveDuration;
+          const t = Math.min(moveT, 1);
+          const eased = 1 - Math.pow(1 - t, 3);
+
+          camera.position.lerpVectors(moveStart.camPos, moveEnd.camPos, eased);
+          controls.target.lerpVectors(moveStart.target, moveEnd.target, eased);
+        }
+
+        hotspotGroup.children.forEach((hotspot) => {
+          hotspot.lookAt(camera.position);
+        });
+
+        controls.update();
+        renderer.render(scene, camera);
+      }
+
+      animate();
+    } catch (error) {
+      console.error(error);
+      setStatus(error.message, 'error');
+    }
+  </script>
+</body>
+</html>

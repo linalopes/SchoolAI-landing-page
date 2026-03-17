@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Atelier</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #EA7DFF; }
+
+  #room-label {
+    position: absolute;
+    top: 20px;
+    left: 24px;
+    z-index: 10;
+    pointer-events: none;
+  }
+  #room-label .eyebrow {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(34,17,62,0.5);
+    margin-bottom: 3px;
+  }
+  #room-label .name {
+    font-family: Georgia, serif;
+    font-size: 22px;
+    color: #22113E;
+    letter-spacing: -0.01em;
+  }
+  #room-label .desc {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    color: rgba(34,17,62,0.4);
+    margin-top: 2px;
+  }
+
+  #hint {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(34,17,62,0.35);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  #minimap-wrap {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 10;
+    background: rgba(255,255,255,0.92);
+    border-radius: 6px;
+    padding: 10px 10px 6px;
+    width: 172px;
+  }
+  #minimap {
+    display: block;
+    width: 152px;
+    height: 148px;
+  }
+  #minimap-label {
+    font-family: 'Courier New', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(34,17,62,0.35);
+    text-align: center;
+    margin-top: 5px;
+  }
+
+  #tooltip {
+    position: absolute;
+    z-index: 20;
+    background: rgba(34,17,62,0.88);
+    color: #CAD8D8;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    padding: 5px 10px;
+    border-radius: 3px;
+    pointer-events: none;
+    display: none;
+    white-space: nowrap;
+  }
+
+  #status {
+    position: absolute;
+    left: 24px;
+    bottom: 40px;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    color: rgba(34,17,62,0.35);
+    pointer-events: none;
+  }
+</style>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.161.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.161.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+
+<div id="room-label">
+  <div class="eyebrow">Wetzikon | Zürich</div>
+  <div class="name" id="room-name">Kitchen</div>
+  <div class="desc" id="room-desc">Entrance · First Floor</div>
+</div>
+
+<div id="hint">drag to look around · click hotspot to navigate</div>
+<div id="tooltip"></div>
+<div id="status">Loading…</div>
+
+<div id="minimap-wrap">
+  <canvas id="minimap" width="152" height="148"></canvas>
+  <div id="minimap-label">Floor plan</div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const PINK        = '#EA7DFF';
+const DEEP_PURPLE = '#22113E';
+const TURQUOISE   = '#08F2DB';
+const GRAY_GREEN  = '#CAD8D8';
+
+// ── NODE MAP ──
+// camPos: camera start position (further back = less zoom feeling)
+// lookAt: where camera points
+// photoPos + photoRotY: where the photo plane sits in 3D
+// scale: [width, height] of photo plane
+// mx/my: normalized position on minimap (0..1)
+const nodes = {
+  kitchen: {
+    label: 'Kitchen', desc: 'Entrance · Ground floor',
+    camPos: [0, 1.6, 6], lookAt: [0, 1.6, 0],
+    photoPos: [0, 2.2, -4], photoRotY: 0, scale: [8, 5.2],
+    mx: 0.20, my: 0.82,
+    photo: 'imgs/space/kitchen.webp',
+    links: [
+      { to: 'dance-studio', label: 'Dance Studio', pos: [0, 1.2, 1] },
+      { to: 'biolab',       label: 'Biolab',       pos: [-2.5, 1.2, 0] },
+    ]
+  },
+  'dance-studio': {
+    label: 'Dance Studio', desc: 'Main open space',
+    camPos: [0, 1.6, 6], lookAt: [0, 1.6, 0],
+    photoPos: [0, 2.2, -4], photoRotY: 0, scale: [8, 5.2],
+    mx: 0.38, my: 0.38,
+    photo: 'imgs/space/dance-studio.webp',
+    links: [
+      { to: 'kitchen',        label: 'Kitchen',       pos: [0, 1.2, 4] },
+      { to: 'biolab',         label: 'Biolab',        pos: [-3, 1.2, 0] },
+      { to: 'saloon',         label: 'Saloon',        pos: [0, 1.2, -2] },
+      { to: 'office',         label: 'Office',        pos: [2.5, 1.2, -1] },
+    ]
+  },
+  biolab: {
+    label: 'Biolab', desc: 'Research & experiments',
+    camPos: [-3.5, 1.6, 0], lookAt: [-5, 1.6, -3],
+    photoPos: [-6, 2.2, -3], photoRotY: 0.45, scale: [7, 4.8],
+    mx: 0.20, my: 0.55,
+    photo: 'imgs/space/biolab.webp',
+    links: [
+      { to: 'dance-studio', label: 'Dance Studio', pos: [1.8, 1.2, 0.8] },
+      { to: 'kitchen',      label: 'Kitchen',      pos: [0, 1.2, 3] },
+    ]
+  },
+  saloon: {
+    label: 'Saloon', desc: 'Central gathering space',
+    camPos: [0, 1.6, 6], lookAt: [0, 1.6, 0],
+    photoPos: [0, 2.2, -4], photoRotY: 0, scale: [8, 5.2],
+    mx: 0.50, my: 0.60,
+    photo: 'imgs/space/saloon.webp',
+    links: [
+      { to: 'dance-studio',   label: 'Dance Studio',   pos: [0, 1.2, 4] },
+      { to: 'studio',         label: 'Studio',         pos: [3, 1.2, -1] },
+      { to: 'dirty-workshop', label: 'Dirty Workshop', pos: [2, 1.2, -3] },
+      { to: 'kitchen',        label: 'Kitchen',        pos: [-2, 1.2, 2] },
+    ]
+  },
+  studio: {
+    label: 'Studio', desc: "School of Tomorrow's AI",
+    camPos: [3.5, 1.6, 0], lookAt: [5, 1.6, -3],
+    photoPos: [6, 2.2, -3], photoRotY: -0.45, scale: [7, 4.8],
+    mx: 0.68, my: 0.70,
+    photo: 'imgs/space/studio.webp',
+    links: [
+      { to: 'saloon',         label: 'Saloon',         pos: [-1.8, 1.2, 0.8] },
+      { to: 'dirty-workshop', label: 'Dirty Workshop', pos: [1.5, 1.2, -2.4] },
+    ]
+  },
+  'dirty-workshop': {
+    label: 'Dirty Workshop', desc: 'Fabrication & making',
+    camPos: [4.8, 1.6, -3.2], lookAt: [6.3, 1.8, -4.8],
+    photoPos: [7.2, 2.3, -5.0], photoRotY: -0.5, scale: [7.4, 4.8],
+    mx: 0.80, my: 0.46,
+    photo: 'imgs/space/dirty-workshop.webp',
+    links: [
+      { to: 'studio',   label: 'Studio',   pos: [-2.4, 1.2, 1.2] },
+      { to: 'office',   label: 'Office',   pos: [-4.2, 1.2, 0.2] },
+      { to: 'saloon',   label: 'Saloon',   pos: [-3, 1.2, 1] },
+    ]
+  },
+  office: {
+    label: 'Office', desc: 'Admin & quiet work',
+    camPos: [0, 1.6, 6], lookAt: [0, 1.6, 0],
+    photoPos: [0, 2.2, -4], photoRotY: 0, scale: [8, 5.2],
+    mx: 0.74, my: 0.18,
+    photo: 'imgs/space/office.webp',
+    links: [
+      { to: 'dance-studio',   label: 'Dance Studio',   pos: [-2, 1.2, 1] },
+      { to: 'dirty-workshop', label: 'Dirty Workshop', pos: [0, 1.2, -2] },
+    ]
+  },
+};
+
+// ── FLOOR PLAN POINTS (from SVG, normalized to 0..1) ──
+// Based on the actual SVG viewBox="0 0 1142 1103"
+const SVG_W = 1142, SVG_H = 1103;
+const FLOOR_POLY = [
+  [168, 86], [957, 90], [961, 982], [692, 985],
+  [691, 896], [465, 894], [256, 705], [168, 703],
+  [168, 86]
+].map(([x,y]) => [x/SVG_W, y/SVG_H]);
+
+// Interior walls (simplified from SVG paths)
+const WALLS = [
+  // horizontal wall dividing office from dance studio
+  [[0.147, 0.453], [0.620, 0.459]],
+  // vertical wall separating office/dirty workshop
+  [[0.620, 0.079], [0.620, 0.459]],
+  // right annex walls
+  [[0.839, 0.320], [0.839, 0.906]],
+  [[0.840, 0.605], [0.960, 0.606]],
+];
+
+// ── THREE ──
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(PINK);
+scene.fog = new THREE.FogExp2(PINK, 0.03);
+
+const camera = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 0.1, 100);
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+document.body.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.enablePan = false;
+controls.minDistance = 2;
+controls.maxDistance = 20;
+
+scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+const dir = new THREE.DirectionalLight(0xffffff, 0.6);
+dir.position.set(5, 10, 8);
+scene.add(dir);
+
+const photoGroup   = new THREE.Group();
+const hotspotGroup = new THREE.Group();
+scene.add(photoGroup, hotspotGroup);
+
+const raycaster = new THREE.Raycaster();
+const mouse     = new THREE.Vector2();
+const hotspots  = [];
+
+let currentId = 'kitchen';
+let moveStart = null, moveEnd = null, moveT = 1;
+const MOVE_DUR = 0.9;
+const clock = new THREE.Clock();
+
+// ── PLACEHOLDER ──
+function placeholder(label, desc, accent) {
+  const W = 1200, H = 800;
+  const c = document.createElement('canvas');
+  c.width = W; c.height = H;
+  const x = c.getContext('2d');
+
+  x.fillStyle = 'rgba(255,255,255,0.08)';
+  x.fillRect(0,0,W,H);
+
+  const g = x.createLinearGradient(0,0,W,H);
+  g.addColorStop(0,'rgba(255,255,255,0.16)');
+  g.addColorStop(1,'rgba(0,0,0,0.08)');
+  x.fillStyle = g; x.fillRect(0,0,W,H);
+
+  x.strokeStyle = accent || '#ffffff';
+  x.lineWidth = 16;
+  x.strokeRect(38,38,W-76,H-76);
+
+  x.strokeStyle = 'rgba(255,255,255,0.35)';
+  x.lineWidth = 2;
+  x.setLineDash([14,10]);
+  x.strokeRect(86,86,W-172,H-172);
+  x.setLineDash([]);
+
+  x.beginPath();
+  x.moveTo(W/2,110); x.lineTo(W/2,H-110);
+  x.moveTo(110,H/2); x.lineTo(W-110,H/2);
+  x.strokeStyle='rgba(255,255,255,0.25)'; x.lineWidth=2; x.stroke();
+
+  x.fillStyle='rgba(255,255,255,0.95)';
+  x.textAlign='center';
+  x.font='bold 56px Arial';
+  x.fillText(label, W/2, H/2-18);
+
+  x.fillStyle='rgba(255,255,255,0.72)';
+  x.font='28px Arial';
+  x.fillText(desc, W/2, H/2+34);
+
+  x.fillStyle='rgba(255,255,255,0.5)';
+  x.font='20px Courier New';
+  x.fillText('placeholder · replace with real photo', W/2, H/2+80);
+
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+
+// ── LOAD TEXTURE ──
+function loadTex(node, cb) {
+  const img = document.createElement('img');
+  img.style.display='none';
+  document.body.appendChild(img);
+  img.onload = () => {
+    const t = new THREE.Texture(img);
+    t.minFilter = THREE.LinearFilter;
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.needsUpdate = true;
+    document.body.removeChild(img);
+    cb(t);
+  };
+  img.onerror = () => {
+    document.body.removeChild(img);
+    cb(placeholder(node.label, node.desc, PINK));
+  };
+  img.src = node.photo;
+}
+
+// ── HOTSPOT — plain white circle (like original) ──
+function makeHotspot(link) {
+  const geo = new THREE.CircleGeometry(0.18, 32);
+  const mat = new THREE.MeshBasicMaterial({
+    color: 0xffffff, transparent: true, opacity: 0.95
+  });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.set(...link.pos);
+  mesh.userData = { to: link.to, label: link.label };
+  hotspotGroup.add(mesh);
+  hotspots.push(mesh);
+  return mesh;
+}
+
+// ── CLEAR ──
+function clearGroup(g) {
+  while (g.children.length) {
+    const ch = g.children[0]; g.remove(ch);
+    ch.geometry?.dispose();
+    if (ch.material) { ch.material.map?.dispose(); ch.material.dispose(); }
+  }
+}
+
+// ── RENDER NODE ──
+function renderNode(id) {
+  const node = nodes[id]; if (!node) return;
+  currentId = id;
+  clearGroup(photoGroup);
+  clearGroup(hotspotGroup);
+  hotspots.length = 0;
+
+  const geo = new THREE.PlaneGeometry(node.scale[0], node.scale[1]);
+  const mat = new THREE.MeshBasicMaterial({
+    color: 0x888888, side: THREE.DoubleSide, transparent: true, opacity: 0
+  });
+  const plane = new THREE.Mesh(geo, mat);
+  plane.position.set(...node.photoPos);
+  plane.rotation.y = node.photoRotY;
+  photoGroup.add(plane);
+
+  loadTex(node, (tex) => {
+    plane.material = new THREE.MeshBasicMaterial({
+      map: tex, side: THREE.DoubleSide, transparent: true, opacity: 0
+    });
+    let f = 0;
+    const fi = setInterval(() => {
+      f += 0.04;
+      if (plane.material) plane.material.opacity = Math.min(f, 1);
+      if (f >= 1) clearInterval(fi);
+    }, 16);
+  });
+
+  node.links.forEach(makeHotspot);
+
+  camera.position.set(...node.camPos);
+  controls.target.set(...node.lookAt);
+  controls.update();
+
+  document.getElementById('room-name').textContent = node.label;
+  document.getElementById('room-desc').textContent = node.desc;
+  document.getElementById('status').textContent = `${node.label} · ${node.links.length} exits`;
+  drawMinimap(id);
+}
+
+// ── MOVE ──
+function moveTo(nextId) {
+  const next = nodes[nextId]; if (!next) return;
+  moveStart = { camPos: camera.position.clone(), target: controls.target.clone() };
+  moveEnd   = {
+    camPos: new THREE.Vector3(...next.camPos),
+    target: new THREE.Vector3(...next.lookAt)
+  };
+  moveT = 0;
+  renderNode(nextId);
+}
+
+// ── MINIMAP ──
+const mc  = document.getElementById('minimap');
+const mx2 = mc.getContext('2d');
+const MW = 152, MH = 148;
+
+function drawMinimap(activeId) {
+  mx2.clearRect(0, 0, MW, MH);
+
+  // floor fill
+  mx2.beginPath();
+  FLOOR_POLY.forEach(([fx,fy], i) =>
+    i===0 ? mx2.moveTo(fx*MW, fy*MH) : mx2.lineTo(fx*MW, fy*MH)
+  );
+  mx2.closePath();
+  mx2.fillStyle = 'rgba(202,216,216,0.35)';
+  mx2.fill();
+  mx2.strokeStyle = DEEP_PURPLE;
+  mx2.lineWidth = 1.5;
+  mx2.stroke();
+
+  // interior walls
+  mx2.strokeStyle = 'rgba(34,17,62,0.3)';
+  mx2.lineWidth = 1;
+  WALLS.forEach(([a, b]) => {
+    mx2.beginPath();
+    mx2.moveTo(a[0]*MW, a[1]*MH);
+    mx2.lineTo(b[0]*MW, b[1]*MH);
+    mx2.stroke();
+  });
+
+  // connections
+  mx2.strokeStyle = 'rgba(34,17,62,0.08)';
+  mx2.lineWidth = 0.8;
+  Object.values(nodes).forEach(n => {
+    n.links.forEach(link => {
+      const t = nodes[link.to]; if (!t) return;
+      mx2.beginPath();
+      mx2.moveTo(n.mx*MW, n.my*MH);
+      mx2.lineTo(t.mx*MW, t.my*MH);
+      mx2.stroke();
+    });
+  });
+
+  // dots
+  Object.entries(nodes).forEach(([id, n]) => {
+    const px = n.mx*MW, py = n.my*MH;
+    const active = id === activeId;
+    mx2.beginPath();
+    mx2.arc(px, py, active ? 7 : 4, 0, Math.PI*2);
+    mx2.fillStyle = active ? PINK : 'rgba(34,17,62,0.3)';
+    mx2.fill();
+    if (active) {
+      mx2.strokeStyle = DEEP_PURPLE;
+      mx2.lineWidth = 1.5;
+      mx2.stroke();
+      mx2.fillStyle = DEEP_PURPLE;
+      mx2.font = 'bold 8px Courier New';
+      mx2.textAlign = 'center';
+      mx2.fillText(n.label, px, py - 11);
+    }
+  });
+}
+
+// ── EVENTS ──
+const tooltip = document.getElementById('tooltip');
+
+renderer.domElement.addEventListener('pointermove', e => {
+  mouse.x = (e.clientX/innerWidth)*2-1;
+  mouse.y = -(e.clientY/innerHeight)*2+1;
+  raycaster.setFromCamera(mouse, camera);
+  const hits = raycaster.intersectObjects(hotspots, false);
+  if (hits.length) {
+    renderer.domElement.style.cursor = 'pointer';
+    tooltip.style.display = 'block';
+    tooltip.style.left = (e.clientX+14)+'px';
+    tooltip.style.top  = (e.clientY-8)+'px';
+    tooltip.textContent = '→ ' + hits[0].object.userData.label;
+  } else {
+    renderer.domElement.style.cursor = '';
+    tooltip.style.display = 'none';
+  }
+});
+
+renderer.domElement.addEventListener('pointerdown', e => {
+  mouse.x = (e.clientX/innerWidth)*2-1;
+  mouse.y = -(e.clientY/innerHeight)*2+1;
+  raycaster.setFromCamera(mouse, camera);
+  const hits = raycaster.intersectObjects(hotspots, false);
+  if (hits.length) moveTo(hits[0].object.userData.to);
+});
+
+// minimap click
+mc.style.cursor = 'pointer';
+mc.addEventListener('click', e => {
+  const rect = mc.getBoundingClientRect();
+  const cx = (e.clientX-rect.left)*(MW/rect.width);
+  const cy = (e.clientY-rect.top)*(MH/rect.height);
+  let closest = null, best = Infinity;
+  Object.entries(nodes).forEach(([id, n]) => {
+    const d = Math.hypot(n.mx*MW-cx, n.my*MH-cy);
+    if (d < 16 && d < best) { best=d; closest=id; }
+  });
+  if (closest && closest !== currentId) moveTo(closest);
+});
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+// ── LOOP ──
+function easeOut(t) { return 1 - Math.pow(1-t, 3); }
+
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = clock.getDelta();
+
+  if (moveT < 1 && moveStart && moveEnd) {
+    moveT = Math.min(moveT + dt/MOVE_DUR, 1);
+    const e = easeOut(moveT);
+    camera.position.lerpVectors(moveStart.camPos, moveEnd.camPos, e);
+    controls.target.lerpVectors(moveStart.target, moveEnd.target, e);
+  }
+
+  // hotspots always face camera + gentle pulse
+  const pulse = 1 + 0.08 * Math.sin(Date.now()*0.003);
+  hotspots.forEach(h => {
+    h.lookAt(camera.position);
+    h.scale.setScalar(pulse);
+  });
+
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+renderNode('kitchen');
+animate();
+</script>
+</body>
+</html>
