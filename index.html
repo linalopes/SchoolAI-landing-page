@@ -128,7 +128,7 @@
   .hero-pattern {
     position: absolute;
     inset: 0;
-    background-image: url('https://github.com/linalopes/SchoolAI-brand-kit/blob/main/patterns/pattern-4.png?raw=true');
+    background-image: url('https://linalopes.github.io/patterns/pattern-4.png');
     background-size: cover;
     background-position: center;
     opacity: 0.18;
@@ -437,7 +437,7 @@
     position: absolute;
     bottom: 0; left: 0; right: 0;
     height: 2px;
-    background: var(--turquoise);
+    background: var(--pink);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.3s;
@@ -504,6 +504,174 @@
     color: var(--gray-green);
     opacity: 0.5;
   }
+  .workshops-program-desc {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    max-width: 640px;
+  }
+  .workshops-program-desc p {
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--gray-green);
+    opacity: 0.7;
+  }
+  .workshop-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(34,17,62,0.85);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .workshop-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .workshop-overlay-inner {
+    background: var(--white);
+    border-radius: var(--radius);
+    max-width: 720px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: var(--space-6);
+    position: relative;
+  }
+  .workshop-overlay-close {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: var(--deep-purple);
+    cursor: pointer;
+    opacity: 0.4;
+    line-height: 1;
+    transition: opacity 0.2s;
+  }
+  .workshop-overlay-close:hover { opacity: 1; }
+  .overlay-subtitle {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 8px;
+  }
+  .overlay-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: 32px;
+    letter-spacing: -0.02em;
+    color: var(--deep-purple);
+    margin-bottom: var(--space-4);
+    line-height: 1.1;
+  }
+  .overlay-schedule {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+  }
+  .overlay-schedule-block {
+    border: 1px solid rgba(34,17,62,0.1);
+    border-radius: var(--radius);
+    padding: var(--space-3);
+  }
+  .overlay-schedule-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--deep-purple);
+    opacity: 0.4;
+    margin-bottom: 4px;
+  }
+  .overlay-schedule-dates {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--deep-purple);
+    margin-bottom: 2px;
+  }
+  .overlay-schedule-time {
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    color: var(--deep-purple);
+    opacity: 0.5;
+  }
+  .overlay-description {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--deep-purple);
+    opacity: 0.75;
+    margin-bottom: var(--space-4);
+    white-space: pre-line;
+  }
+  .overlay-section-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--deep-purple);
+    opacity: 0.4;
+    margin-bottom: var(--space-3);
+    padding-top: var(--space-4);
+    border-top: 1px solid rgba(34,17,62,0.08);
+  }
+  .overlay-learn-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: var(--space-4);
+  }
+  .overlay-learn-list li {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--deep-purple);
+    opacity: 0.7;
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 6px;
+  }
+  .overlay-learn-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--pink);
+    font-size: 12px;
+  }
+  .overlay-who {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--deep-purple);
+    opacity: 0.65;
+    margin-bottom: var(--space-5);
+  }
+  .overlay-cta {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: var(--turquoise);
+    color: var(--deep-purple);
+    font-family: 'Courier Prime', monospace;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 16px;
+    border-radius: var(--radius);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .overlay-cta:hover { background: var(--pink); }
 
   /* ── UPCOMING EVENTS ── */
   #upcoming-events {
@@ -827,7 +995,7 @@
   .faq-pattern {
     position: absolute;
     inset: 0;
-    background-image: url('https://github.com/linalopes/SchoolAI-brand-kit/blob/main/patterns/pattern-2.png?raw=true');
+    background-image: url('https://linalopes.github.io/patterns/pattern-2.png');
     background-size: cover;
     opacity: 0.07;
     pointer-events: none;
@@ -1119,7 +1287,7 @@
   .footer-pattern {
     position: absolute;
     inset: 0;
-    background-image: url('https://github.com/linalopes/SchoolAI-brand-kit/blob/main/patterns/pattern-6.png?raw=true');
+    background-image: url('https://linalopes.github.io/patterns/pattern-6.png');
     background-size: cover;
     opacity: 1;
     pointer-events: none;
@@ -1297,55 +1465,10 @@
     <h2 class="section-title" style="color:var(--white);">Room for Interaction:<br>Seven workshops.<br>One season.</h2>
   </div>
   <div class="divider"></div>
-  <div class="workshops-grid">
+  <div class="workshops-grid" id="workshops-grid"></div>
 
-    <div class="workshop-card fade-up">
-      <div class="workshop-tag">Sensor + Body</div>
-      <div class="workshop-name">Augmented Chorus</div>
-      <p class="workshop-desc">Turn the studio into an expanded voice. Sensors translate breath and gesture into collective sound.</p>
-      <div class="workshop-meta">2h · beginner-friendly · Apr 2026</div>
-    </div>
-
-    <div class="workshop-card fade-up">
-      <div class="workshop-tag">Game Design</div>
-      <div class="workshop-name">Maze Circuit</div>
-      <p class="workshop-desc">A collaborative game where conductive points the exits. Touch is the controller.</p>
-      <div class="workshop-meta">2h · all levels · May 2026</div>
-    </div>
-
-    <div class="workshop-card fade-up">
-      <div class="workshop-tag">Voice + Space</div>
-      <div class="workshop-name">Singing to a Garden</div>
-      <p class="workshop-desc">Voices make paper flowers bloom, wilt, and open again. Thresholds, intimacy, and signal.</p>
-      <div class="workshop-meta">2h · all levels · Jun 2026</div>
-    </div>
-
-    <div class="workshop-card fade-up">
-      <div class="workshop-tag">Robotics + Sound</div>
-      <div class="workshop-name">Marble Machine Orchestra</div>
-      <p class="workshop-desc">Build small self-rolling machines. Each marble becomes a note in a collective score.</p>
-      <div class="workshop-meta">3h · intermediate · Aug 2026</div>
-    </div>
-
-    <div class="workshop-card fade-up">
-      <div class="workshop-tag">Drawing + Code</div>
-      <div class="workshop-name">From Gesture to Pen</div>
-      <p class="workshop-desc">Draw with your body and print it with a pen plotter. Motion captured as line.</p>
-      <div class="workshop-meta">2h · beginner-friendly · Sep 2026</div>
-    </div>
-
-    <div class="workshop-card fade-up">
-      <div class="workshop-tag">Touch Technology</div>
-      <div class="workshop-name">Room as Instrument</div>
-      <p class="workshop-desc">The studio becomes a giant musical instrument. Every surface plays.</p>
-      <div class="workshop-meta">2h · all levels · Oct 2026</div>
-    </div>
-
-  </div>
-
-  <div class="workshops-footer">
-    <p>Each workshop — 2 online sessions + 1 in-person Saturday</p>
-    <a href="#contact" class="btn-accent">See full programme →</a>
+  <div class="workshops-program-desc fade-up">
+    <p id="program-description"></p>
   </div>
 </section>
 
@@ -1570,6 +1693,13 @@
   </div>
   <p class="footer-copy">© 2026 Lina Lopes · School of Tomorrow's AI</p>
 </footer>
+
+<div id="workshop-overlay" class="workshop-overlay" aria-hidden="true">
+  <div class="workshop-overlay-inner">
+    <button class="workshop-overlay-close" id="overlay-close" aria-label="Close">×</button>
+    <div id="overlay-content"></div>
+  </div>
+</div>
 
 <script>
   const EVENTS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSpM1GYZ-ohq9jHkppGkz4hCx_p3vuCDjekln1apcu1nV2KILUmDeoT3xeLTSprREAXWjiWY8AovP4y/pub?gid=0&single=true&output=csv';
@@ -1812,6 +1942,91 @@
       if (!isOpen) item.classList.add('open');
     });
   });
+
+  async function loadWorkshops() {
+    try {
+      const res = await fetch('room-for-interaction.json');
+      const data = await res.json();
+      renderWorkshopCards(data.workshops);
+    } catch(e) {
+      console.error('Could not load workshops:', e);
+    }
+  }
+
+  function renderWorkshopCards(workshops) {
+    const grid = document.getElementById('workshops-grid');
+    if (!grid) return;
+    grid.innerHTML = workshops.map(w => `
+      <div class="workshop-card fade-up" onclick="openWorkshop('${w.id}')">
+        <div class="workshop-tag">${w.subtitle}</div>
+        <div class="workshop-name">${w.title}</div>
+        <p class="workshop-desc">${w.description}</p>
+        <div class="workshop-meta">${w.schedule.inPerson.dates}</div>
+      </div>
+    `).join('');
+    document.querySelectorAll('.workshop-card.fade-up').forEach(el => observer.observe(el));
+  }
+
+  let workshopsData = [];
+  async function initWorkshops() {
+    try {
+      const res = await fetch('room-for-interaction.json');
+      const data = await res.json();
+      workshopsData = data.workshops;
+      const desc = document.getElementById('program-description');
+      if (desc && data.program) {
+        desc.textContent = data.program.description.split('\n\n')[0];
+      }
+      renderWorkshopCards(workshopsData);
+    } catch(e) { console.error(e); }
+  }
+
+  function openWorkshop(id) {
+    const w = workshopsData.find(w => w.id === id);
+    if (!w) return;
+    const overlay = document.getElementById('workshop-overlay');
+    const content = document.getElementById('overlay-content');
+    content.innerHTML = `
+      <p class="overlay-subtitle">${w.subtitle}</p>
+      <h2 class="overlay-title">${w.title}</h2>
+      <div class="overlay-schedule">
+        <div class="overlay-schedule-block">
+          <div class="overlay-schedule-label">Online sessions</div>
+          <div class="overlay-schedule-dates">${w.schedule.online.dates}</div>
+          <div class="overlay-schedule-time">${w.schedule.online.time}</div>
+        </div>
+        <div class="overlay-schedule-block">
+          <div class="overlay-schedule-label">In person</div>
+          <div class="overlay-schedule-dates">${w.schedule.inPerson.dates}</div>
+          <div class="overlay-schedule-time">${w.schedule.inPerson.time}</div>
+        </div>
+      </div>
+      <p class="overlay-description">${w.content.description}</p>
+      <p class="overlay-section-label">What you'll learn</p>
+      <ul class="overlay-learn-list">${w.content.whatYoullLearn.map(item => `<li>${item}</li>`).join('')}</ul>
+      <p class="overlay-section-label">Who should join</p>
+      <p class="overlay-who">${w.content.whoShouldJoin}</p>
+      <a href="${w.lumaEventUrl}" target="_blank" rel="noopener" class="overlay-cta">Register at Luma →</a>
+    `;
+    overlay.classList.add('active');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeWorkshop() {
+    const overlay = document.getElementById('workshop-overlay');
+    overlay.classList.remove('active');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('overlay-close').addEventListener('click', closeWorkshop);
+  document.getElementById('workshop-overlay').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closeWorkshop();
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeWorkshop(); });
+
+  initWorkshops();
 </script>
 </body>
 </html>
