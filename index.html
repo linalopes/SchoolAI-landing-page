@@ -2110,8 +2110,12 @@
   function renderWorkshopCards(workshops) {
     const grid = document.getElementById('workshops-grid');
     if (!grid) return;
+    const toWorkshopSlug = (title) => title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
     grid.innerHTML = workshops.map(w => `
-      <div class="workshop-card fade-up" onclick="openWorkshop('${w.id}')">
+      <div class="workshop-card fade-up" data-id="${toWorkshopSlug(w.title)}" onclick="openWorkshop('${w.id}', this)">
         <div class="workshop-tag">${w.subtitle}</div>
         <div class="workshop-name">${w.title}</div>
         <p class="workshop-desc">${w.description}</p>
@@ -2135,7 +2139,7 @@
     } catch(e) { console.error(e); }
   }
 
-  function openWorkshop(id) {
+  function openWorkshop(id, card) {
     const w = workshopsData.find(w => w.id === id);
     if (!w) return;
     const overlay = document.getElementById('workshop-overlay');
@@ -2164,6 +2168,10 @@
     `;
     overlay.classList.add('active');
     overlay.setAttribute('aria-hidden', 'false');
+    if (card && card.dataset && card.dataset.id) {
+      document.getElementById('workshop-overlay').dataset.activeId = card.dataset.id;
+      history.pushState(null, '', '#workshop-' + card.dataset.id);
+    }
     document.body.style.overflow = 'hidden';
   }
 
@@ -2171,6 +2179,7 @@
     const overlay = document.getElementById('workshop-overlay');
     overlay.classList.remove('active');
     overlay.setAttribute('aria-hidden', 'true');
+    history.pushState(null, '', window.location.pathname);
     document.body.style.overflow = '';
   }
 
@@ -2180,7 +2189,15 @@
   });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeWorkshop(); });
 
-  initWorkshops();
+  initWorkshops().then(() => {
+    // Deep link: open lightbox if URL has a workshop hash
+    const hash = window.location.hash;
+    if (hash && hash.startsWith('#workshop-')) {
+      const slug = hash.replace('#workshop-', '');
+      const card = document.querySelector(`[data-id="${slug}"]`);
+      if (card) card.click();
+    }
+  });
 
   const hamburger = document.getElementById('nav-hamburger');
   const mobileMenu = document.getElementById('nav-mobile-menu');
