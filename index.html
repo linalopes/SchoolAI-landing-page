@@ -792,55 +792,29 @@
     color: var(--deep-purple);
     opacity: 0.6;
   }
-  .location-masonry {
-    columns: 3;
-    column-gap: 8px;
+  .location-3d {
+    width: 100%;
     margin-bottom: 52px;
   }
-  .location-masonry-item {
-    break-inside: avoid;
-    margin-bottom: 8px;
-    overflow: hidden;
-    border-radius: var(--radius);
-    position: relative;
-    cursor: pointer;
-  }
-  .location-masonry-item img {
+  .location-3d-frame {
     width: 100%;
-    display: block;
-    transition: transform 0.4s ease;
-  }
-  .location-masonry-item:hover img {
-    transform: scale(1.04);
-  }
-  .lm-overlay {
-    position: absolute;
-    inset: 0;
-    background: var(--deep-purple);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    height: 520px;
+    border: none;
     border-radius: var(--radius);
+    display: block;
   }
-  .location-masonry-item:hover .lm-overlay {
-    opacity: 0.2;
-  }
-  .lm-line {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--pink);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.35s ease;
-  }
-  .location-masonry-item:hover .lm-line {
-    transform: scaleX(1);
+  .location-3d-hint {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--deep-purple);
+    opacity: 0.3;
+    margin-top: 10px;
+    text-align: center;
   }
   @media (max-width: 900px) {
     .location-header { grid-template-columns: 1fr; gap: var(--space-4); }
-    .location-masonry { columns: 2; }
     .location-features { grid-template-columns: 1fr; gap: var(--space-4); }
   }
 
@@ -1415,20 +1389,9 @@
     <p class="location-intro">A shared atelier with Glitch Lab and Schönau Art Community — a transformed factory space where creative research, prototyping, and artistic experimentation come together.</p>
   </div>
 
-  <div class="location-masonry fade-up">
-    <div class="location-masonry-item"><img src="https://media.linalopes.info/schoolai-space/IMG_3342.jpeg" alt="Atelier space"><div class="lm-overlay"></div><div class="lm-line"></div></div>
-    <div class="location-masonry-item"><img src="https://media.linalopes.info/schoolai-space/IMG_3343.jpeg" alt="Atelier space"><div class="lm-overlay"></div><div class="lm-line"></div></div>
-    <div class="location-masonry-item"><img src="https://media.linalopes.info/schoolai-space/IMG_3346.jpeg" alt="Atelier space"><div class="lm-overlay"></div><div class="lm-line"></div></div>
-    <div class="location-masonry-item"><img src="https://media.linalopes.info/schoolai-space/IMG_3348.jpeg" alt="Atelier space"><div class="lm-overlay"></div><div class="lm-line"></div></div>
-    <div class="location-masonry-item"><img src="https://media.linalopes.info/schoolai-space/IMG_3349.jpeg" alt="Atelier space"><div class="lm-overlay"></div><div class="lm-line"></div></div>
-    <div class="location-masonry-item"><img src="https://media.linalopes.info/schoolai-space/IMG_3350.jpeg" alt="Atelier space"><div class="lm-overlay"></div><div class="lm-line"></div></div>
-    <div class="location-masonry-item"><img src="https://media.linalopes.info/schoolai-space/IMG_3351.jpeg" alt="Atelier space"><div class="lm-overlay"></div><div class="lm-line"></div></div>
-    <div class="location-masonry-item"><img src="https://media.linalopes.info/schoolai-space/IMG_3352.jpeg" alt="Atelier space"><div class="lm-overlay"></div><div class="lm-line"></div></div>
-    <div class="location-masonry-item"><img src="https://media.linalopes.info/schoolai-space/IMG_3356.jpeg" alt="Atelier space"><div class="lm-overlay"></div><div class="lm-line"></div></div>
-    <div class="location-masonry-item"><img src="https://media.linalopes.info/schoolai-space/IMG_3357.jpeg" alt="Atelier space"><div class="lm-overlay"></div><div class="lm-line"></div></div>
-    <div class="location-masonry-item"><img src="https://media.linalopes.info/schoolai-space/IMG_3358.jpeg" alt="Atelier space"><div class="lm-overlay"></div><div class="lm-line"></div></div>
-    <div class="location-masonry-item"><img src="https://media.linalopes.info/schoolai-space/IMG_3364.jpeg" alt="Atelier space"><div class="lm-overlay"></div><div class="lm-line"></div></div>
-    <div class="location-masonry-item"><img src="https://media.linalopes.info/schoolai-space/IMG_3365.jpeg" alt="Atelier space"><div class="lm-overlay"></div><div class="lm-line"></div></div>
+  <div class="location-3d fade-up">
+    <iframe src="space3d.html" class="location-3d-frame" title="Glitch Lab — The Atelier Space in 3D" allowfullscreen></iframe>
+    <p class="location-3d-hint">Drag to explore · cmd+Scroll to zoom</p>
   </div>
 
   <div class="location-features fade-up">
