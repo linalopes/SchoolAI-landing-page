@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Glitch Lab — The Atelier</title>
+<title>The Atelier Space</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { width: 100%; height: 100%; overflow: hidden; background: #EA7DFF; }
@@ -74,9 +74,9 @@
 <body>
 
 <div id="room-label">
-  <div class="eyebrow">Glitch Lab · Wetzikon, Zürich</div>
+  <div class="eyebrow">Wetzikon | Zürich</div>
   <div class="name" id="room-name">Kitchen</div>
-  <div class="desc" id="room-desc">Entrance · Ground floor</div>
+  <div class="desc" id="room-desc">Entrance · First floor</div>
 </div>
 <div id="hint">drag to look around · click sphere to navigate</div>
 <div id="tooltip"></div>
@@ -98,6 +98,7 @@ const TURQUOISE   = '#08F2DB';
 // Y is always 1.6 (eye level for spheres) or 2.1 (photo plane center)
 // Scale: ~1 unit = ~1.5m
 const WORLD = {
+  'entrance':       [ -10,   12 ],
   'kitchen':        [ -5,   5 ],
   'dance-studio':   [ -2,   0 ],
   'biolab':         [ -5,   1 ],
@@ -109,8 +110,13 @@ const WORLD = {
 
 // ── NODE MAP ──
 const nodes = {
+  entrance: {
+    label: 'Entrance',
+    desc: 'Ground floor · Building door',
+    photo: 'imgs/space/entrance.webp',
+  },
   kitchen: {
-    label: 'Kitchen', desc: 'Entrance · Ground floor',
+    label: 'Kitchen', desc: 'Staircase · First floor',
     photo: 'imgs/space/kitchen.webp',
   },
   'dance-studio': {
@@ -142,6 +148,7 @@ const nodes = {
 // Minimap layout (normalized 0..1 from SVG)
 const SVG_W = 1142, SVG_H = 1103;
 const MINIMAP_POS = {
+  'entrance':       [286/SVG_W, 980/SVG_H],
   'kitchen':        [286/SVG_W, 872/SVG_H],
   'dance-studio':   [400/SVG_W, 500/SVG_H],
   'biolab':         [294/SVG_W, 608/SVG_H],
@@ -272,7 +279,8 @@ function buildScene() {
       color: 0x999999, side: THREE.DoubleSide, transparent: true, opacity: 0
     });
     const plane = new THREE.Mesh(geo, mat);
-    plane.position.set(wx, 2.1, wz - 4); // photo sits "in front" of the room position
+    const planeY = id === 'entrance' ? 1.4 : 2.1;
+    plane.position.set(wx, planeY, wz - 4);
     scene.add(plane);
 
     // Sphere
@@ -343,9 +351,11 @@ function setRoom(id) {
 
   // Camera positioned behind the room, looking at the photo plane
   moveStart = { camPos: camera.position.clone(), target: controls.target.clone() };
+  const floorY = id === 'entrance' ? 0.8 : 1.6;
+  const photoY = id === 'entrance' ? 1.4 : 2.1;
   moveEnd = {
-    camPos: new THREE.Vector3(wx, 1.6, wz + 6),
-    target: new THREE.Vector3(wx, 1.6, wz)
+    camPos: new THREE.Vector3(wx, floorY, wz + 6),
+    target: new THREE.Vector3(wx, floorY, wz)
   };
   moveT = 0;
 
@@ -464,7 +474,7 @@ function animate(){
 
 // ── INIT ──
 buildScene();
-setRoom('kitchen');
+setRoom('entrance');
 animate();
 </script>
 </body>
