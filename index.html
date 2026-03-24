@@ -1452,9 +1452,29 @@
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     nav {
-      grid-template-columns: 1fr auto;
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: 10px;
+      align-items: center;
     }
-    nav { padding: 4px var(--space-4); }
+    .nav-logo {
+      justify-self: stretch;
+      width: 100%;
+      min-width: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-inline-end: 2px;
+    }
+    .nav-logo img {
+      display: block;
+      width: min(100%, min(98vw, 720px));
+      height: auto;
+      max-height: clamp(120px, 26vw, 168px);
+      margin-inline: auto;
+      object-fit: contain;
+      object-position: center;
+    }
+    nav { padding: 10px var(--space-4); }
     section { padding: 72px var(--space-4); }
     .manifesto-grid,
     .host-grid { grid-template-columns: 1fr; gap: var(--space-5); }
