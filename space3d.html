@@ -13,23 +13,23 @@
     z-index: 10; pointer-events: none;
   }
   #room-label .eyebrow {
-    font-family: 'Courier New', monospace; font-size: 10px;
+    font-family: 'Courier New', monospace; font-size: 12px;
     letter-spacing: 0.15em; text-transform: uppercase;
     color: rgba(34,17,62,0.5); margin-bottom: 3px;
   }
   #room-label .name {
-    font-family: Georgia, serif; font-size: 22px;
+    font-family: Georgia, serif; font-size: 24px;
     color: #22113E; letter-spacing: -0.01em;
   }
   #room-label .desc {
-    font-family: 'Courier New', monospace; font-size: 10px;
+    font-family: 'Courier New', monospace; font-size: 12px;
     color: rgba(34,17,62,0.4); margin-top: 2px;
   }
 
   #hint {
     position: absolute; bottom: 20px; left: 50%;
     transform: translateX(-50%);
-    font-family: 'Courier New', monospace; font-size: 10px;
+    font-family: 'Courier New', monospace; font-size: 12px;
     letter-spacing: 0.15em; text-transform: uppercase;
     color: rgba(34,17,62,0.35); pointer-events: none; white-space: nowrap;
   }
@@ -41,7 +41,7 @@
   }
   #minimap { display: block; width: 152px; height: 148px; }
   #minimap-label {
-    font-family: 'Courier New', monospace; font-size: 9px;
+    font-family: 'Courier New', monospace; font-size: 11px;
     letter-spacing: 0.12em; text-transform: uppercase;
     color: rgba(34,17,62,0.35); text-align: center; margin-top: 5px;
   }
@@ -52,7 +52,7 @@
     background: #22113E;
     color: #ffffff;
     font-family: 'Courier New', monospace;
-    font-size: 12px;
+    font-size: 14px;
     letter-spacing: 0.08em;
     padding: 6px 14px;
     border-radius: 4px;
@@ -257,11 +257,11 @@ function placeholder(label, desc) {
   x.strokeStyle='rgba(255,255,255,0.2)'; x.lineWidth=1; x.stroke();
   x.fillStyle='rgba(255,255,255,0.55)'; x.fillRect(W/2-28,H/2-50,56,3);
   x.fillStyle='rgba(255,255,255,0.95)';
-  x.textAlign='center'; x.font='bold 54px Arial';
+  x.textAlign='center'; x.font='bold 56px Arial';
   x.fillText(label, W/2, H/2-10);
-  x.font='26px Arial'; x.fillStyle='rgba(255,255,255,0.65)';
+  x.font='28px Arial'; x.fillStyle='rgba(255,255,255,0.65)';
   x.fillText(desc, W/2, H/2+38);
-  x.font='17px Courier New'; x.fillStyle='rgba(255,255,255,0.38)';
+  x.font='19px Courier New'; x.fillStyle='rgba(255,255,255,0.38)';
   x.fillText('placeholder · replace with real photo', W/2, H/2+78);
   const t = new THREE.CanvasTexture(c);
   t.colorSpace = THREE.SRGBColorSpace;
@@ -432,7 +432,7 @@ function drawMinimap(activeId) {
     mx2.fill();
     if (active) {
       mx2.strokeStyle=DEEP_PURPLE; mx2.lineWidth=1.5; mx2.stroke();
-      mx2.fillStyle=DEEP_PURPLE; mx2.font='bold 8px Courier New';
+      mx2.fillStyle=DEEP_PURPLE; mx2.font='bold 10px Courier New';
       mx2.textAlign='center';
       mx2.fillText(nodes[id].label, px, py-12);
     }
