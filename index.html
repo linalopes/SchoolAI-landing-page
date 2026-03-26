@@ -77,6 +77,8 @@
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     padding: 4px var(--space-6);
+    background: rgba(34, 17, 62, 0.92);
+    backdrop-filter: blur(12px);
     mix-blend-mode: normal;
     transition: background 0.4s, backdrop-filter 0.4s;
   }
@@ -199,12 +201,10 @@
     min-height: 100vh;
     background: var(--deep-purple);
     position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    /* padding: var(--space-6); */
-    padding-top: 120px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     overflow: hidden;
+    padding: 0;
   }
   .hero-pattern {
     position: absolute;
@@ -214,6 +214,161 @@
     background-position: center;
     opacity: 0.18;
     mix-blend-mode: screen;
+  }
+  .hero-left {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 120px var(--space-6) 100px var(--space-6);
+  }
+  .hero-right {
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    height: 100%;
+  }
+  .hero-carousel-slides {
+    position: absolute;
+    inset: 0;
+  }
+  .hero-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+  }
+  .hero-slide-image,
+  .hero-slide-pattern,
+  .hero-slide-tint,
+  .hero-slide-gradient {
+    position: absolute;
+    inset: 0;
+  }
+  .hero-slide-image {
+    background-color: var(--deep-purple);
+    background-size: cover;
+    background-position: center;
+    transform: scale(1);
+    transition: transform 6s ease;
+  }
+  .hero-slide-pattern {
+    background-image: url('https://raw.githubusercontent.com/linalopes/SchoolAI-brand-kit/main/patterns/pattern-4.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.12;
+    mix-blend-mode: screen;
+  }
+  .hero-slide.active .hero-slide-image {
+    transform: scale(1.04);
+  }
+  .hero-slide-tint {
+    background: var(--slide-accent);
+    opacity: 0.15;
+  }
+  .hero-slide-gradient {
+    background: linear-gradient(to top,
+      rgba(34,17,62,0.95) 0%,
+      rgba(34,17,62,0.65) 40%,
+      rgba(34,17,62,0.20) 70%,
+      transparent 100%
+    );
+  }
+  .hero-slide.active {
+    opacity: 1;
+  }
+  .hero-slide-content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: var(--space-5) var(--space-4);
+    z-index: 2;
+  }
+  .hero-slide-eyebrow,
+  .hero-slide-title,
+  .hero-slide-tagline,
+  .hero-slide-cta {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .hero-slide.active .hero-slide-eyebrow,
+  .hero-slide.active .hero-slide-title,
+  .hero-slide.active .hero-slide-tagline,
+  .hero-slide.active .hero-slide-cta {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .hero-slide.active .hero-slide-eyebrow { transition-delay: 0.1s; }
+  .hero-slide.active .hero-slide-title { transition-delay: 0.2s; }
+  .hero-slide.active .hero-slide-tagline { transition-delay: 0.35s; }
+  .hero-slide.active .hero-slide-cta { transition-delay: 0.5s; }
+  .hero-slide-eyebrow {
+    color: var(--slide-accent);
+    margin-bottom: var(--space-2);
+  }
+  .hero-slide-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: clamp(22px, 2.8vw, 36px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: var(--space-3);
+  }
+  .hero-slide-title span {
+    color: var(--slide-accent);
+  }
+  .hero-slide-tagline {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    color: var(--gray-green);
+    line-height: 1.6;
+    max-width: 260px;
+    margin-bottom: var(--space-3);
+  }
+  .hero-slide-cta {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    color: var(--slide-accent);
+    border: 1px solid var(--slide-accent-border);
+    border-radius: var(--radius);
+    padding: 8px 16px;
+    display: inline-block;
+    text-decoration: none;
+  }
+  .hero-carousel-dots {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    z-index: 3;
+    display: flex;
+    gap: 8px;
+  }
+  .hero-carousel-dot {
+    width: 6px;
+    height: 6px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transform: scale(1);
+    transition: background 0.3s, transform 0.3s;
+    cursor: pointer;
+    padding: 0;
+  }
+  .hero-carousel-dot.active {
+    background: rgba(255,255,255,0.75);
+    transform: scale(1.3);
+  }
+  .hero-carousel-progress {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    z-index: 3;
   }
   .hero-content {
     position: relative;
@@ -1452,6 +1607,13 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
+    #hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 72px var(--space-4); }
+    .hero-right {
+      display: block;
+      width: 100%;
+      height: clamp(280px, 60vw, 420px);
+    }
     nav {
       grid-template-columns: minmax(0, 1fr) auto;
       column-gap: 10px;
@@ -1529,24 +1691,27 @@
 <!-- ── HERO ── -->
 <section id="hero">
   <div class="hero-pattern"></div>
-  <div class="hero-content">
-    <p class="t-label hero-eyebrow">School of Tomorrow's AI — Wetzikon | Zürich</p>
-    <h1 class="hero-title">
-      AI as<br><em>material.</em>
-    </h1>
-    <p class="hero-tagline">
-      A creative learning platform at the intersection of
-      Art × Technology × Science.
-    </p>
-    <div class="hero-actions">
-      <a href="#workshops" class="btn-accent">Explore workshops</a>
-      <a href="#contact" class="btn-primary">Join the list</a>
+  <div class="hero-left">
+    <div class="hero-content">
+      <p class="t-label hero-eyebrow">School of Tomorrow's AI — Wetzikon | Zürich</p>
+      <h1 class="hero-title">
+        AI as<br><em>material.</em>
+      </h1>
+      <p class="hero-tagline">
+        A creative learning platform at the intersection of
+        Art × Technology × Science.
+      </p>
+      <div class="hero-actions">
+        <a href="#workshops" class="btn-accent">Explore workshops</a>
+        <a href="#contact" class="btn-primary">Join the list</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span>Scroll</span>
     </div>
   </div>
-  <div class="hero-scroll">
-    <div class="hero-scroll-line"></div>
-    <span>Scroll</span>
-  </div>
+  <div class="hero-right" id="hero-carousel"></div>
 </section>
 
 <!-- ── MARQUEE ── -->
@@ -1873,6 +2038,7 @@
 
 <script>
   const EVENTS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSpM1GYZ-ohq9jHkppGkz4hCx_p3vuCDjekln1apcu1nV2KILUmDeoT3xeLTSprREAXWjiWY8AovP4y/pub?gid=0&single=true&output=csv';
+  const CAROUSEL_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSpM1GYZ-ohq9jHkppGkz4hCx_p3vuCDjekln1apcu1nV2KILUmDeoT3xeLTSprREAXWjiWY8AovP4y/pub?gid=1398027263&single=true&output=csv';
 
   function parseCSVLine(line) {
     const values = [];
@@ -1927,6 +2093,131 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
+  }
+
+  function getCarouselAccentConfig(accentValue) {
+    const accent = (accentValue || '').toLowerCase().trim();
+    if (accent === 'pink') return { color: 'var(--pink)', border: 'rgba(234,125,255,0.45)' };
+    if (accent === 'white') return { color: 'rgba(255,255,255,0.55)', border: 'rgba(255,255,255,0.45)' };
+    if (accent === 'turquoise') return { color: 'var(--turquoise)', border: 'rgba(8,242,219,0.45)' };
+    return { color: 'var(--turquoise)', border: 'rgba(8,242,219,0.45)' };
+  }
+
+  function emphasizeLastWord(title) {
+    const words = title.trim().split(/\s+/);
+    if (!words.length) return '';
+    if (words.length === 1) return `<span>${words[0]}</span>`;
+    const leading = words.slice(0, -1).join(' ');
+    const ending = words[words.length - 1];
+    return `${leading} <span>${ending}</span>`;
+  }
+
+  async function loadCarousel() {
+    const carouselEl = document.getElementById('hero-carousel');
+    if (!carouselEl) return;
+
+    try {
+      const response = await fetch(CAROUSEL_CSV_URL);
+      if (!response.ok) throw new Error('Request failed');
+
+      const csvText = await response.text();
+      const slides = parseCSV(csvText);
+      if (!slides.length) {
+        carouselEl.style.display = 'none';
+        return;
+      }
+
+      const slidesHTML = slides.map((slide, index) => {
+        const type = escapeHTML(slide.type);
+        const title = escapeHTML(slide.title);
+        const tagline = escapeHTML(slide.tagline);
+        const imageUrl = escapeHTML(slide.image_url);
+        const hasImage = imageUrl.length > 0;
+        const ctaLabel = escapeHTML(slide.cta_label || 'Learn more');
+        const ctaUrl = escapeHTML(slide.cta_url);
+        const accent = getCarouselAccentConfig(escapeHTML(slide.accent));
+        const ctaHTML = ctaUrl ? `<a class="hero-slide-cta t-mono" href="${ctaUrl}" target="_blank" rel="noopener">${ctaLabel}</a>` : '';
+        const imageStyle = hasImage ? `background-image:url('${imageUrl}');` : '';
+
+        return `
+          <article class="hero-slide${index === 0 ? ' active' : ''}" style="--slide-accent:${accent.color};--slide-accent-border:${accent.border};">
+            <div class="hero-slide-image" style="${imageStyle}"></div>
+            ${hasImage ? '' : '<div class="hero-slide-pattern"></div>'}
+            <div class="hero-slide-tint"></div>
+            <div class="hero-slide-gradient"></div>
+            <div class="hero-slide-content">
+              ${type ? `<p class="hero-slide-eyebrow t-label">${type}</p>` : ''}
+              <h3 class="hero-slide-title">${emphasizeLastWord(title)}</h3>
+              ${tagline ? `<p class="hero-slide-tagline">${tagline}</p>` : ''}
+              ${ctaHTML}
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      const dotsHTML = slides.map((slide, index) => `
+        <button class="hero-carousel-dot${index === 0 ? ' active' : ''}" type="button" data-index="${index}" aria-label="Go to slide ${index + 1}"></button>
+      `).join('');
+
+      carouselEl.innerHTML = `
+        <div class="hero-carousel-slides">${slidesHTML}</div>
+        <div class="hero-carousel-dots">${dotsHTML}</div>
+        <div class="hero-carousel-progress"></div>
+      `;
+
+      const slideEls = carouselEl.querySelectorAll('.hero-slide');
+      const dotEls = carouselEl.querySelectorAll('.hero-carousel-dot');
+      const progressEl = carouselEl.querySelector('.hero-carousel-progress');
+      const DURATION = 5000;
+      let currentIndex = 0;
+      let timerId;
+
+      const restartProgress = (accentColor) => {
+        progressEl.style.transition = 'none';
+        progressEl.style.width = '0';
+        progressEl.style.background = accentColor;
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            progressEl.style.transition = `width ${DURATION}ms linear`;
+            progressEl.style.width = '100%';
+          });
+        });
+      };
+
+      const setActiveSlide = (nextIndex) => {
+        currentIndex = nextIndex;
+        slideEls.forEach((slideEl, idx) => {
+          slideEl.classList.toggle('active', idx === currentIndex);
+        });
+        dotEls.forEach((dotEl, idx) => {
+          dotEl.classList.toggle('active', idx === currentIndex);
+        });
+        const accentColor = getComputedStyle(slideEls[currentIndex]).getPropertyValue('--slide-accent').trim() || 'var(--turquoise)';
+        restartProgress(accentColor);
+      };
+
+      const startTimer = () => {
+        clearInterval(timerId);
+        timerId = setInterval(() => {
+          const nextIndex = (currentIndex + 1) % slideEls.length;
+          setActiveSlide(nextIndex);
+        }, DURATION);
+      };
+
+      dotEls.forEach((dotEl) => {
+        dotEl.addEventListener('click', () => {
+          const nextIndex = Number(dotEl.dataset.index);
+          if (Number.isNaN(nextIndex) || nextIndex === currentIndex) return;
+          setActiveSlide(nextIndex);
+          startTimer();
+        });
+      });
+
+      setActiveSlide(0);
+      startTimer();
+    } catch (error) {
+      carouselEl.style.display = 'none';
+    }
   }
 
   function getStatusClass(statusValue) {
@@ -2103,6 +2394,7 @@
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
   loadUpcomingEvents();
+  loadCarousel();
 
   document.querySelectorAll('.faq-question').forEach(btn => {
     btn.addEventListener('click', () => {
