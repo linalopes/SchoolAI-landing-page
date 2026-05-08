@@ -44,32 +44,34 @@
     {
       "id": "maze-circuit",
       "title": "Maze Circuit",
-      "subtitle": "Collaborative Game",
-      "description": "A collaborative game where connection powers the play.",
+      "subtitle": "AI-Assisted Prototyping",
+      "description": "Turn touch, circuits and AI-assisted coding into playful physical-digital interfaces.",
       "icon": "zap",
       "color": "#08F2DB",
       "schedule": {
         "online": {
-          "title": "Online Sessions",
-          "time": "Tuesdays, 19:00–21:00 CET",
-          "dates": "May 12 & May 19, 2026"
+          "title": "",
+          "time": "",
+          "dates": ""
         },
         "inPerson": {
           "title": "In-Person Session",
-          "time": "Saturday, 10:00–17:00 CET",
+          "time": "Saturday, 13:00–18:00 CET",
           "dates": "May 23, 2026"
         }
       },
       "content": {
         "description": "Maze Circuit is a collaborative workshop where bodies, conductive materials, and simple code come together to create playful circuits and games. On the floor, a maze made of copper and aluminum tape becomes a responsive playground: sometimes you move alone, sometimes you must connect — hand to hand, foot to foot, skin to skin — to advance.\n\nThe workshop is inspired by Makey Makey's playful logic, where closing a circuit turns the body into a controller. From navigating a conductive labyrinth to controlling a Pong game on screen, participants explore how touch, paper, and tape can transform into digital interfaces.",
         "whatYoullLearn": [
-          "Learn the basics of conductive materials and simple circuit design.",
-          "Explore Makey Makey and similar tools for body-based interaction.",
-          "Create collaborative games using touch and movement.",
-          "Design and build conductive mazes and interactive surfaces.",
-          "Understand how physical materials can become digital interfaces."
+          "Learn how conductive materials such as copper tape, aluminum, graphite and paper can be used to build simple circuits.",
+          "Understand how Makey Makey-style boards or similar input systems register touch and transform it into input for a computer.",
+          "Explore how a physical circuit can communicate with a simple web-based interface.",
+          "Design a playful interaction that connects bodies, materials and digital feedback.",
+          "Use AI tools to brainstorm, prototype, generate code, debug and iterate quickly.",
+          "Create a simple interactive game, visual interface or web-based experience using AI-assisted coding.",
+          "Collaborate in small groups to build a physical-digital prototype."
         ],
-        "whoShouldJoin": "This workshop is perfect for anyone interested in playful technology, collaborative games, or hands-on learning. No prior experience with electronics or coding is required. Designed for educators, artists, designers, and anyone curious about how our bodies can interact with technology in new and unexpected ways."
+        "whoShouldJoin": "No previous experience is required. Maze Circuit is designed for curious beginners as well as people with experience in UX, interaction design, product design, education, creative technology, art, performance or coding. It is especially suitable for people from the UX, interaction and design communities who are curious about playful interfaces, embodied interaction, AI-assisted prototyping and designing experiences beyond the screen."
       },
       "lumaEventUrl": "https://luma.com/iwq729r8",
       "lumaEmbedUrl": "https://luma.com/embed/event/evt-qJ5pyCoWsj8Q2et/simple"
