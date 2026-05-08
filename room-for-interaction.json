@@ -50,9 +50,9 @@
       "color": "#08F2DB",
       "schedule": {
         "online": {
-          "title": "",
-          "time": "",
-          "dates": ""
+          "title": "Online Sessions",
+          "time": "undefined",
+          "dates": "undefined"
         },
         "inPerson": {
           "title": "In-Person Session",
@@ -61,7 +61,7 @@
         }
       },
       "content": {
-        "description": "Maze Circuit is a collaborative workshop where bodies, conductive materials, and simple code come together to create playful circuits and games. On the floor, a maze made of copper and aluminum tape becomes a responsive playground: sometimes you move alone, sometimes you must connect — hand to hand, foot to foot, skin to skin — to advance.\n\nThe workshop is inspired by Makey Makey's playful logic, where closing a circuit turns the body into a controller. From navigating a conductive labyrinth to controlling a Pong game on screen, participants explore how touch, paper, and tape can transform into digital interfaces.",
+        "description": "Maze Circuit is a hands-on workshop where bodies, conductive materials, simple electronics, web-based interfaces, and AI-assisted coding come together to create playful physical-digital experiences.\n\nParticipants step into a maze built on the floor: a conductive playground made with copper tape, aluminum, graphite, paper, and other accessible materials. As they move through the space, touch hands, connect skin to skin, or complete paths with their bodies, they discover how closing a simple circuit can control what happens on screen.\n\nBut Maze Circuit is not only about circuits. It is also about designing the digital experience connected to them. Working in small groups of 4 to 5 people, participants will create a simple web-based interface, game, or interactive experience that responds to the physical maze. This could become a collaborative Pong game, a visual feedback system, a playful navigation interface, a collective challenge, or another interaction imagined by the group.\n\nThroughout the workshop, we will use AI-assisted prototyping, also known as vibe coding, as a creative method. AI tools will support brainstorming, interaction design, game mechanics, code generation, debugging, and rapid experimentation. The goal is not to become an expert programmer in one afternoon, but to understand how an interaction idea can become a working prototype.",
         "whatYoullLearn": [
           "Learn how conductive materials such as copper tape, aluminum, graphite and paper can be used to build simple circuits.",
           "Understand how Makey Makey-style boards or similar input systems register touch and transform it into input for a computer.",
