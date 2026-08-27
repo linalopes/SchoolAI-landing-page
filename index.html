@@ -134,8 +134,13 @@
     color: var(--white);
     opacity: 0.7;
     transition: opacity 0.2s;
+    white-space: nowrap;
   }
   .nav-links a:hover { opacity: 1; }
+  @media (max-width: 1280px) and (min-width: 901px) {
+    .nav-links { gap: var(--space-3); }
+    .nav-links a { font-size: 13px; }
+  }
   .nav-cta {
     justify-self: end;
   }
@@ -1236,11 +1241,27 @@
     opacity: 0.7;
     margin-bottom: var(--space-4);
   }
-
-  .host-content p.callout {
-    opacity: 1;
-    margin-top: var(--space-4);
-    margin-bottom: var(--space-5);
+  .host-facets {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4) var(--space-5);
+    margin-top: var(--space-5);
+  }
+  .facet-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 6px;
+  }
+  .facet-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    color: var(--deep-purple);
+    line-height: 1.2;
   }
 
   /* ── COLLABORATE ── */
@@ -1265,6 +1286,41 @@
     margin-top: var(--space-6);
     position: relative;
     z-index: 1;
+  }
+  .collaborate-cta-note {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: var(--gray-green);
+    opacity: 0.7;
+    margin-bottom: var(--space-3);
+  }
+  .collaborate-cta-link {
+    display: inline-block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: clamp(28px, 3.2vw, 44px);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--turquoise);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(8, 242, 219, 0.4);
+    padding-bottom: 4px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .collaborate-cta-link:hover {
+    color: var(--pink);
+    border-bottom-color: var(--pink);
+  }
+  .collaborate-cta-link:focus-visible {
+    outline: 2px solid var(--pink);
+    outline-offset: 4px;
+  }
+  .collaborate-cta-email {
+    display: block;
+    margin-top: var(--space-3);
+    font-size: 14px;
+    width: fit-content;
   }
   .invite-grid {
     display: grid;
@@ -1553,6 +1609,8 @@
     <li><a href="#investigation">Research</a></li>
     <li><a href="#programs">Programs</a></li>
     <li><a href="#events">Events</a></li>
+    <li><a href="#location">The Base</a></li>
+    <li><a href="#lead">Lina</a></li>
     <li><a href="https://blog.linalopes.info/schoolai.html" target="_blank" rel="noopener">Blog &#x2197;&#xFE0E;</a></li>
   </ul>
   <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
@@ -1565,6 +1623,8 @@
       <li><a href="#investigation" class="nav-mobile-link">Research</a></li>
       <li><a href="#programs" class="nav-mobile-link">Programs</a></li>
       <li><a href="#events" class="nav-mobile-link">Events</a></li>
+      <li><a href="#location" class="nav-mobile-link">The Base</a></li>
+      <li><a href="#lead" class="nav-mobile-link">Lina</a></li>
       <li><a href="https://blog.linalopes.info/schoolai.html" target="_blank" rel="noopener" class="nav-mobile-link">Blog &#x2197;&#xFE0E;</a></li>
     </ul>
     <a href="#collaborate" class="button button--on-dark nav-mobile-cta">Collaborate</a>
@@ -1753,19 +1813,38 @@
       <div class="host-photo-frame">
         <img src="imgs/lina.jpg" alt="Portrait of Lina Lopes">
       </div>
-      <!-- <div class="host-photo-caption">
-        <span class="host-photo-caption-label">Artist &amp; Research Lead</span>
+      <div class="host-photo-caption">
+        <!-- <span class="host-photo-caption-label">Artist &amp; Research Lead</span> -->
         <div class="host-photo-caption-name">Lina Lopes</div>
         <div class="host-photo-caption-rule"></div>
-      </div> -->
+      </div>
     </div>
     <div class="host-content fade-up">
+      <h2>Artist, educator,<br><em>data scientist.</em></h2>
       <p>
-        Lina Lopes is a Brazilian artist based in Zürich. Her work sits between interactive installation, machine learning and embodied systems: rooms that respond, textiles that light, gestures that become traces. She has worked across art, academic research and applied contexts for more than a decade, treating intelligent systems as material rather than as an end point. She founded School of Tomorrow's AI as a place to hold that inquiry in Switzerland — with space to prototype, test with others and place experiments in public.
+        Lina Lopes is a Brazilian artist, educator and data scientist based in Zürich, Switzerland. Her practice moves between interactive installation, machine learning, biosignals and embodied systems, using science and technology as material for artistic research.
       </p>
-      <p class="callout">
-        The School is where Lina develops, tests and shares research across art, science and emerging technology.
+      <p>
+        She founded School of Tomorrow's AI as a platform for speculative prototyping, experimentation and public research — a place where strange questions can become physical, testable and shared.
       </p>
+      <div class="host-facets">
+        <div class="facet">
+          <div class="facet-label">01 ·</div>
+          <div class="facet-title">Interactive Artist</div>
+        </div>
+        <div class="facet">
+          <div class="facet-label">02 ·</div>
+          <div class="facet-title">Speaker &amp; Educator</div>
+        </div>
+        <div class="facet">
+          <div class="facet-label">03 ·</div>
+          <div class="facet-title">Data Scientist</div>
+        </div>
+        <div class="facet">
+          <div class="facet-label">04 ·</div>
+          <div class="facet-title">Research Methodologist</div>
+        </div>
+      </div>
       <div style="margin-top: var(--space-5); display:flex; gap: var(--space-3); flex-wrap:wrap;">
         <a href="https://linalopes.info" target="_blank" rel="noopener" class="button button--primary">linalopes.info &#x2197;&#xFE0E;</a>
         <a href="https://blog.linalopes.info" target="_blank" rel="noopener" class="button button--primary">Blog &#x2197;&#xFE0E;</a>
@@ -1847,10 +1926,9 @@
     </div>
   </div>
   <div class="collaborate-actions fade-up">
-    <a href="mailto:lilothink.science@gmail.com" class="button button--accent">Write to the School</a>
-    <p class="invite-desc" style="margin-top: var(--space-3); max-width: 520px;">
-      <a href="mailto:lilothink.science@gmail.com" class="contact-email">lilothink.science@gmail.com</a>
-    </p>
+    <p class="collaborate-cta-note">For funding, commissions and research collaborations.</p>
+    <a href="mailto:lilothink.science@gmail.com" class="collaborate-cta-link">Start a conversation &#x2192;&#xFE0E;</a>
+    <a href="mailto:lilothink.science@gmail.com" class="contact-email collaborate-cta-email">lilothink.science@gmail.com</a>
   </div>
 </section>
 
