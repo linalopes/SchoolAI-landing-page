@@ -295,10 +295,11 @@
     font-weight: 700;
   }
   .button--ghost {
-    background: var(--deep-purple);
-    border-color: var(--deep-purple);
-    color: var(--white);
+    background: var(--pink);
+    border-color: var(--pink);
+    color: var(--deep-purple);
     width: 100%;
+    font-weight: 700;
   }
   .button:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
   .button-quiet {
@@ -461,7 +462,6 @@
     <a href="index.html" class="header-mark">
       <img src="imgs/sota-horizontal-bg-transparent-dark.svg" alt="School of Tomorrow's AI" />
     </a>
-    <!-- <span class="header-current">Pepper's Ghost</span> -->
   </div>
 </header>
 
@@ -646,7 +646,7 @@ const EXAMPLES = {
   textAlign(CENTER, CENTER);
   textSize(32);
 
-  rotate(PI);
+  scale(1, -1);
   text("HELLO", 0, 0);
 }`
 };
