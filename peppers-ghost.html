@@ -12,6 +12,7 @@
   :root {
     --deep-purple: #22113E;
     --pink: #EA7DFF;
+    --link-magenta: #A21CAF;
     --turquoise: #08F2DB;
     --gray-green: #CAD8D8;
     --white: #FFFFFF;
@@ -93,8 +94,16 @@
     font-size: 12px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--pink);
+    color: var(--deep-purple);
     margin-bottom: 12px;
+  }
+  .hero-kicker::after {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--pink);
+    margin-top: 8px;
   }
   h1 {
     font-family: 'Space Grotesk', sans-serif;
@@ -132,9 +141,18 @@
     font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--pink);
+    color: var(--link-magenta);
     display: block;
     margin-bottom: 4px;
+  }
+  .step-n::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 2px;
+    background: var(--pink);
+    margin-right: 8px;
+    vertical-align: middle;
   }
   .step-t {
     font-family: 'Space Grotesk', sans-serif;
@@ -328,11 +346,52 @@
 
   .howto ol, .pyramid ol { padding-left: 1.2em; max-width: 36em; }
   .howto li, .pyramid li { margin-bottom: 8px; opacity: 0.8; }
-  .note {
+  .note-callout {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    max-width: 36em;
+    margin-top: 16px;
+    padding: 12px 14px;
+    background: var(--gray-green);
+    color: var(--deep-purple);
+    border-radius: var(--radius);
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .note-callout::before {
+    content: '→';
+    color: var(--pink);
+    flex-shrink: 0;
+    line-height: 1.45;
+  }
+
+  .template-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  a.button {
+    width: auto;
+    max-width: 100%;
+    text-align: center;
+    white-space: normal;
+  }
+  a.button:hover, a.button:focus-visible {
+    background: var(--pink);
+    border-color: var(--pink);
+    color: var(--deep-purple);
+  }
+  .template-meta {
     font-family: 'Courier Prime', monospace;
     font-size: 13px;
-    margin-top: 12px;
-    opacity: 0.6;
+    letter-spacing: 0.04em;
+    color: var(--deep-purple);
+    opacity: 0.65;
+    overflow-wrap: break-word;
   }
 
   .calibrate { margin: 28px 0 8px; }
@@ -355,7 +414,11 @@
   }
 
   .school-note { margin-top: 48px; padding-top: 28px; border-top: 1px solid rgba(34,17,62,0.14); }
-  .school-note a { color: var(--deep-purple); border-bottom: 1px solid var(--pink); }
+  .school-note a {
+    color: var(--link-magenta);
+    border-bottom: 1px solid var(--pink);
+  }
+  .school-note a:hover, .school-note a:focus-visible { color: var(--deep-purple); }
 
   footer {
     margin-top: 36px;
@@ -525,7 +588,16 @@
       <li>Place the small opening at the center of the screen.</li>
       <li>Tap <strong>Use with Ghost</strong>.</li>
     </ol>
-    <p class="note">The illusion works best in a dark environment.</p>
+    <p class="note-callout">The illusion works best in a dark environment.</p>
+  </section>
+
+  <section class="template" id="template">
+    <h2>Build your own pyramid</h2>
+    <p class="lede">Want to make another one? Download the 6 cm template, print it at 100%, trace it onto transparent acetate, cut and fold.</p>
+    <div class="template-actions">
+      <a class="button" href="imgs/pepper_ghost_pyramid_template_6cm.svg" download="pepper_ghost_pyramid_template_6cm.svg">Download pyramid template ↓</a>
+      <p class="template-meta">6 cm · SVG · print at 100%</p>
+    </div>
   </section>
 
   <section class="calibrate" id="calibrate">
