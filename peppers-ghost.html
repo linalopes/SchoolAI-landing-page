@@ -458,10 +458,11 @@
 <body>
 <header class="site-header">
   <div class="header-row">
-    <a href="index.html" class="header-mark">School of Tomorrow's AI</a>
-    <span class="header-current">Pepper's Ghost</span>
+    <a href="index.html" class="header-mark">
+      <img src="imgs/sota-horizontal-bg-transparent-dark.svg" alt="School of Tomorrow's AI" />
+    </a>
+    <!-- <span class="header-current">Pepper's Ghost</span> -->
   </div>
-  <a href="index.html" class="header-back">Back to the School ↗</a>
 </header>
 
 <main>
@@ -592,7 +593,7 @@ const EXAMPLES = {
   orb: `function ghost() {
   noFill();
   stroke(255);
-  strokeWeight(3);
+  strokeWeight(1.5);
 
   for (let i = 0; i < 8; i++) {
     const d =
@@ -628,11 +629,14 @@ const EXAMPLES = {
   noStroke();
   fill(255);
 
-  const n = 12;
-  for (let i = 0; i < n; i++) {
-    const a = frameCount * 0.02 + (i / n) * TWO_PI;
-    const r = 26 + (i % 3) * 16;
-    circle(cos(a) * r, sin(a) * r, 7);
+  for (let i = 0; i < 44; i++) {
+    const a = frameCount * 0.012 + i * 0.9;
+    const r = 26 + (i % 5) * 15;
+
+    const x = cos(a) * r;
+    const y = sin(a * 1.3) * r;
+
+    circle(x, y, 2.6);
   }
 }`,
   text: `function ghost() {
@@ -642,6 +646,7 @@ const EXAMPLES = {
   textAlign(CENTER, CENTER);
   textSize(32);
 
+  rotate(PI);
   text("HELLO", 0, 0);
 }`
 };
