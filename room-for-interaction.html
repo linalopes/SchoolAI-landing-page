@@ -356,6 +356,25 @@
     margin-bottom: var(--space-4);
   }
   .about-grid p:last-child { margin-bottom: 0; }
+  .about-lead {
+    font-size: 20px;
+    line-height: 1.8;
+    opacity: 0.78;
+    max-width: 760px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: var(--space-4);
+  }
+  .about-curiosity {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: clamp(22px, 2.4vw, 30px);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    max-width: 640px;
+    position: relative;
+    z-index: 1;
+  }
   .about-kicker {
     font-family: 'Courier Prime', monospace;
     font-size: 13px;
@@ -363,6 +382,30 @@
     text-transform: uppercase;
     color: var(--pink);
     margin-bottom: var(--space-3);
+  }
+
+  #format {
+    background: var(--gray-green);
+    position: relative;
+    overflow: hidden;
+  }
+  .format-body {
+    max-width: 760px;
+    position: relative;
+    z-index: 1;
+  }
+  .format-body p {
+    font-size: 18px;
+    line-height: 1.8;
+    opacity: 0.78;
+    margin-bottom: var(--space-4);
+  }
+  .format-body p:last-child { margin-bottom: 0; }
+  .format-note {
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    opacity: 0.7;
   }
 
   .quote-break {
@@ -412,7 +455,11 @@
   #workshops .section-title { color: var(--white); }
   #workshops .section-number { color: var(--pink); }
   #workshops .section-intro { color: var(--gray-green); opacity: 0.78; }
-  #workshops .divider { background: var(--white); opacity: 0.08; }
+  #workshops .divider {
+    background: var(--white);
+    opacity: 0.08;
+    margin-bottom: var(--space-5);
+  }
   .workshops-pattern {
     position: absolute;
     inset: 0;
@@ -424,15 +471,14 @@
 
   .season-overview {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: var(--space-4);
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
     margin-bottom: var(--space-6);
     position: relative;
     z-index: 1;
   }
   .season-item {
-    border-top: 1px solid rgba(255,255,255,0.14);
-    padding-top: var(--space-3);
+    padding: 0;
   }
   .season-label {
     font-family: 'Courier Prime', monospace;
@@ -481,10 +527,6 @@
     border-color: rgba(255,255,255,0.16);
   }
   .workshop-card:hover::after { transform: scaleX(1); }
-  .workshop-card.is-past {
-    opacity: 0.48;
-  }
-  .workshop-card.is-past:hover { opacity: 0.72; }
   .workshop-card.is-next {
     border-color: rgba(8,242,219,0.45);
     background: rgba(8,242,219,0.04);
@@ -706,9 +748,10 @@
   .location-name {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 300;
-    font-size: 34px;
+    font-size: clamp(26px, 3vw, 34px);
     letter-spacing: -0.02em;
     margin-bottom: 10px;
+    line-height: 1.15;
   }
   .location-address {
     display: flex;
@@ -792,7 +835,7 @@
   }
   .faq-item.open .faq-question::after { transform: rotate(45deg); }
   .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease; }
-  .faq-item.open .faq-answer { max-height: 320px; padding-bottom: 24px; }
+  .faq-item.open .faq-answer { max-height: 480px; padding-bottom: 24px; }
   .faq-answer p {
     font-size: 17px;
     line-height: 1.8;
@@ -834,6 +877,18 @@
     outline: none;
   }
   .newsletter-form input[type="email"]::placeholder { opacity: 0.35; }
+  .contact-divider {
+    width: 40px;
+    height: 1px;
+    background: rgba(202,216,216,0.2);
+    margin: var(--space-5) 0;
+  }
+  .contact-direct {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--gray-green);
+    opacity: 0.8;
+  }
 
   footer {
     background: var(--deep-purple);
@@ -976,13 +1031,11 @@
     <img src="imgs/sota-horizontal-bg-transparent-dark.svg" alt="School of Tomorrow's AI">
   </a>
   <ul class="nav-links">
-    <li><a href="index.html#hero">The School</a></li>
-    <li><a href="index.html#investigation">Research</a></li>
-    <li><a href="index.html#programs">Programs</a></li>
-    <li><a href="index.html#events">Events</a></li>
-    <li><a href="index.html#location">The Base</a></li>
-    <li><a href="index.html#lead">Lina</a></li>
-    <li><a href="https://blog.linalopes.info/schoolai.html" target="_blank" rel="noopener">Blog &#x2197;&#xFE0E;</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#workshops">Workshops</a></li>
+    <li><a href="#format">Format</a></li>
+    <li><a href="#location">Location</a></li>
+    <li><a href="#faq">FAQ</a></li>
   </ul>
   <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
     <span></span><span></span><span></span>
@@ -990,29 +1043,27 @@
   <div class="nav-mobile-menu" id="nav-mobile-menu">
     <button class="nav-mobile-close" id="nav-mobile-close" aria-label="Close menu">×</button>
     <ul class="nav-mobile-links">
-      <li><a href="index.html#hero" class="nav-mobile-link">The School</a></li>
-      <li><a href="index.html#investigation" class="nav-mobile-link">Research</a></li>
-      <li><a href="index.html#programs" class="nav-mobile-link">Programs</a></li>
-      <li><a href="index.html#events" class="nav-mobile-link">Events</a></li>
-      <li><a href="index.html#location" class="nav-mobile-link">The Base</a></li>
-      <li><a href="index.html#lead" class="nav-mobile-link">Lina</a></li>
-      <li><a href="https://blog.linalopes.info/schoolai.html" target="_blank" rel="noopener" class="nav-mobile-link">Blog &#x2197;&#xFE0E;</a></li>
+      <li><a href="#about" class="nav-mobile-link">About</a></li>
+      <li><a href="#workshops" class="nav-mobile-link">Workshops</a></li>
+      <li><a href="#format" class="nav-mobile-link">Format</a></li>
+      <li><a href="#location" class="nav-mobile-link">Location</a></li>
+      <li><a href="#faq" class="nav-mobile-link">FAQ</a></li>
     </ul>
-    <a href="index.html#collaborate" class="button button--on-dark nav-mobile-cta">Collaborate</a>
+    <a href="#workshops" class="button button--on-dark nav-mobile-cta" id="nav-mobile-cta">Next workshop</a>
   </div>
-  <a href="index.html#collaborate" class="button button--on-dark nav-cta">Collaborate</a>
+  <a href="#workshops" class="button button--on-dark nav-cta" id="nav-cta">Next workshop</a>
 </nav>
 
 <section id="hero">
   <div class="hero-pattern"></div>
   <div class="hero-left">
     <div class="hero-content">
-      <p class="t-label hero-eyebrow">Public program · School of Tomorrow's AI · 2026</p>
+      <p class="t-label hero-eyebrow">Public program · 2026</p>
       <h1 class="hero-title">Room for<br><em>Interaction</em></h1>
-      <p class="hero-tagline">A playground for body, space and technology. Seven independent workshops where the room itself becomes a site for making, interaction and physical-digital experimentation.</p>
-      <p class="hero-meta" id="hero-meta">Workshop series · 2026 · Wetzikon — Zürich, Switzerland</p>
+      <p class="hero-tagline">A playground for body, space and technology.</p>
+      <p class="hero-meta">Seven workshops. One season. · Wetzikon — Zürich, Switzerland</p>
       <div class="hero-actions">
-        <a href="#workshops" class="button button--accent" id="hero-primary-cta">Explore the program</a>
+        <a href="#workshops" class="button button--accent" id="hero-primary-cta">Next workshop</a>
         <a href="index.html" class="button button--on-dark">About the School</a>
       </div>
     </div>
@@ -1040,38 +1091,31 @@
   <div class="about-pattern"></div>
   <div class="section-header fade-up">
     <span class="section-number t-label">01</span>
-    <div>
-      <h2 class="section-title">The<br>program</h2>
-      <p class="section-intro">A public workshop season by School of Tomorrow's AI — not the School itself, but one of the ways its research meets other people.</p>
-    </div>
+    <h2 class="section-title">The<br>program</h2>
   </div>
   <div class="divider"></div>
-  <div class="about-grid">
-    <div class="fade-up">
-      <p class="about-kicker">What it is</p>
-      <p>Room for Interaction is a series of workshops where the space itself becomes a playground for the body. Each session invites you to experiment with simple, creative interactions — voices that make paper flowers bloom, gestures that become sculptures, touches that light up space.</p>
-      <p>You don't need to code. You need curiosity.</p>
-    </div>
-    <div class="fade-up">
-      <p class="about-kicker">The season</p>
-      <p>Seven independent, one-day workshops across 2026. Each workshop includes two short online prep sessions that introduce the ideas and tools, followed by an in-person Saturday in the atelier. Join online, in person, or both — choose how deep you want to dive.</p>
-      <p>Typical format: online Tuesdays, 19:00–21:00 CET; in person Saturday, 10:00–17:00 CET. Details can vary by session.</p>
-    </div>
-  </div>
+  <p class="about-lead fade-up">Room for Interaction is a series of workshops where the space itself becomes a playground for the body. Each workshop invites you to experiment with simple, creative interactions — voices that make paper flowers bloom, gestures that become sculptures, touches that light up space.</p>
+  <p class="about-curiosity fade-up">You don't need to code. You need curiosity.</p>
 </section>
 
-<div class="quote-break">
-  <div class="quote-break-pattern"></div>
-  <blockquote>
-    "You'll leave each session with hands-on prototypes, new tools to play with, and a shared sense of how <em>technology becomes a tool for imagination, play, and radical experimentation.</em>"
-  </blockquote>
-  <cite>— Room for Interaction, 2026</cite>
-</div>
+<section id="format">
+  <div class="section-header fade-up">
+    <span class="section-number t-label">02</span>
+    <h2 class="section-title">How it<br>works</h2>
+  </div>
+  <div class="divider"></div>
+  <div class="format-body fade-up">
+    <p>Each workshop includes 2 online sessions followed by 1 in-person Saturday workshop.</p>
+    <p>Online sessions typically take place on Tuesday evenings, 19:00–21:00 CET, before the Saturday. In-person sessions typically run Saturday, 10:00–17:00 CET. Times can differ by workshop — Maze Circuit, for example, ran 13:00–18:00 CET. Check each workshop for its dates.</p>
+    <p>Join online, in person, or both. Each workshop stands alone.</p>
+    <p class="format-note">If a date or time is missing from a workshop listing, those details are not published here.</p>
+  </div>
+</section>
 
 <section id="workshops">
   <div class="workshops-pattern"></div>
   <div class="section-header fade-up">
-    <span class="section-number t-label">02</span>
+    <span class="section-number t-label">03</span>
     <div>
       <h2 class="section-title">Seven workshops.<br>One season.</h2>
       <p class="section-intro">Each workshop stands alone. Past sessions remain here as documentation of the season.</p>
@@ -1082,27 +1126,34 @@
   <div class="workshops-grid" id="workshops-grid"></div>
 </section>
 
+<div class="quote-break">
+  <div class="quote-break-pattern"></div>
+  <blockquote>
+    "You'll leave each session with hands-on prototypes, new tools to play with, and a shared sense of how <em>technology becomes a tool for imagination, play, and radical experimentation.</em>"
+  </blockquote>
+  <cite>— Room for Interaction, 2026</cite>
+</div>
+
 <section id="location">
   <div class="section-header fade-up">
-    <span class="section-number t-label">03</span>
+    <span class="section-number t-label">04</span>
     <h2 class="section-title">Where it<br>happens</h2>
   </div>
   <div class="divider"></div>
   <div class="location-header fade-up">
     <div>
-      <div class="location-name">The Atelier</div>
+      <div class="location-name">School of Tomorrow's AI Atelier</div>
       <div class="location-address">
-        <span>School of Tomorrow's AI</span>
+        <span>Schönau Areal</span>
         <span>Schönaustrasse 13</span>
         <span>8620 Wetzikon, Zürich</span>
-        <span>Schönau Areal</span>
       </div>
       <a href="https://maps.google.com/?q=Schönaustrasse+13+8620+Wetzikon" target="_blank" rel="noopener" class="location-map-link">Open in Google Maps &#x2197;&#xFE0E;</a>
     </div>
     <div>
-      <p class="location-intro">In-person sessions take place at the School of Tomorrow's AI Atelier at Schönau Areal in Wetzikon, in the Zürich region of Switzerland. The atelier is the current physical base: a place for building, testing and public experiments.</p>
-      <p class="location-intro">Online sessions happen ahead of each Saturday, introducing the ideas and tools before the room is used.</p>
-      <p class="location-credit">Room for Interaction was presented with Glitch Lab as a historical collaborator when the program was conceived. Glitch Lab is not the current venue.</p>
+      <p class="location-intro">Current in-person workshops take place at the School of Tomorrow's AI Atelier at Schönau Areal in Wetzikon, in the Zürich region of Switzerland.</p>
+      <p class="location-intro">Online sessions happen ahead of each Saturday and introduce the ideas and tools before the room is used.</p>
+      <p class="location-credit">Room for Interaction was originally presented with Glitch Lab. That credit is historical. Glitch Lab is not the current venue.</p>
     </div>
   </div>
 </section>
@@ -1110,38 +1161,54 @@
 <section id="faq">
   <div class="faq-pattern"></div>
   <div class="section-header fade-up">
-    <span class="section-number t-label">04</span>
+    <span class="section-number t-label">05</span>
     <h2 class="section-title">Frequently<br>asked.</h2>
   </div>
   <div class="divider"></div>
   <div class="faq-list">
     <div class="faq-item fade-up">
-      <button class="faq-question" type="button"><span class="faq-question-text">Can I join only one workshop?</span></button>
-      <div class="faq-answer"><p>Yes. Each workshop is independent. You do not need to attend the whole series.</p></div>
+      <button class="faq-question" type="button"><span class="faq-question-text">Do I need to attend both the online and in-person sessions?</span></button>
+      <div class="faq-answer"><p>Each workshop is built as two online sessions followed by one in-person Saturday. You can join online, in person, or both, depending on what is listed for that workshop. Please check the current registration page for ticket options.</p></div>
     </div>
     <div class="faq-item fade-up">
-      <button class="faq-question" type="button"><span class="faq-question-text">Do I need coding experience?</span></button>
-      <div class="faq-answer"><p>No. You don't need to code. The workshops are designed for curiosity — beginners and people with technical experience can both take part.</p></div>
+      <button class="faq-question" type="button"><span class="faq-question-text">Can I just take one workshop, or do I need to sign up for the whole series?</span></button>
+      <div class="faq-answer"><p>You can join a single workshop. You do not need to sign up for the whole series.</p></div>
     </div>
     <div class="faq-item fade-up">
-      <button class="faq-question" type="button"><span class="faq-question-text">What is online vs in-person?</span></button>
-      <div class="faq-answer"><p>The typical format is two Tuesday evening online sessions, then one in-person Saturday in the atelier. You can join online, in person, or both, depending on what remains open for that workshop. Exact times are listed on each session.</p></div>
+      <button class="faq-question" type="button"><span class="faq-question-text">Can I switch from an online ticket to an in-person ticket later?</span></button>
+      <div class="faq-answer"><p>Contact us if you need to change your registration.</p></div>
     </div>
     <div class="faq-item fade-up">
-      <button class="faq-question" type="button"><span class="faq-question-text">Where does it happen?</span></button>
-      <div class="faq-answer"><p>In-person sessions take place at the School of Tomorrow's AI Atelier, Schönaustrasse 13, 8620 Wetzikon, Zürich, at Schönau Areal. Online sessions happen ahead of the Saturday.</p></div>
+      <button class="faq-question" type="button"><span class="faq-question-text">Is there a discount if I buy the full package of seven workshops?</span></button>
+      <div class="faq-answer"><p>Please check the current registration page for the latest details, or contact us about joining more than one workshop.</p></div>
     </div>
     <div class="faq-item fade-up">
-      <button class="faq-question" type="button"><span class="faq-question-text">Do I need to bring a laptop?</span></button>
+      <button class="faq-question" type="button"><span class="faq-question-text">How many participants are allowed in the in-person workshops?</span></button>
+      <div class="faq-answer"><p>Each workshop is limited to about 20 participants in person.</p></div>
+    </div>
+    <div class="faq-item fade-up">
+      <button class="faq-question" type="button"><span class="faq-question-text">When do the online sessions take place?</span></button>
+      <div class="faq-answer"><p>Online sessions typically take place on Tuesday evenings, 19:00–21:00 CET, before the in-person Saturday. Check each workshop for its published dates. If online details are missing from a listing, they are not available here.</p></div>
+    </div>
+    <div class="faq-item fade-up">
+      <button class="faq-question" type="button"><span class="faq-question-text">Will there be recordings of the online sessions?</span></button>
+      <div class="faq-answer"><p>Please check the current registration page for the latest details.</p></div>
+    </div>
+    <div class="faq-item fade-up">
+      <button class="faq-question" type="button"><span class="faq-question-text">Do I need to bring my own laptop?</span></button>
       <div class="faq-answer"><p>Yes. Please bring your computer, any operating system, and a notebook.</p></div>
     </div>
     <div class="faq-item fade-up">
-      <button class="faq-question" type="button"><span class="faq-question-text">How many people are in the room?</span></button>
-      <div class="faq-answer"><p>Each in-person workshop is limited to about 20 participants.</p></div>
+      <button class="faq-question" type="button"><span class="faq-question-text">Where do the in-person workshops take place?</span></button>
+      <div class="faq-answer"><p>Current in-person workshops take place at the School of Tomorrow's AI Atelier, Schönau Areal, Schönaustrasse 13, 8620 Wetzikon, Zürich.</p></div>
     </div>
     <div class="faq-item fade-up">
-      <button class="faq-question" type="button"><span class="faq-question-text">How do I hear about future editions?</span></button>
-      <div class="faq-answer"><p>Leave your email at the bottom of this page to hear about the next room and later editions of the program.</p></div>
+      <button class="faq-question" type="button"><span class="faq-question-text">What is the cancellation policy?</span></button>
+      <div class="faq-answer"><p>Please check the current registration page for the latest details.</p></div>
+    </div>
+    <div class="faq-item fade-up">
+      <button class="faq-question" type="button"><span class="faq-question-text">How do I know my registration is confirmed?</span></button>
+      <div class="faq-answer"><p>Please check the current registration page for confirmation details. If something is unclear, write to us.</p></div>
     </div>
   </div>
 </section>
@@ -1149,12 +1216,12 @@
 <section id="contact">
   <div style="position:absolute;inset:0;background-image:url('https://raw.githubusercontent.com/linalopes/SchoolAI-brand-kit/main/patterns/pattern-6.png');background-size:cover;opacity:0.07;pointer-events:none;"></div>
   <div class="contact-inner fade-up" style="position:relative;z-index:1;">
-    <p class="t-label" style="color:var(--turquoise); margin-bottom: var(--space-4);">Updates</p>
+    <p class="t-label" style="color:var(--turquoise); margin-bottom: var(--space-4);">Stay connected</p>
     <h2 class="contact-title" style="color:var(--white);">
-      Hear about<br>the next <em>room</em>.
+      Stay close to<br>the next <em>room</em>.
     </h2>
     <p class="contact-sub" style="color:var(--gray-green);">
-      Occasional notes when a future session of Room for Interaction opens.
+      Leave your email to hear first when new workshops and registrations open.
     </p>
     <form id="newsletter-form" action="https://formspree.io/f/mvgbznoe" method="POST">
       <div class="newsletter-form">
@@ -1165,6 +1232,11 @@
     </form>
     <p id="newsletter-success" style="display:none; font-family:'Courier Prime',monospace; font-size: 15px; color:var(--turquoise); margin-top:12px;">
       ✓ You're on the list. Talk soon.
+    </p>
+    <div class="contact-divider"></div>
+    <p class="contact-direct">
+      For questions, partnerships, or group inquiries, write directly to:<br>
+      <a href="mailto:lilothink.science@gmail.com" class="contact-email">lilothink.science@gmail.com</a>
     </p>
   </div>
 </section>
@@ -1218,7 +1290,7 @@
 </div>
 
 <script>
-  const LOCATION_LINE = 'School of Tomorrow\'s AI Atelier, Schönaustrasse 13, 8620 Wetzikon, Zürich';
+  const LOCATION_LINE = 'School of Tomorrow\'s AI Atelier, Schönau Areal, Schönaustrasse 13, 8620 Wetzikon, Zürich';
   const STATUS_LABELS = {
     past: 'Past',
     next: 'Next',
@@ -1285,10 +1357,8 @@
     if (isUsable(workshop.schedule && workshop.schedule.inPerson && workshop.schedule.inPerson.dates)) {
       lines.push(workshop.schedule.inPerson.dates);
     }
-    lines.push('Online + in person');
-    if (workshop.status === 'past') lines.push('Registration closed');
-    else if (isUsable(workshop.lumaEventUrl)) lines.push('Registration open');
-    else lines.push('Registration unavailable');
+    if (workshop.status === 'past') lines.push('Documentation');
+    else lines.push('Online + in person');
     return lines.join(' · ');
   }
 
@@ -1313,9 +1383,7 @@
   let workshopsData = [];
 
   function renderSeasonOverview(workshops) {
-    const pastCount = workshops.filter((w) => w.status === 'past').length;
     const next = workshops.find((w) => w.status === 'next');
-    const remaining = workshops.filter((w) => w.status === 'upcoming').length;
     const dated = workshops.map((w) => w.date).filter(Boolean).sort((a, b) => a - b);
     const season = dated.length
       ? dated[0].toLocaleString('en-GB', { month: 'long' }) + ' — ' + dated[dated.length - 1].toLocaleString('en-GB', { month: 'long' }) + ' 2026'
@@ -1325,11 +1393,9 @@
       : 'None scheduled';
 
     document.getElementById('season-overview').innerHTML = `
-      <div class="season-item"><div class="season-label">Workshops</div><div class="season-value">${workshops.length}</div></div>
       <div class="season-item"><div class="season-label">Season</div><div class="season-value">${escapeHTML(season)}</div></div>
-      <div class="season-item"><div class="season-label">Past</div><div class="season-value">${pastCount}</div></div>
+      <div class="season-item"><div class="season-label">Format</div><div class="season-value">Seven independent workshops</div></div>
       <div class="season-item"><div class="season-label">Next</div><div class="season-value">${escapeHTML(nextLabel)}</div></div>
-      <div class="season-item"><div class="season-label">Remaining</div><div class="season-value">${remaining}</div></div>
     `;
   }
 
@@ -1363,31 +1429,37 @@
     });
   }
 
-  function updateHero(workshops) {
-    const next = workshops.find((w) => w.status === 'next');
-    const upcomingCount = workshops.filter((w) => w.status === 'next' || w.status === 'upcoming').length;
-    const meta = document.getElementById('hero-meta');
-    const cta = document.getElementById('hero-primary-cta');
-    const statusLine = next
-      ? 'Next · ' + next.title + (isUsable(next.schedule.inPerson.dates) ? ' · ' + next.schedule.inPerson.dates : '')
-      : upcomingCount ? 'Upcoming sessions still open' : 'Season in progress · past sessions documented here';
-    meta.textContent = 'Workshop series · 2026 · Wetzikon — Zürich, Switzerland · ' + statusLine;
+  function goToWorkshop(id) {
+    const card = document.querySelector('[data-id="' + id + '"]');
+    if (!card) {
+      document.getElementById('workshops').scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    openWorkshop(id, card);
+  }
 
-    if (next && isUsable(next.lumaEventUrl)) {
-      cta.textContent = 'Next workshop';
-      cta.href = '#workshop-' + next.id;
-      cta.addEventListener('click', (event) => {
+  function bindNextCta(element, next) {
+    if (!element) return;
+    element.onclick = null;
+    if (next) {
+      element.textContent = 'Next workshop';
+      element.href = '#workshop-' + next.id;
+      element.addEventListener('click', (event) => {
         event.preventDefault();
-        const card = document.querySelector('[data-id="' + next.id + '"]');
-        if (card) {
-          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          openWorkshop(next.id, card);
-        }
+        goToWorkshop(next.id);
       });
     } else {
-      cta.textContent = 'Explore the program';
-      cta.href = '#workshops';
+      element.textContent = 'Workshops';
+      element.href = '#workshops';
     }
+  }
+
+  function updateProgramCtas(workshops) {
+    const next = workshops.find((w) => w.status === 'next');
+    bindNextCta(document.getElementById('hero-primary-cta'), next);
+    bindNextCta(document.getElementById('nav-cta'), next);
+    bindNextCta(document.getElementById('nav-mobile-cta'), next);
   }
 
   function openWorkshop(id, card) {
@@ -1397,6 +1469,9 @@
     const inPerson = workshop.schedule && workshop.schedule.inPerson ? workshop.schedule.inPerson : {};
     const learn = (workshop.content && workshop.content.whatYoullLearn) || [];
     const showRegister = workshop.status !== 'past' && isUsable(workshop.lumaEventUrl);
+    const locationLine = workshop.status === 'past'
+      ? 'Schönaustrasse 13, 8620 Wetzikon, Zürich · Schönau Areal'
+      : LOCATION_LINE;
     const content = document.getElementById('overlay-content');
 
     content.innerHTML = `
@@ -1412,10 +1487,10 @@
       <p class="overlay-section-label">Who should join</p>
       <p class="overlay-who">${escapeHTML(workshop.content && workshop.content.whoShouldJoin)}</p>
       <p class="overlay-section-label">Location</p>
-      <p class="overlay-who">${LOCATION_LINE}</p>
+      <p class="overlay-who">${escapeHTML(locationLine)}</p>
       ${showRegister
-        ? '<a href="' + escapeHTML(workshop.lumaEventUrl) + '" target="_blank" rel="noopener" class="button button--accent overlay-cta">Register at Luma &#x2197;&#xFE0E;</a>'
-        : '<p class="overlay-past-note">' + (workshop.status === 'past' ? 'This session has taken place. Registration is closed.' : 'Registration is not listed for this session.') + '</p>'}
+        ? '<a href="' + escapeHTML(workshop.lumaEventUrl) + '" target="_blank" rel="noopener" class="button button--accent overlay-cta">View registration page &#x2197;&#xFE0E;</a>'
+        : '<p class="overlay-past-note">' + (workshop.status === 'past' ? 'This session has taken place.' : 'A registration page is not listed for this session.') + '</p>'}
     `;
 
     const overlay = document.getElementById('workshop-overlay');
@@ -1440,7 +1515,7 @@
     workshopsData = classifyWorkshops(data.workshops || []);
     renderSeasonOverview(workshopsData);
     renderWorkshopCards(workshopsData);
-    updateHero(workshopsData);
+    updateProgramCtas(workshopsData);
 
     const hash = window.location.hash;
     if (hash && hash.startsWith('#workshop-')) {
