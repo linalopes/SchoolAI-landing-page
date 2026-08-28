@@ -50,7 +50,7 @@
   }
   .header-row {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: 12px;
   }
@@ -62,13 +62,20 @@
   }
   .site-header a:hover, .site-header a:focus-visible { opacity: 1; color: var(--pink); }
   .header-mark {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 300;
-    font-size: 15px;
-    letter-spacing: -0.01em;
-    text-transform: none;
+    display: flex;
+    align-items: center;
     opacity: 1;
+    flex-shrink: 0;
     min-width: 0;
+    overflow: visible;
+  }
+  .header-mark img {
+    display: block;
+    height: 52px;
+    width: auto;
+    max-width: min(240px, 62vw);
+    object-fit: contain;
+    opacity: 1;
   }
   .header-current {
     font-family: 'Courier Prime', monospace;
@@ -507,9 +514,10 @@
     .orient-hint { display: none !important; }
     .site-header {
       flex-direction: row;
-      align-items: baseline;
+      align-items: center;
     }
     .header-row { flex: 1; }
+    .header-mark img { height: 64px; max-width: 280px; }
     .header-back { margin-left: var(--space-4); }
   }
 
@@ -525,6 +533,7 @@
     <a href="index.html" class="header-mark">
       <img src="imgs/sota-horizontal-bg-transparent-dark.svg" alt="School of Tomorrow's AI" />
     </a>
+    <span class="header-current">Pepper's Ghost</span>
   </div>
 </header>
 
@@ -604,12 +613,12 @@
     <h2>Display</h2>
     <p class="lede">Handmade pyramids and phones vary. Adjust until the apparition sits cleanly inside the acetate.</p>
     <div class="cal-row">
-      <label for="cal-size">Ghost size <span id="cal-size-val">1.00</span></label>
-      <input id="cal-size" type="range" min="0.55" max="1.55" step="0.01" value="1">
+      <label for="cal-size">Ghost size <span id="cal-size-val">0.85</span></label>
+      <input id="cal-size" type="range" min="0.55" max="1.55" step="0.01" value="0.85">
     </div>
     <div class="cal-row">
-      <label for="cal-dist">Distance from center <span id="cal-dist-val">0.27</span></label>
-      <input id="cal-dist" type="range" min="0.18" max="0.36" step="0.01" value="0.27">
+      <label for="cal-dist">Distance from center <span id="cal-dist-val">0.35</span></label>
+      <input id="cal-dist" type="range" min="0.22" max="0.42" step="0.01" value="0.35">
     </div>
     <button type="button" class="button" id="btn-cal-reset">Reset display</button>
   </section>
@@ -657,8 +666,8 @@ const P5_SRC = 'https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js';
 const STORAGE = {
   code: 'peppers-ghost-code',
   example: 'peppers-ghost-example',
-  scale: 'peppers-ghost-scale',
-  distance: 'peppers-ghost-distance'
+  scale: 'peppers-ghost-scale-v2',
+  distance: 'peppers-ghost-distance-v2'
 };
 
 const EXAMPLES = {
@@ -723,7 +732,7 @@ const EXAMPLES = {
 }`
 };
 
-const DEFAULT_CONFIG = { scale: 1, centerGap: 0.2, imageDistance: 0.27 };
+const DEFAULT_CONFIG = { scale: 0.85, centerGap: 0.32, imageDistance: 0.35 };
 
 let selectedExample = localStorage.getItem(STORAGE.example) || 'orb';
 if (!EXAMPLES[selectedExample]) selectedExample = 'orb';
@@ -856,15 +865,25 @@ function draw() {
     var cy = height / 2;
     var m = min(width, height);
     var cfg = window.ghostConfig;
-    var margin = m * 0.04;
+    var margin = m * 0.03;
     var maxReach = m / 2 - margin;
-    var dist = cfg.imageDistance * m;
+    var minInner = cfg.centerGap * m * 0.5;
     var s = cfg.scale;
-    var content = 100 * s;
-    if (dist + content > maxReach && dist + content > 0) {
-      var k = maxReach / (dist + content);
-      dist *= k;
-      s *= k;
+    var content = 80 * s;
+    var maxContent = (maxReach - minInner) / 2;
+    if (maxContent < 8) maxContent = maxReach * 0.2;
+    if (content > maxContent) {
+      s = s * (maxContent / content);
+      content = maxContent;
+    }
+    var dist = cfg.imageDistance * m;
+    var minDist = minInner + content;
+    var maxDist = maxReach - content;
+    if (minDist > maxDist) {
+      dist = (minInner + maxReach) / 2;
+    } else {
+      if (dist < minDist) dist = minDist;
+      if (dist > maxDist) dist = maxDist;
     }
     var views = [
       { x: cx, y: cy - dist, r: 180 },
