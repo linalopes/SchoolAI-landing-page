@@ -1,5 +1,5 @@
 ---
-import { homeHref } from '../../data/navigation';
+import { footerNavItems, homeHref } from '../../data/navigation';
 import { site } from '../../data/site';
 ---
 <footer>
@@ -11,12 +11,9 @@ import { site } from '../../data/site';
     <p class="footer-lead">Founded in {site.founded} by Lina Lopes. Independent research atelier.</p>
   </div>
   <div class="footer-text-links">
-    <a href="/about/" class="footer-text-link">The School</a>
-    <a href="/research/" class="footer-text-link">Research</a>
-    <a href="/atelier/" class="footer-text-link">The Atelier</a>
-    <a href="/programme/" class="footer-text-link">Programme</a>
-    <a href="/inverted-gallery/" class="footer-text-link">Inverted Gallery</a>
-    <a href="/collaborate/" class="footer-text-link">Collaborate</a>
+    {footerNavItems.map((item) => (
+      <a href={item.href} class="footer-text-link">{item.label}</a>
+    ))}
     <a href={site.founderUrl} target="_blank" rel="noopener" class="footer-text-link">Lina Lopes &#x2197;&#xFE0E;</a>
     <a href="https://blog.linalopes.info" target="_blank" rel="noopener" class="footer-text-link">Blog &#x2197;&#xFE0E;</a>
   </div>

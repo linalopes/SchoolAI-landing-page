@@ -1288,7 +1288,8 @@
   }
 
   .editorial-panel {
-    margin-bottom: var(--space-6);
+    /* Vertical rhythm between panels comes from .editorial gap — avoid stacking. */
+    margin-bottom: 0;
   }
 
   .editorial-subtitle {
@@ -1562,10 +1563,11 @@
   .editorial {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 0 var(--space-6) 100px;
+    padding: 0 var(--space-6) var(--space-6);
     display: grid;
     grid-template-columns: minmax(0, 1fr) 280px;
-    gap: var(--space-6);
+    gap: var(--space-5);
+    row-gap: var(--space-5);
     align-items: start;
   }
   .editorial--wide {
@@ -1578,7 +1580,10 @@
   }
   .editorial-header {
     grid-column: 1 / -1;
-    margin-bottom: var(--space-4);
+    margin-bottom: 0;
+  }
+  .editorial-header > :last-child {
+    margin-bottom: 0;
   }
   .editorial-eyebrow {
     color: var(--pink);
@@ -1590,7 +1595,7 @@
     font-size: clamp(42px, 6vw, 74px);
     line-height: 1.05;
     letter-spacing: -0.02em;
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-3);
   }
   .editorial-title::after {
     content: '';
@@ -2036,7 +2041,8 @@
     .hero-title { font-size: clamp(44px, 10vw, 74px); }
     .editorial {
       grid-template-columns: 1fr;
-      padding: 0 var(--space-4) 72px;
+      padding: 0 var(--space-4) var(--space-6);
+      row-gap: var(--space-5);
     }
     .editorial-aside { position: static; max-width: 320px; }
     .editorial-main { padding-top: 100px; }

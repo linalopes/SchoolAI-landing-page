@@ -1,5 +1,5 @@
 ---
-import { collaborateHref, homeHref, navItems } from '../../data/navigation';
+import { collaborateHref, collaborateLabel, homeHref, navItems } from '../../data/navigation';
 ---
 <!-- External-link arrows: &#x2197; + &#xFE0E; (VS15) forces text style on iOS/Safari instead of emoji. -->
 <nav id="nav">
@@ -25,7 +25,7 @@ import { collaborateHref, homeHref, navItems } from '../../data/navigation';
         </li>
       ))}
     </ul>
-    <a href={collaborateHref} class="button button--on-dark nav-mobile-cta">Collaborate</a>
+    <a href={collaborateHref} class="button button--on-dark nav-mobile-cta">{collaborateLabel}</a>
   </div>
-  <a href={collaborateHref} class="button button--on-dark nav-cta">Collaborate</a>
+  <a href={collaborateHref} class="button button--on-dark nav-cta">{collaborateLabel}</a>
 </nav>

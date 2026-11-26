@@ -118,15 +118,18 @@ test('navigation promotes all seven institutional routes while keeping homepage 
   const programmeHome = read('src/components/home/Programme.astro');
   const galleryHome = read('src/components/home/Gallery.astro');
   const collaborateHome = read('src/components/home/Collaborate.astro');
-  for (const label of ['The School', 'Research', 'The Atelier', 'Programme', 'Inverted Gallery', 'Collaborate']) {
-    assert.match(nav, new RegExp(label));
+  for (const label of ['About', 'Research', 'Atelier', 'Programme', 'Inverted Gallery']) {
+    assert.match(nav, new RegExp(`label: '${label}'`));
   }
+  assert.match(nav, /collaborateHref = '\/collaborate\/'/);
+  assert.match(nav, /collaborateLabel = 'Collaborate'/);
+  assert.match(nav, /footerNavItems/);
+  assert.doesNotMatch(nav.slice(0, nav.indexOf('export const footerNavItems')), /label: 'Collaborate'/);
   assert.match(nav, /href: '\/about\/'/);
   assert.match(nav, /href: '\/research\/'/);
   assert.match(nav, /href: '\/atelier\/'/);
   assert.match(nav, /href: '\/programme\/'/);
   assert.match(nav, /href: '\/inverted-gallery\/'/);
-  assert.match(nav, /href: '\/collaborate\/'/);
   const planned = nav.slice(nav.indexOf('export const plannedRoutes'));
   assert.match(planned, /wishlist/);
   assert.match(planned, /contributors/);
@@ -140,9 +143,13 @@ test('navigation promotes all seven institutional routes while keeping homepage 
   assert.match(homeMd, /href: \/inverted-gallery\//);
   assert.match(homeMd, /href: \/collaborate\//);
   assert.match(homeMd, /href: \/research\//);
-  assert.match(footer, /href="\/programme\/"/);
+  assert.match(footer, /footerNavItems/);
   assert.match(view, /navItems/);
+  assert.match(view, /nav-cta/);
+  assert.match(view, /nav-mobile-cta/);
   assert.match(view, /id="nav-hamburger"/);
+  assert.match(view, /class="button button--on-dark nav-cta"/);
+  assert.doesNotMatch(view, /nav-links[\s\S]*Collaborate[\s\S]*nav-hamburger/);
 });
 
 test('institutional editorial content is sourced from Markdown', () => {
