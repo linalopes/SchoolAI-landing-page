@@ -26,6 +26,7 @@ const pages = defineCollection({
     description: z.string().optional(),
     eyebrow: z.string().optional(),
     lede: z.string().optional(),
+    intro: z.string().optional(),
     meta: z.string().optional(),
     aside_note: z.string().optional(),
     portrait_src: z.string().optional(),
@@ -232,6 +233,57 @@ const pages = defineCollection({
       })
       .optional(),
 
+    wishlist_teaser: z
+      .object({
+        title: z.string(),
+        intro: z.string(),
+        cta: ctaSchema,
+      })
+      .optional(),
+
+    wishlist: z
+      .object({
+        current_title: z.string(),
+        current_empty: z.string(),
+        fulfilled_title: z.string(),
+        fulfilled_intro: z.string(),
+        fulfilled_empty: z.string(),
+        closing_title: z.string().optional(),
+        closing: z.string(),
+        reference_label: z.string(),
+        fulfilled_credit_prefix: z.string(),
+        contact_cta: ctaSchema,
+        back_cta: ctaSchema,
+        categories: z.object({
+          equipment: z.string(),
+          material: z.string(),
+          access: z.string(),
+          expertise: z.string(),
+          time: z.string(),
+          financial: z.string(),
+        }),
+        statuses: z.object({
+          open: z.string(),
+          'in-progress': z.string(),
+          fulfilled: z.string(),
+          paused: z.string(),
+        }),
+        cta_labels: z.object({
+          equipment: z.string(),
+          material: z.string(),
+          access: z.string(),
+          expertise: z.string(),
+          time: z.string(),
+          financial: z.string(),
+        }),
+        category_order: z
+          .array(
+            z.enum(['equipment', 'material', 'access', 'expertise', 'time', 'financial']),
+          )
+          .optional(),
+      })
+      .optional(),
+
     concept: z
       .object({
         title: z.string(),
@@ -328,30 +380,6 @@ const support = defineCollection({
   }),
 });
 
-const wishlist = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/wishlist' }),
-  schema: z.object({
-    title: z.string(),
-    id: z.string(),
-    contribution_type: z.enum([
-      'material',
-      'equipment',
-      'access',
-      'time',
-      'expertise',
-      'financial',
-    ]),
-    status: z.enum(['open', 'fulfilled', 'paused']),
-    published: z.boolean(),
-    updated_at: z.coerce.date(),
-    target_amount_chf: z.number().optional(),
-    quantity: z.string().optional(),
-    external_url: z.string().optional(),
-    image_url: z.string().optional(),
-    image_alt: z.string().optional(),
-  }),
-});
-
 const siteContent = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/site' }),
   schema: z.discriminatedUnion('doc', [
@@ -388,4 +416,4 @@ const siteContent = defineCollection({
   ]),
 });
 
-export const collections = { pages, gallery, support, wishlist, site: siteContent };
+export const collections = { pages, gallery, support, site: siteContent };

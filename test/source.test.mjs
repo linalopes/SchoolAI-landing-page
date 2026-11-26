@@ -8,6 +8,7 @@ import {
   loadContributorsSnapshot,
   loadEventsSnapshot,
   loadHeroSnapshot,
+  loadWishlistSnapshot,
   loadWorkstationsSnapshot,
   selectUpcomingEvents,
   workstationTitles,
@@ -131,12 +132,16 @@ test('navigation promotes all seven institutional routes while keeping homepage 
   assert.match(nav, /href: '\/atelier\/'/);
   assert.match(nav, /href: '\/programme\/'/);
   assert.match(nav, /href: '\/inverted-gallery\/'/);
-  const planned = nav.slice(nav.indexOf('export const plannedRoutes'));
-  assert.match(planned, /wishlist/);
-  assert.doesNotMatch(planned, /\/collaborate\/contributors\//);
-  assert.doesNotMatch(planned, /href: '\/programme\/'/);
+  assert.match(nav, /wishlistHref = '\/collaborate\/wishlist\/'/);
+  const navItemsBlock = nav.slice(nav.indexOf('export const navItems'), nav.indexOf('export const homeHref'));
+  assert.doesNotMatch(navItemsBlock, /wishlist/i);
+  assert.doesNotMatch(nav, /\/collaborate\/contributors\//);
   assert.match(read('src/content/pages/collaborate.md'), /Made possible by/);
+  assert.match(read('src/content/pages/collaborate.md'), /Research Wishlist/);
+  assert.match(read('src/content/pages/wishlist.md'), /Help make things possible/);
   assert.match(read('src/pages/collaborate/index.astro'), /Contributors/);
+  assert.match(read('src/pages/collaborate/index.astro'), /WishlistTeaser/);
+  assert.match(read('src/pages/collaborate/wishlist/index.astro'), /WishlistDirectory/);
   assert.match(researchHome, /id="research"/);
   assert.match(atelierHome, /id="atelier"/);
   assert.match(programmeHome, /id="programme"/);
@@ -375,12 +380,13 @@ test('no unauthorised editorial media was added outside preserved and functional
   assert.deepEqual(unexpected, []);
 });
 
-test('offline build can read all five committed snapshots without Google', () => {
+test('offline build can read all six committed snapshots without Google', () => {
   const hero = loadHeroSnapshot();
   const events = loadEventsSnapshot();
   const archive = loadArchiveSnapshot();
   const workstations = loadWorkstationsSnapshot();
   const contributors = loadContributorsSnapshot();
+  const wishlist = loadWishlistSnapshot();
   assert.equal(hero.items.length > 0, true);
   assert.equal(selectUpcomingEvents(events.items).length, 0);
   assert.equal(archive.items.length, 6);
@@ -388,6 +394,8 @@ test('offline build can read all five committed snapshots without Google', () =>
   assert.deepEqual(workstations.items.map((item) => item.title), [...workstationTitles]);
   assert.equal(contributors.items.length, 7);
   assert.equal(contributors.items.every((item) => item.published), true);
+  assert.equal(wishlist.items.length, 11);
+  assert.equal(wishlist.items.every((item) => item.published), true);
   assert.match(read('docs/feed-resilience.md'), /Last-known-good snapshots/);
   assert.match(read('docs/csv-parser.md'), /csv-parse/);
 });
@@ -403,10 +411,14 @@ test('README includes the editorial administration guide', () => {
   assert.match(readme, /gid=20271126/);
   assert.match(readme, /gid=20271127/);
   assert.match(readme, /gid=20271128/);
+  assert.match(readme, /gid=20271129/);
   assert.match(readme, /Contributors|Made possible by/);
+  assert.match(readme, /Research Wishlist/);
+  assert.match(readme, /src\/content\/pages\/wishlist\.md/);
+  assert.match(readme, /target_amount_chf/);
   assert.match(readme, /src\/content\/site\/footer\.md/);
   assert.match(readme, /src\/content\/site\/location\.md/);
-  assert.match(readme, /published checkbox|not a private contributor register/i);
+  assert.match(readme, /not a privacy mechanism|authorised for public disclosure/i);
   assert.match(readme, /refresh once in the browser|Requires a new \*\*build and deployment\*\*/i);
   assert.match(readme, /Deploy production site|deploy\.yml/);
   assert.match(readme, /legacy-html-2026/);

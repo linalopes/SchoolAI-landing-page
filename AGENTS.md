@@ -4,7 +4,7 @@ Read README and docs before edits. Follow approved phase scope. Preserve existin
 
 **Editorial content must not live in Astro or TypeScript.** Institutional copy, homepage sections, gallery narrative, rental rates, financial support text, CTA labels, SEO descriptions and external editorial image URLs belong in Markdown under `src/content/`. Components present; TypeScript validates feeds and application logic. Do not duplicate sources of truth.
 
-Google Sheets remains the source for hero, events, research archive, workstations and contributors. Markdown updates require rebuild/deploy; sheet updates use `npm run refresh-feeds` plus client refresh with last-known-good fallback. Canonical physical address lives in `src/content/site/location.md`; footer labels and external links live in `src/content/site/footer.md`.
+Google Sheets remains the source for hero, events, research archive, workstations, contributors and wishlist. Markdown updates require rebuild/deploy; sheet updates use `npm run refresh-feeds` plus client refresh with last-known-good fallback. Canonical physical address lives in `src/content/site/location.md`; footer labels and external links live in `src/content/site/footer.md`. Wishlist page copy lives in `src/content/pages/wishlist.md`.
 
 Financial support (TWINT personal-contact QR and Stripe Payment Link) is configured in `src/content/support/financial-support.md`. Do not add Stripe SDK, API keys, webhooks or custom checkout. Authorised functional media exceptions: `public/imgs/contact-twint.png` and `public/imgs/stripe.png`. Never store editorial photographs, video, audio or research documentation binaries in Git. Reference stable public HTTPS media URLs. Audit legacy media before removal; preserve URLs.
 

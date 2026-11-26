@@ -1,7 +1,7 @@
 /**
  * Primary navigation. Only destinations with published content are listed.
  * Collaborate is the highlighted header CTA, not a text nav item.
- * Wishlist and contributors stay in plannedRoutes until approved content ships.
+ * Research Wishlist lives under Collaborate and is not a primary nav item.
  */
 export const navItems = [
   { href: '/about/', label: 'About' },
@@ -14,6 +14,7 @@ export const navItems = [
 export const homeHref = '/';
 export const collaborateHref = '/collaborate/';
 export const collaborateLabel = 'Collaborate';
+export const wishlistHref = '/collaborate/wishlist/';
 
 /** Footer destinations: primary nav plus Collaborate and external links. */
 export const footerNavItems = [
@@ -21,7 +22,5 @@ export const footerNavItems = [
   { href: collaborateHref, label: collaborateLabel },
 ] as const;
 
-/** Prepared routes — not linked until pages and approved content exist. */
-export const plannedRoutes = [
-  { href: '/collaborate/wishlist/', label: 'Research Wishlist' },
-] as const;
+/** Secondary routes linked from Collaborate, not from the primary nav. */
+export const plannedRoutes = [] as const;

@@ -11,6 +11,7 @@ Normal builds read committed snapshots and do not call Google Sheets.
 | Research Archive | `20271126` | `src/data/feeds/archive.json` | Yes, once after load |
 | Workstations | `20271127` | `src/data/feeds/workstations.json` | Yes, once after load |
 | Contributors | `20271128` | `src/data/feeds/contributors.json` | Yes, once after load |
+| Wishlist | `20271129` | `src/data/feeds/wishlist.json` | Yes, once after load |
 
 Canonical spreadsheet: <https://docs.google.com/spreadsheets/d/1XIkDn7NrSSQbcVyYgrlcQxjFsOkraDdfJmI1qzaq54I/edit>
 
@@ -22,7 +23,7 @@ A content typo, dependency bump, or unrelated deploy must succeed while the publ
 
 ## Last-known-good snapshots
 
-Snapshots are public, validated JSON under `src/data/feeds/`. They must not contain private spreadsheet material or unpublished rows. The archive snapshot stores only published and featured entries, sorted by `order`, limited to six. The workstations and contributors snapshots store only published entries, sorted by `order`. Empty contributor rows (including rows with only an unchecked `published` checkbox) are ignored. Loaders resolve that directory from `process.cwd()` so offline builds and Astro prerender do not depend on Google or on `import.meta.url` after bundling.
+Snapshots are public, validated JSON under `src/data/feeds/`. They must not contain private spreadsheet material or unpublished rows. The archive snapshot stores only published and featured entries, sorted by `order`, limited to six. The workstations, contributors and wishlist snapshots store only published entries, sorted by `order`. Empty contributor or wishlist rows (including rows with only an unchecked `published` checkbox) are ignored. A valid empty wishlist is not a feed failure. Loaders resolve that directory from `process.cwd()` so offline builds and Astro prerender do not depend on Google or on `import.meta.url` after bundling.
 
 ## Refresh and build
 
@@ -43,7 +44,7 @@ npm run build
 
 Reads the committed snapshots only. It fails if a required snapshot is missing or no longer matches the contract. It does not fetch Google.
 
-Client-side hero, events, archive, workstations and contributors refresh request the same CSV once after load, with a timeout. On timeout, invalid data, or an offline browser, the already rendered snapshot stays on screen.
+Client-side hero, events, archive, workstations, contributors and wishlist refresh request the same CSV once after load, with a timeout. On timeout, invalid data, or an offline browser, the already rendered snapshot stays on screen.
 
 ## Parser
 

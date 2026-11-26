@@ -38,7 +38,7 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   assert.match(html, /\/space3d\.html/);
   assert.match(html, /#22113E/i);
   assert.doesNotMatch(html, /later phase|planned route|Phase 3/i);
-  assert.doesNotMatch(html, /wishlist|Made possible by/i);
+  assert.doesNotMatch(html, /Research Wishlist|Made possible by/i);
 
   const about = readFileSync(dist('about/index.html'), 'utf8');
   assert.match(about, /The School/);
@@ -110,10 +110,28 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   assert.match(collaborate, /data-feed="contributors"/);
   assert.match(collaborate, /City of Wetzikon/);
   assert.match(collaborate, /Individual Supporters/);
+  assert.match(collaborate, /Research Wishlist/);
+  assert.match(collaborate, /Explore the Research Wishlist/);
+  assert.match(collaborate, /href="\/collaborate\/wishlist\/"/);
   assert.match(collaborate, /Let(?:'|’|&#39;)s start a conversation/);
   assert.match(collaborate, /Arrange a visit/);
-  assert.doesNotMatch(collaborate, /wishlist/i);
   assert.doesNotMatch(collaborate, /formal employment|residency programmes|internships/);
+
+  const wishlist = readFileSync(dist('collaborate/wishlist/index.html'), 'utf8');
+  assert.match(wishlist, /Help make things possible/);
+  assert.match(wishlist, /data-feed="wishlist"/);
+  assert.match(wishlist, /Current needs/);
+  assert.match(wishlist, /Made possible together/);
+  assert.match(wishlist, /65-inch flat-screen TV/);
+  assert.match(wishlist, /In progress/);
+  assert.match(wishlist, /Projection screen/);
+  assert.match(wishlist, /Made possible by/);
+  assert.match(wishlist, /Nina Judge/);
+  assert.match(wishlist, /Offer equipment|Offer materials|Discuss access|Share your expertise/);
+  assert.match(wishlist, /Back to Collaborate/);
+  assert.match(wishlist, /canonical/);
+  assert.match(wishlist, /mailto:lilothink\.science@gmail\.com/);
+  assert.doesNotMatch(wishlist, /shopping cart|checkout|progress bar/i);
 
   const footer = readFileSync(dist('index.html'), 'utf8');
   assert.match(footer, /footer-main/);
@@ -148,6 +166,7 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   assert.equal(statSync(dist('sitemap.xml')).isFile(), true);
   assert.match(readFileSync(dist('robots.txt'), 'utf8'), /Sitemap: https:\/\/schoolai\.linalopes\.info\/sitemap\.xml/);
   assert.match(readFileSync(dist('sitemap.xml'), 'utf8'), /https:\/\/schoolai\.linalopes\.info\/inverted-gallery\//);
+  assert.match(readFileSync(dist('sitemap.xml'), 'utf8'), /https:\/\/schoolai\.linalopes\.info\/collaborate\/wishlist\//);
   assert.match(readFileSync(dist('404.html'), 'utf8'), /Page not found/);
   assert.match(html, /og:title/);
   assert.match(html, /canonical/);
@@ -161,6 +180,6 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   ]) {
     assert.equal(statSync(dist(path)).isFile(), true, path);
   }
-  assert.equal(existsSync(dist('collaborate/wishlist/index.html')), false);
+  assert.equal(existsSync(dist('collaborate/wishlist/index.html')), true);
   assert.equal(existsSync(dist('collaborate/contributors/index.html')), false);
 });

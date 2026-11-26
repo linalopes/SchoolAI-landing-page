@@ -1,6 +1,6 @@
 import { mkdirSync, readFileSync, renameSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { contributorCategories } from './contract.ts';
+import { contributorCategories, wishlistCategories, wishlistStatuses } from './contract.ts';
 import type {
   ArchiveEntry,
   ContributorCategory,
@@ -9,11 +9,16 @@ import type {
   FeedId,
   FeedSnapshot,
   HeroSlide,
+  WishlistCategory,
+  WishlistEntry,
+  WishlistStatus,
   WorkstationEntry,
 } from './types.ts';
 import { FeedValidationError } from './types.ts';
 
 const contributorCategorySet = new Set<string>(contributorCategories);
+const wishlistCategorySet = new Set<string>(wishlistCategories);
+const wishlistStatusSet = new Set<string>(wishlistStatuses);
 
 // Resolve from process.cwd() so Astro prerender bundles still find the
 // committed snapshots. import.meta.url points inside dist/.prerender after build.
@@ -247,6 +252,63 @@ export function loadContributorsSnapshot(): FeedSnapshot<ContributorEntry> {
   const text = readSnapshotFile('contributors');
   if (!text) throw new FeedValidationError('Required contributors snapshot is missing');
   return parseContributorsSnapshot(JSON.parse(text));
+}
+
+export function parseWishlistSnapshot(raw: unknown): FeedSnapshot<WishlistEntry> {
+  return assertSnapshotShape('wishlist', raw, (item, index) => {
+    if (!isObject(item)) throw new FeedValidationError(`wishlist snapshot item ${index} is invalid`);
+    const order = item.order;
+    if (typeof order !== 'number' || !Number.isInteger(order)) {
+      throw new FeedValidationError(`wishlist snapshot item ${index} has an invalid order`);
+    }
+    if (typeof item.published !== 'boolean') {
+      throw new FeedValidationError(`wishlist snapshot item ${index} has invalid published`);
+    }
+    const category = requireString(item, 'category', `wishlist item ${index}`);
+    if (!wishlistCategorySet.has(category)) {
+      throw new FeedValidationError(`wishlist snapshot item ${index} has an unknown category`, [category]);
+    }
+    const status = requireString(item, 'status', `wishlist item ${index}`);
+    if (!wishlistStatusSet.has(status)) {
+      throw new FeedValidationError(`wishlist snapshot item ${index} has an unknown status`, [status]);
+    }
+    const targetAmountChf = item.targetAmountChf;
+    if (
+      targetAmountChf !== null
+      && (typeof targetAmountChf !== 'number' || !(targetAmountChf > 0))
+    ) {
+      throw new FeedValidationError(`wishlist snapshot item ${index} has an invalid targetAmountChf`);
+    }
+    const fulfilledYear = item.fulfilledYear;
+    if (
+      fulfilledYear !== null
+      && (typeof fulfilledYear !== 'number' || !Number.isInteger(fulfilledYear))
+    ) {
+      throw new FeedValidationError(`wishlist snapshot item ${index} has an invalid fulfilledYear`);
+    }
+    return {
+      id: requireString(item, 'id', `wishlist item ${index}`),
+      title: requireString(item, 'title', `wishlist item ${index}`),
+      category: category as WishlistCategory,
+      description: requireString(item, 'description', `wishlist item ${index}`),
+      quantity: requireNullableString(item, 'quantity', `wishlist item ${index}`),
+      imageUrl: requireNullableString(item, 'imageUrl', `wishlist item ${index}`),
+      imageAlt: requireNullableString(item, 'imageAlt', `wishlist item ${index}`),
+      referenceUrl: requireNullableString(item, 'referenceUrl', `wishlist item ${index}`),
+      targetAmountChf: targetAmountChf as number | null,
+      status: status as WishlistStatus,
+      fulfilledBy: requireNullableString(item, 'fulfilledBy', `wishlist item ${index}`),
+      fulfilledYear: fulfilledYear as number | null,
+      order,
+      published: item.published,
+    };
+  });
+}
+
+export function loadWishlistSnapshot(): FeedSnapshot<WishlistEntry> {
+  const text = readSnapshotFile('wishlist');
+  if (!text) throw new FeedValidationError('Required wishlist snapshot is missing');
+  return parseWishlistSnapshot(JSON.parse(text));
 }
 
 export function writeSnapshotAtomic<T>(snapshot: FeedSnapshot<T>): void {

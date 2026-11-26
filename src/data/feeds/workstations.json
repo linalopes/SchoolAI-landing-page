@@ -1,6 +1,6 @@
 {
   "feed": "workstations",
-  "fetchedAt": "2026-11-26T13:10:19.445Z",
+  "fetchedAt": "2026-11-26T15:25:37.446Z",
   "sourceUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpM1GYZ-ohq9jHkppGkz4hCx_p3vuCDjekln1apcu1nV2KILUmDeoT3xeLTSprREAXWjiWY8AovP4y/pub?gid=20271127&single=true&output=csv",
   "itemCount": 8,
   "items": [
@@ -9,7 +9,7 @@
       "title": "BioLab",
       "tagline": "Bioart & living systems",
       "description": "A space for biological experimentation and artistic investigations involving living systems, including the associated artistic research I Want to Make an Onion Cry.",
-      "imageUrl": null,
+      "imageUrl": "https://cloud.linalopes.info/index.php/apps/files_sharing/publicpreview/jiAJgYacM6rGq3Q?file=biolab.webp&x=2400&y=2400&a=true",
       "imageAlt": null,
       "order": 1,
       "published": true
@@ -19,7 +19,7 @@
       "title": "Makerspace",
       "tagline": "Digital fabrication & rapid prototyping",
       "description": "A workstation for 3D printing, laser cutting and the fabrication of custom components for experimental research.",
-      "imageUrl": null,
+      "imageUrl": "https://cloud.linalopes.info/index.php/apps/files_sharing/publicpreview/jiAJgYacM6rGq3Q?file=makerspace.webp&x=2400&y=2400&a=true",
       "imageAlt": null,
       "order": 2,
       "published": true
@@ -29,7 +29,7 @@
       "title": "Dirty Workshop",
       "tagline": "Material processing & machine hacking",
       "description": "A space for woodworking, drilling, cutting, mechanical construction and adapting machines and tools for research.",
-      "imageUrl": null,
+      "imageUrl": "https://cloud.linalopes.info/index.php/apps/files_sharing/publicpreview/jiAJgYacM6rGq3Q?file=dirty-workshop.webp&x=2400&y=2400&a=true",
       "imageAlt": null,
       "order": 3,
       "published": true
@@ -39,7 +39,7 @@
       "title": "Electronics Bench",
       "tagline": "Circuits, PCBs & embedded systems",
       "description": "A workstation for electronic experimentation, circuit prototyping, soldering, PCB design and embedded systems.",
-      "imageUrl": null,
+      "imageUrl": "https://cloud.linalopes.info/index.php/apps/files_sharing/publicpreview/jiAJgYacM6rGq3Q?file=electronic-bench.webp&x=2400&y=2400&a=true",
       "imageAlt": null,
       "order": 4,
       "published": true
@@ -49,7 +49,7 @@
       "title": "Wearables Lab",
       "tagline": "Wearable electronics & e-textiles",
       "description": "A research workstation exploring wearable electronics, electronic textiles and interfaces between bodies and technology.",
-      "imageUrl": null,
+      "imageUrl": "https://cloud.linalopes.info/index.php/apps/files_sharing/publicpreview/jiAJgYacM6rGq3Q?file=wearables-lab.webp&x=2400&y=2400&a=true",
       "imageAlt": null,
       "order": 5,
       "published": true
@@ -59,7 +59,7 @@
       "title": "Craft Office",
       "tagline": "Paper, crafts & printing",
       "description": "A space for paper engineering, cardboard mechanisms, crafts and printing, with sublimation printing planned.",
-      "imageUrl": null,
+      "imageUrl": "https://cloud.linalopes.info/index.php/apps/files_sharing/publicpreview/jiAJgYacM6rGq3Q?file=office.webp&x=2400&y=2400&a=true",
       "imageAlt": null,
       "order": 6,
       "published": true
@@ -69,7 +69,7 @@
       "title": "Studio",
       "tagline": "Photography & research documentation",
       "description": "A dedicated space for lighting, photography, documenting research processes and producing instructional media.",
-      "imageUrl": null,
+      "imageUrl": "https://cloud.linalopes.info/index.php/apps/files_sharing/publicpreview/jiAJgYacM6rGq3Q?file=studio.webp&x=2400&y=2400&a=true",
       "imageAlt": null,
       "order": 7,
       "published": true
@@ -79,7 +79,7 @@
       "title": "Saloon",
       "tagline": "Hands-on research & assembly",
       "description": "The central working area for assembling prototypes and installations, hands-on experimentation and sharing works in progress during Open Research Studio.",
-      "imageUrl": null,
+      "imageUrl": "https://cloud.linalopes.info/index.php/apps/files_sharing/publicpreview/jiAJgYacM6rGq3Q?file=saloon.webp&x=2400&y=2400&a=true",
       "imageAlt": null,
       "order": 8,
       "published": true

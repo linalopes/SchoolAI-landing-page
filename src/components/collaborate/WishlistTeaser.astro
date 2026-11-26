@@ -1,0 +1,17 @@
+---
+import { requirePage } from '../../lib/content';
+
+const page = await requirePage('collaborate');
+const copy = page.data.wishlist_teaser;
+if (!copy) {
+  throw new Error('collaborate.md is missing the wishlist_teaser frontmatter section.');
+}
+---
+<section id="research-wishlist" class="wishlist-teaser editorial-panel fade-up" aria-labelledby="wishlist-teaser-heading">
+  <p class="t-label wishlist-teaser-label">Support</p>
+  <h2 id="wishlist-teaser-heading" class="editorial-subtitle">{copy.title}</h2>
+  <p class="prose-p">{copy.intro}</p>
+  <div class="section-actions">
+    <a href={copy.cta.href} class="button button--primary">{copy.cta.label}</a>
+  </div>
+</section>

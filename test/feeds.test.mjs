@@ -4,8 +4,11 @@ import { join } from 'node:path';
 import test from 'node:test';
 import {
   FeedValidationError,
+  formatWishlistAmountChf,
   groupContributorsByCategory,
+  groupWishlistByCategory,
   parseAndSelectArchive,
+  parseAndSelectWishlist,
   parseAndSelectWorkstations,
   parseArchiveCsv,
   parseContributorsCsv,
@@ -14,17 +17,24 @@ import {
   parseEventsCsv,
   parseHeroCsv,
   parseHeroSnapshot,
+  parseWishlistCsv,
   parseWorkstationsCsv,
   renderContributorsMarkup,
+  renderWishlistPanels,
   selectArchiveEntries,
   resolvePublicEventUrl,
   selectContributors,
+  selectCurrentNeeds,
+  selectFulfilledWishlist,
   selectPastEvents,
   selectPastEventsPreview,
   selectUpcomingEvents,
+  selectWishlist,
   selectWorkstations,
   snapshotExists,
 } from '../src/lib/sheets/index.ts';
+
+const wishlistHeader = 'id,title,category,description,quantity,image_url,image_alt,reference_url,target_amount_chf,status,fulfilled_by,fulfilled_year,order,published';
 
 test('CSV parser keeps quoted commas, escapes, multiline fields, BOM and CRLF', () => {
   const csv = '\uFEFFtype,title,tagline,image_url,cta_label,cta_url,accent\r\n'
@@ -246,8 +256,10 @@ test('refresh script distinguishes network keep from invalid failure', async () 
   assert.match(source, /parseAndSelectArchive/);
   assert.match(source, /parseAndSelectWorkstations/);
   assert.match(source, /parseAndSelectContributors/);
+  assert.match(source, /parseAndSelectWishlist/);
   assert.match(source, /workstationsCsvUrl/);
   assert.match(source, /contributorsCsvUrl/);
+  assert.match(source, /wishlistCsvUrl/);
 });
 
 test('contributors adapter filters published rows, ignores empty checkbox rows, groups and orders', () => {
@@ -367,4 +379,143 @@ test('committed snapshots contain only public feed material', () => {
   assert.equal(contributors.items.every((item) => item.published === true), true);
   assert.equal(contributors.items[0].id, 'wetzikon-culture');
   assert.match(contributors.items[0].name, /City of Wetzikon/);
+
+  const wishlist = JSON.parse(readFileSync(new URL('../src/data/feeds/wishlist.json', import.meta.url), 'utf8'));
+  assert.equal(wishlist.feed, 'wishlist');
+  assert.equal(wishlist.items.length, 11);
+  assert.equal(wishlist.items.every((item) => item.published === true), true);
+  assert.equal(wishlist.items[0].id, '65-inch-tv');
+  assert.equal(wishlist.items[0].status, 'in-progress');
+  assert.equal(wishlist.items.find((item) => item.id === 'projection-screen')?.fulfilledBy, 'Nina Judge');
+});
+
+test('wishlist adapter filters published rows, ignores empty checkbox rows, groups and orders', () => {
+  const csv = [
+    wishlistHeader,
+    'laser,Laser,equipment,Desc,1,,,,,open,,,2,TRUE',
+    'tv,TV,equipment,Desc,1,,,,,in-progress,,,1,TRUE',
+    'cloth,Cloth,material,Desc,,,,,,open,,,3,TRUE',
+    'draft,Draft,equipment,Desc,,,,,,open,,,9,FALSE',
+    'paused-item,Paused,access,Desc,,,,,,paused,,,8,TRUE',
+    'gift,Screen,equipment,Desc,1,,,,,fulfilled,Nina Judge,2026,4,TRUE',
+    ',,,,,,,,,,,,,FALSE',
+    ',,,,,,,,,,,,,',
+  ].join('\n');
+
+  const parsed = parseWishlistCsv(csv);
+  assert.equal(parsed.items.length, 6);
+  assert.deepEqual(selectWishlist(parsed.items).map((item) => item.id), [
+    'tv',
+    'laser',
+    'cloth',
+    'gift',
+    'paused-item',
+  ]);
+  assert.equal(parsed.items.some((item) => item.id === 'draft'), true);
+  assert.deepEqual(selectCurrentNeeds(parsed.items).map((item) => item.id), ['tv', 'laser', 'cloth']);
+  assert.deepEqual(selectFulfilledWishlist(parsed.items).map((item) => item.id), ['gift']);
+  assert.equal(selectCurrentNeeds(parsed.items).some((item) => item.status === 'paused'), false);
+
+  const groups = groupWishlistByCategory(parsed.items);
+  assert.deepEqual(groups.map((group) => group.category), ['equipment', 'material']);
+  assert.deepEqual(groups[0].items.map((item) => item.id), ['tv', 'laser']);
+
+  const panels = renderWishlistPanels(selectWishlist(parsed.items), {
+    categoryLabels: {
+      equipment: 'Equipment',
+      material: 'Materials',
+      access: 'Technology & Research Access',
+      expertise: 'Expertise',
+      time: 'Time & Assistance',
+      financial: 'Financial Support',
+    },
+    statusLabels: {
+      open: 'Open',
+      'in-progress': 'In progress',
+      fulfilled: 'Fulfilled',
+      paused: 'Paused',
+    },
+    ctaLabels: {
+      equipment: 'Offer equipment',
+      material: 'Offer materials',
+      access: 'Discuss access',
+      expertise: 'Share your expertise',
+      time: 'Get involved',
+      financial: 'Discuss financial support',
+    },
+    contactEmail: 'hello@example.com',
+    referenceLabel: 'View reference',
+    fulfilledCreditPrefix: 'Made possible by',
+    currentEmpty: 'No open needs',
+    fulfilledEmpty: 'No fulfilled items',
+  });
+  assert.match(panels.current, /Offer equipment/);
+  assert.match(panels.current, /In progress/);
+  assert.doesNotMatch(panels.current, /Paused|Draft/);
+  assert.match(panels.fulfilled, /Made possible by/);
+  assert.match(panels.fulfilled, /Nina Judge/);
+  assert.doesNotMatch(panels.fulfilled, /Offer equipment/);
+});
+
+test('wishlist adapter validates categories, statuses, optional fields and unsafe urls', () => {
+  assert.throws(
+    () => parseWishlistCsv([
+      wishlistHeader,
+      'x,Title,unknown,Desc,,,,,,open,,,1,TRUE',
+    ].join('\n')),
+    /unknown category/i,
+  );
+  assert.throws(
+    () => parseWishlistCsv([
+      wishlistHeader,
+      'x,Title,equipment,Desc,,,,,,waiting,,,1,TRUE',
+    ].join('\n')),
+    /unknown status/i,
+  );
+  assert.throws(
+    () => parseWishlistCsv([
+      wishlistHeader,
+      'x,Title,equipment,Desc,,https://example.com/a.jpg,,,,open,,,1,TRUE',
+    ].join('\n')),
+    /image_alt is required/i,
+  );
+  assert.throws(
+    () => parseWishlistCsv([
+      wishlistHeader,
+      'x,Title,equipment,Desc,,,,javascript:alert(1),,open,,,1,TRUE',
+    ].join('\n')),
+    /Unsafe URL scheme/i,
+  );
+  assert.throws(
+    () => parseWishlistCsv([
+      wishlistHeader,
+      'dup,One,equipment,Desc,,,,,,open,,,1,TRUE',
+      'dup,Two,equipment,Desc,,,,,,open,,,2,TRUE',
+    ].join('\n')),
+    /duplicate id/i,
+  );
+
+  const withOptional = parseWishlistCsv([
+    wishlistHeader,
+    'kit,Kit,financial,Support fund,,,,https://example.com/ref,250.5,open,,,1,TRUE',
+  ].join('\n'));
+  assert.equal(withOptional.items[0].referenceUrl, 'https://example.com/ref');
+  assert.equal(withOptional.items[0].targetAmountChf, 250.5);
+  assert.equal(formatWishlistAmountChf(250.5), 'CHF 250.50');
+  assert.equal(formatWishlistAmountChf(1200), 'CHF 1200');
+
+  const empty = parseAndSelectWishlist(`${wishlistHeader}\n`);
+  assert.equal(empty.items.length, 0);
+  const panels = renderWishlistPanels([], {
+    categoryLabels: {},
+    statusLabels: {},
+    ctaLabels: {},
+    contactEmail: 'hello@example.com',
+    referenceLabel: 'View reference',
+    fulfilledCreditPrefix: 'Made possible by',
+    currentEmpty: 'No open needs',
+    fulfilledEmpty: 'No fulfilled items',
+  });
+  assert.match(panels.current, /No open needs/);
+  assert.match(panels.fulfilled, /No fulfilled items/);
 });

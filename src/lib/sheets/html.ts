@@ -1,11 +1,20 @@
-import { archiveCta, contributorCategories } from './contract.ts';
+import { archiveCta, contributorCategories, wishlistCategories } from './contract.ts';
 import { groupContributorsByCategory } from './contributors.ts';
+import {
+  formatWishlistAmountChf,
+  groupWishlistByCategory,
+  selectCurrentNeeds,
+  selectFulfilledWishlist,
+} from './wishlist.ts';
 import type {
   ArchiveEntry,
   ContributorCategory,
   ContributorEntry,
   EventItem,
   HeroSlide,
+  WishlistCategory,
+  WishlistEntry,
+  WishlistStatus,
   WorkstationEntry,
 } from './types.ts';
 import { resolvePublicEventUrl } from './urls.ts';
@@ -278,4 +287,129 @@ export function renderContributorsMarkup(
       </div>
     `;
   }).join('');
+}
+
+export type WishlistRenderOptions = {
+  categoryLabels: Partial<Record<WishlistCategory, string>>;
+  statusLabels: Partial<Record<WishlistStatus, string>>;
+  ctaLabels: Partial<Record<WishlistCategory, string>>;
+  contactEmail: string;
+  referenceLabel: string;
+  fulfilledCreditPrefix: string;
+  currentEmpty: string;
+  fulfilledEmpty: string;
+  categoryOrder?: readonly WishlistCategory[];
+};
+
+function wishlistMailto(email: string, subject: string): string {
+  return `mailto:${escapeHTML(email)}?subject=${encodeURIComponent(subject)}`;
+}
+
+export function renderWishlistItemMarkup(
+  entry: WishlistEntry,
+  options: WishlistRenderOptions,
+  mode: 'current' | 'fulfilled',
+): string {
+  const categoryLabel = options.categoryLabels[entry.category] ?? entry.category;
+  const statusLabel = options.statusLabels[entry.status] ?? entry.status;
+  const image = entry.imageUrl
+    ? `<div class="wishlist-item-media"><img src="${escapeHTML(entry.imageUrl)}" alt="${escapeHTML(entry.imageAlt ?? '')}" loading="lazy" decoding="async" /></div>`
+    : '';
+
+  const metaParts: string[] = [];
+  if (entry.quantity) {
+    metaParts.push(`<span class="wishlist-item-quantity">${escapeHTML(entry.quantity)}</span>`);
+  }
+  if (entry.targetAmountChf !== null) {
+    metaParts.push(
+      `<span class="wishlist-item-amount">${escapeHTML(formatWishlistAmountChf(entry.targetAmountChf))}</span>`,
+    );
+  }
+  if (mode === 'fulfilled' && entry.fulfilledYear !== null) {
+    metaParts.push(`<span class="wishlist-item-year">${entry.fulfilledYear}</span>`);
+  }
+
+  const actions: string[] = [];
+  if (mode === 'current') {
+    const ctaLabel = options.ctaLabels[entry.category] ?? 'Get in touch';
+    const subject = `Wishlist: ${entry.title}`;
+    actions.push(
+      `<a class="wishlist-item-cta button button--primary button--sm" href="${wishlistMailto(options.contactEmail, subject)}">${escapeHTML(ctaLabel)}</a>`,
+    );
+  }
+  if (entry.referenceUrl) {
+    actions.push(
+      `<a class="wishlist-item-reference" href="${escapeHTML(entry.referenceUrl)}" target="_blank" rel="noopener">${escapeHTML(options.referenceLabel)} &#x2197;&#xFE0E;</a>`,
+    );
+  }
+
+  const credit = mode === 'fulfilled' && entry.fulfilledBy
+    ? `<p class="wishlist-item-credit">${escapeHTML(options.fulfilledCreditPrefix)} <strong>${escapeHTML(entry.fulfilledBy)}</strong>.</p>`
+    : '';
+
+  return `
+    <article class="wishlist-item wishlist-item--${escapeHTML(entry.status)}" data-wishlist-id="${escapeHTML(entry.id)}">
+      ${image}
+      <div class="wishlist-item-body">
+        <div class="wishlist-item-labels">
+          <p class="t-label wishlist-item-category">${escapeHTML(categoryLabel)}</p>
+          <p class="t-label wishlist-item-status">${escapeHTML(statusLabel)}</p>
+        </div>
+        <h3 class="wishlist-item-title">${escapeHTML(entry.title)}</h3>
+        <p class="wishlist-item-desc">${escapeHTML(entry.description)}</p>
+        ${metaParts.length ? `<p class="wishlist-item-meta">${metaParts.join('<span aria-hidden="true"> · </span>')}</p>` : ''}
+        ${credit}
+        ${actions.length ? `<div class="wishlist-item-actions">${actions.join('')}</div>` : ''}
+      </div>
+    </article>
+  `;
+}
+
+export function renderWishlistCurrentMarkup(
+  entries: WishlistEntry[],
+  options: WishlistRenderOptions,
+): string {
+  const order = options.categoryOrder?.length ? options.categoryOrder : wishlistCategories;
+  const groups = groupWishlistByCategory(entries, order);
+  if (!groups.length) {
+    return `<p class="wishlist-empty">${escapeHTML(options.currentEmpty)}</p>`;
+  }
+
+  return groups.map((group) => {
+    const label = options.categoryLabels[group.category] ?? group.category;
+    const items = group.items
+      .map((entry) => renderWishlistItemMarkup(entry, options, 'current'))
+      .join('');
+    return `
+      <section class="wishlist-category" aria-label="${escapeHTML(label)}">
+        <h3 class="wishlist-category-title t-label">${escapeHTML(label)}</h3>
+        <div class="wishlist-items">${items}</div>
+      </section>
+    `;
+  }).join('');
+}
+
+export function renderWishlistFulfilledMarkup(
+  entries: WishlistEntry[],
+  options: WishlistRenderOptions,
+): string {
+  const items = selectFulfilledWishlist(entries);
+  if (!items.length) {
+    return `<p class="wishlist-empty">${escapeHTML(options.fulfilledEmpty)}</p>`;
+  }
+  return `
+    <div class="wishlist-items wishlist-items--fulfilled">
+      ${items.map((entry) => renderWishlistItemMarkup(entry, options, 'fulfilled')).join('')}
+    </div>
+  `;
+}
+
+export function renderWishlistPanels(
+  entries: WishlistEntry[],
+  options: WishlistRenderOptions,
+): { current: string; fulfilled: string } {
+  return {
+    current: renderWishlistCurrentMarkup(selectCurrentNeeds(entries), options),
+    fulfilled: renderWishlistFulfilledMarkup(selectFulfilledWishlist(entries), options),
+  };
 }

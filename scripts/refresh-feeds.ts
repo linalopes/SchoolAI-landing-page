@@ -15,12 +15,14 @@ import {
   heroCsvUrl,
   parseAndSelectArchive,
   parseAndSelectContributors,
+  parseAndSelectWishlist,
   parseAndSelectWorkstations,
   parseEventsCsv,
   parseHeroCsv,
   readSnapshotFile,
   snapshotAgeMs,
   snapshotExists,
+  wishlistCsvUrl,
   workstationsCsvUrl,
   writeSnapshotAtomic,
   type FeedId,
@@ -141,6 +143,7 @@ async function main(): Promise<void> {
     await refreshOne('archive', archiveCsvUrl, (csv) => parseAndSelectArchive(csv)),
     await refreshOne('workstations', workstationsCsvUrl, (csv) => parseAndSelectWorkstations(csv)),
     await refreshOne('contributors', contributorsCsvUrl, (csv) => parseAndSelectContributors(csv)),
+    await refreshOne('wishlist', wishlistCsvUrl, (csv) => parseAndSelectWishlist(csv)),
   ];
 
   for (const outcome of outcomes) {

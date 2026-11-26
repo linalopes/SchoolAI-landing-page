@@ -1523,6 +1523,179 @@
     gap: var(--space-3);
   }
 
+  /* Research Wishlist — editorial directory on light surfaces */
+  .wishlist-teaser {
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-5);
+  }
+  .wishlist-teaser-label {
+    color: var(--pink);
+    margin-bottom: var(--space-2);
+  }
+  .wishlist-directory {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    margin: var(--space-5) 0;
+  }
+  .wishlist-section-header {
+    margin-bottom: var(--space-4);
+  }
+  .wishlist-section-header .prose-p {
+    margin-top: var(--space-2);
+    max-width: 40rem;
+  }
+  .wishlist-section--fulfilled {
+    background: var(--gray-green);
+    padding: var(--space-5);
+    margin-inline: calc(-1 * var(--space-4));
+  }
+  .wishlist-category {
+    margin-bottom: var(--space-5);
+  }
+  .wishlist-category:last-child {
+    margin-bottom: 0;
+  }
+  .wishlist-category-title {
+    color: var(--pink);
+    margin-bottom: var(--space-3);
+  }
+  .wishlist-items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  .wishlist-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .wishlist-item:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+  .wishlist-item-media {
+    max-width: 280px;
+  }
+  .wishlist-item-media img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: rgba(34, 17, 62, 0.04);
+  }
+  .wishlist-item-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-3);
+    margin-bottom: var(--space-2);
+  }
+  .wishlist-item-category {
+    color: var(--pink);
+    margin: 0;
+  }
+  .wishlist-item-status {
+    color: var(--deep-purple);
+    opacity: 0.72;
+    margin: 0;
+  }
+  .wishlist-item--in-progress .wishlist-item-status {
+    color: var(--brand-magenta);
+    opacity: 1;
+  }
+  .wishlist-item-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: clamp(22px, 2.4vw, 28px);
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    color: var(--deep-purple);
+    margin: 0 0 var(--space-2);
+  }
+  .wishlist-item-desc {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--deep-purple);
+    max-width: 42rem;
+    margin: 0;
+  }
+  .wishlist-item-meta {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    color: var(--deep-purple);
+    opacity: 0.78;
+    margin: var(--space-2) 0 0;
+  }
+  .wishlist-item-credit {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--deep-purple);
+    margin: var(--space-3) 0 0;
+  }
+  .wishlist-item-credit strong {
+    font-weight: 600;
+  }
+  .wishlist-item-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+  .wishlist-item-reference {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    color: var(--color-link);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-link-underline);
+  }
+  .wishlist-item-reference:hover {
+    color: var(--pink);
+    border-bottom-color: var(--pink);
+  }
+  .wishlist-empty {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--deep-purple);
+    opacity: 0.8;
+  }
+  .wishlist-closing {
+    margin-top: var(--space-5);
+  }
+  .wishlist-back-link {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    color: var(--deep-purple);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(34, 17, 62, 0.28);
+  }
+  .wishlist-back-link:hover {
+    color: var(--pink);
+    border-bottom-color: var(--pink);
+  }
+  @media (min-width: 720px) {
+    .wishlist-item:has(.wishlist-item-media) {
+      grid-template-columns: minmax(160px, 220px) minmax(0, 1fr);
+      gap: var(--space-4);
+      align-items: start;
+    }
+    .wishlist-section--fulfilled {
+      margin-inline: 0;
+    }
+  }
+
   /* Contributors — dark acknowledgement band on Collaborate */
   .contributors-section {
     background: var(--deep-purple);

@@ -1,0 +1,61 @@
+---
+import {
+  loadWishlistSnapshot,
+  renderWishlistPanels,
+  type WishlistCategory,
+  type WishlistRenderOptions,
+  type WishlistStatus,
+} from '../../lib/sheets/index.ts';
+import { requirePage } from '../../lib/content';
+import { site } from '../../data/site';
+
+const page = await requirePage('wishlist');
+const copy = page.data.wishlist;
+if (!copy) {
+  throw new Error('wishlist.md is missing the wishlist frontmatter section.');
+}
+
+const snapshot = loadWishlistSnapshot();
+const categoryOrder = (copy.category_order ?? Object.keys(copy.categories)) as WishlistCategory[];
+const options: WishlistRenderOptions = {
+  categoryLabels: copy.categories,
+  statusLabels: copy.statuses as Partial<Record<WishlistStatus, string>>,
+  ctaLabels: copy.cta_labels,
+  contactEmail: site.contactEmail,
+  referenceLabel: copy.reference_label,
+  fulfilledCreditPrefix: copy.fulfilled_credit_prefix,
+  currentEmpty: copy.current_empty,
+  fulfilledEmpty: copy.fulfilled_empty,
+  categoryOrder,
+};
+const panels = renderWishlistPanels(snapshot.items, options);
+---
+<div
+  class="wishlist-directory"
+  data-feed="wishlist"
+  data-snapshot-at={snapshot.fetchedAt}
+  data-category-labels={JSON.stringify(copy.categories)}
+  data-status-labels={JSON.stringify(copy.statuses)}
+  data-cta-labels={JSON.stringify(copy.cta_labels)}
+  data-category-order={JSON.stringify(categoryOrder)}
+  data-contact-email={site.contactEmail}
+  data-reference-label={copy.reference_label}
+  data-fulfilled-credit-prefix={copy.fulfilled_credit_prefix}
+  data-current-empty={copy.current_empty}
+  data-fulfilled-empty={copy.fulfilled_empty}
+>
+  <section class="wishlist-section wishlist-section--current fade-up" aria-labelledby="wishlist-current-heading">
+    <header class="wishlist-section-header">
+      <h2 id="wishlist-current-heading" class="editorial-subtitle">{copy.current_title}</h2>
+    </header>
+    <div class="wishlist-panel" data-wishlist-panel="current" set:html={panels.current} />
+  </section>
+
+  <section class="wishlist-section wishlist-section--fulfilled fade-up" aria-labelledby="wishlist-fulfilled-heading">
+    <header class="wishlist-section-header">
+      <h2 id="wishlist-fulfilled-heading" class="editorial-subtitle">{copy.fulfilled_title}</h2>
+      <p class="prose-p">{copy.fulfilled_intro}</p>
+    </header>
+    <div class="wishlist-panel" data-wishlist-panel="fulfilled" set:html={panels.fulfilled} />
+  </section>
+</div>

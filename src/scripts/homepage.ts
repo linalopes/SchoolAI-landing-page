@@ -4,6 +4,7 @@ import {
   eventsCsvUrl,
   feedClientTimeoutMs,
   heroCsvUrl,
+  wishlistCsvUrl,
   workstationsCsvUrl,
 } from '../lib/sheets/contract.ts';
 import { parseAndSelectArchive } from '../lib/sheets/archive.ts';
@@ -15,9 +16,12 @@ import {
   renderContributorsMarkup,
   renderEventsMarkup,
   renderHeroCarouselMarkup,
+  renderWishlistPanels,
   renderWorkstationsMarkup,
+  type WishlistRenderOptions,
 } from '../lib/sheets/html.ts';
-import type { ContributorCategory } from '../lib/sheets/types.ts';
+import type { ContributorCategory, WishlistCategory } from '../lib/sheets/types.ts';
+import { parseAndSelectWishlist } from '../lib/sheets/wishlist.ts';
 import { parseAndSelectWorkstations } from '../lib/sheets/workstations.ts';
 
 function prefersReducedMotion(): boolean {
@@ -222,6 +226,43 @@ async function refreshContributors(hostEl: HTMLElement): Promise<void> {
   }
 }
 
+function readWishlistRenderOptions(hostEl: HTMLElement): WishlistRenderOptions {
+  const parseJson = <T>(raw: string | undefined, fallback: T): T => {
+    try {
+      return JSON.parse(raw || '') as T;
+    } catch {
+      return fallback;
+    }
+  };
+
+  const categoryOrder = parseJson<WishlistCategory[]>(hostEl.dataset.categoryOrder, []);
+  return {
+    categoryLabels: parseJson(hostEl.dataset.categoryLabels, {}),
+    statusLabels: parseJson(hostEl.dataset.statusLabels, {}),
+    ctaLabels: parseJson(hostEl.dataset.ctaLabels, {}),
+    contactEmail: hostEl.dataset.contactEmail || '',
+    referenceLabel: hostEl.dataset.referenceLabel || 'View reference',
+    fulfilledCreditPrefix: hostEl.dataset.fulfilledCreditPrefix || 'Made possible by',
+    currentEmpty: hostEl.dataset.currentEmpty || '',
+    fulfilledEmpty: hostEl.dataset.fulfilledEmpty || '',
+    categoryOrder: categoryOrder.length ? categoryOrder : undefined,
+  };
+}
+
+async function refreshWishlist(hostEl: HTMLElement): Promise<void> {
+  try {
+    const csv = await fetchCsv(wishlistCsvUrl);
+    const { items } = parseAndSelectWishlist(csv);
+    const panels = renderWishlistPanels(items, readWishlistRenderOptions(hostEl));
+    const current = hostEl.querySelector<HTMLElement>('[data-wishlist-panel="current"]');
+    const fulfilled = hostEl.querySelector<HTMLElement>('[data-wishlist-panel="fulfilled"]');
+    if (current) current.innerHTML = panels.current;
+    if (fulfilled) fulfilled.innerHTML = panels.fulfilled;
+  } catch {
+    // Keep the last rendered snapshot.
+  }
+}
+
 export function startHomepage(): void {
   const nav = document.getElementById('nav');
   if (!nav) return;
@@ -261,6 +302,10 @@ export function startHomepage(): void {
 
   document.querySelectorAll<HTMLElement>('[data-feed="contributors"]').forEach((el) => {
     void refreshContributors(el);
+  });
+
+  document.querySelectorAll<HTMLElement>('[data-feed="wishlist"]').forEach((el) => {
+    void refreshWishlist(el);
   });
 
   const hamburger = document.getElementById('nav-hamburger');

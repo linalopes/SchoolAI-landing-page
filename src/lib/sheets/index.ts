@@ -16,6 +16,10 @@ export {
   heroColumns,
   heroCsvUrl,
   requiredFeeds,
+  wishlistCategories,
+  wishlistColumns,
+  wishlistCsvUrl,
+  wishlistStatuses,
   workstationColumns,
   workstationTitles,
   workstationsCsvUrl,
@@ -54,6 +58,10 @@ export {
   renderHeroCarouselMarkup,
   renderPastEventsEmptyMarkup,
   renderPastEventsMarkup,
+  renderWishlistCurrentMarkup,
+  renderWishlistFulfilledMarkup,
+  renderWishlistItemMarkup,
+  renderWishlistPanels,
   renderWorkstationsMarkup,
 } from './html.ts';
 export { resolvePublicEventUrl } from './urls.ts';
@@ -64,11 +72,13 @@ export {
   loadContributorsSnapshot,
   loadEventsSnapshot,
   loadHeroSnapshot,
+  loadWishlistSnapshot,
   loadWorkstationsSnapshot,
   parseArchiveSnapshot,
   parseContributorsSnapshot,
   parseEventsSnapshot,
   parseHeroSnapshot,
+  parseWishlistSnapshot,
   parseWorkstationsSnapshot,
   readSnapshotFile,
   snapshotAgeMs,
@@ -81,6 +91,16 @@ export {
   parseWorkstationsCsv,
   selectWorkstations,
 } from './workstations.ts';
+export {
+  adaptWishlistRows,
+  formatWishlistAmountChf,
+  groupWishlistByCategory,
+  parseAndSelectWishlist,
+  parseWishlistCsv,
+  selectCurrentNeeds,
+  selectFulfilledWishlist,
+  selectWishlist,
+} from './wishlist.ts';
 export type {
   ArchiveEntry,
   ContributorCategory,
@@ -90,6 +110,10 @@ export type {
   FeedResult,
   FeedSnapshot,
   HeroSlide,
+  WishlistCategory,
+  WishlistEntry,
+  WishlistStatus,
   WorkstationEntry,
 } from './types.ts';
+export type { ContributorRenderOptions, WishlistRenderOptions } from './html.ts';
 export { FeedValidationError } from './types.ts';

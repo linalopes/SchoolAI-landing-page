@@ -1,6 +1,7 @@
 ---
 import EditorialLayout from '../../layouts/EditorialLayout.astro';
 import Contributors from '../../components/collaborate/Contributors.astro';
+import WishlistTeaser from '../../components/collaborate/WishlistTeaser.astro';
 import FinancialSupport from '../../components/support/FinancialSupport.astro';
 import { resolveCtaHref, requirePage } from '../../lib/content';
 import { site } from '../../data/site';
@@ -41,6 +42,8 @@ const pageTitle = `${entry.data.title} · ${site.title}`;
         })}
       </div>
     </section>
+
+    <WishlistTeaser />
 
     <FinancialSupport />
 

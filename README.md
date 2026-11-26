@@ -25,11 +25,11 @@ Institutional website for [schoolai.linalopes.info](https://schoolai.linalopes.i
 
 - **Stack:** Astro 7 static output, TypeScript, native CSS (SchoolAI Brand Kit).
 - **Editorial Markdown:** `src/content/` for institutional pages, homepage copy, gallery rates/photos, financial support.
-- **Google Sheets feeds:** hero, events, research archive, workstations, contributors — validated snapshots in `src/data/feeds/`.
+- **Google Sheets feeds:** hero, events, research archive, workstations, contributors, wishlist — validated snapshots in `src/data/feeds/`.
 - **Builds:** offline against committed snapshots. Production deploy never calls Google Sheets.
 - **Hosting:** GitHub Pages via `.github/workflows/deploy.yml` on `refs/heads/main` only (push or manual dispatch).
 - **Domain:** `schoolai.linalopes.info` (no repository-name base path).
-- **Routes:** `/`, `/about/`, `/research/`, `/atelier/`, `/programme/`, `/inverted-gallery/`, `/collaborate/`, plus legacy HTML under `public/`.
+- **Routes:** `/`, `/about/`, `/research/`, `/atelier/`, `/programme/`, `/inverted-gallery/`, `/collaborate/`, `/collaborate/wishlist/`, plus legacy HTML under `public/`.
 - **Legacy preservation:** `legacy-html-2026` / `v1.0.0-legacy` at `0a84b8c`. Rollback uses temporary branch-root publishing of that branch — merging an ancestor does not restore its tree. See [docs/production-release.md](docs/production-release.md).
 
 ### Local development
@@ -72,7 +72,7 @@ Release and rollback: [docs/production-release.md](docs/production-release.md).
 | Source | What it controls | How changes appear |
 |---|---|---|
 | **Markdown** in `src/content/` | Institutional text, homepage copy, gallery rates, gallery photos, financial support, CTAs, SEO descriptions | Requires a new **build and deployment** |
-| **Google Sheets** (public CSV) | Hero carousel, events, selected research archive, workstations, contributors | After `npm run refresh-feeds` and deploy for snapshots; live pages also refresh once in the browser and keep the last good content if the request fails |
+| **Google Sheets** (public CSV) | Hero carousel, events, selected research archive, workstations, contributors, wishlist | After `npm run refresh-feeds` and deploy for snapshots; live pages also refresh once in the browser and keep the last good content if the request fails |
 
 Do **not** edit `.astro` or `.ts` files to change institutional wording, prices, payment labels or photograph URLs.
 
@@ -87,7 +87,8 @@ src/content/
     atelier.md              # Atelier page + workstation intro
     programme.md            # Programme offerings + event labels
     inverted-gallery.md     # Gallery narrative, rental CTAs, optional photos
-    collaborate.md          # Pathways, Made possible by copy, contact
+    collaborate.md          # Pathways, wishlist teaser, Made possible by copy, contact
+    wishlist.md             # Research Wishlist page copy, labels and CTAs
   gallery/
     rental-rates.md         # Dimensions, category copy, CHF rate table
   support/
@@ -95,7 +96,6 @@ src/content/
   site/
     location.md             # Canonical physical address + maps URL
     footer.md               # Footer labels, Explore/Elsewhere links, social
-  wishlist/                 # Empty until approved needs exist
 ```
 
 ### Google Sheets
@@ -113,10 +113,11 @@ Published CSV endpoints:
 | Research Archive | `20271126` | https://docs.google.com/spreadsheets/d/e/2PACX-1vSpM1GYZ-ohq9jHkppGkz4hCx_p3vuCDjekln1apcu1nV2KILUmDeoT3xeLTSprREAXWjiWY8AovP4y/pub?gid=20271126&single=true&output=csv |
 | Workstations | `20271127` | https://docs.google.com/spreadsheets/d/e/2PACX-1vSpM1GYZ-ohq9jHkppGkz4hCx_p3vuCDjekln1apcu1nV2KILUmDeoT3xeLTSprREAXWjiWY8AovP4y/pub?gid=20271127&single=true&output=csv |
 | Contributors | `20271128` | https://docs.google.com/spreadsheets/d/e/2PACX-1vSpM1GYZ-ohq9jHkppGkz4hCx_p3vuCDjekln1apcu1nV2KILUmDeoT3xeLTSprREAXWjiWY8AovP4y/pub?gid=20271128&single=true&output=csv |
+| Wishlist | `20271129` | https://docs.google.com/spreadsheets/d/e/2PACX-1vSpM1GYZ-ohq9jHkppGkz4hCx_p3vuCDjekln1apcu1nV2KILUmDeoT3xeLTSprREAXWjiWY8AovP4y/pub?gid=20271129&single=true&output=csv |
 
 After sheet edits, run `npm run refresh-feeds`, commit the updated files under `src/data/feeds/`, then deploy when approved.
 
-**Important:** A public CSV is not a private contributor register. Rows in the public spreadsheet are public even when unpublished. The published checkbox controls website visibility, not confidentiality. Only authorised public names may appear in the published spreadsheet.
+**Important:** A public CSV is not a privacy mechanism. Rows in the public spreadsheet are public even when unpublished. The published checkbox controls website visibility, not confidentiality. Only information authorised for public disclosure may be stored in the published spreadsheet.
 
 ### Common editorial tasks
 
@@ -182,8 +183,44 @@ In the same file, set `twint.enabled` or `stripe.enabled` to `false`. Update `st
 - `/imgs/contact-twint.png` (personal-contact QR)
 - `/imgs/stripe.png` (official Stripe QR)
 
-**Publish Wishlist entries later**  
-Add Markdown files under `src/content/wishlist/` with the required frontmatter (`published: true`). Do not link the route until content is approved.
+**Add or update Research Wishlist items**  
+Edit the Wishlist tab in Google Sheets. Columns:
+
+| Column | Field | Notes |
+|---|---|---|
+| A | `id` | Required unique kebab-case id |
+| B | `title` | Required |
+| C | `category` | `equipment` · `material` · `access` · `expertise` · `time` · `financial` |
+| D | `description` | Required |
+| E | `quantity` | Optional text |
+| F | `image_url` | Optional public HTTPS URL |
+| G | `image_alt` | Required when an image is supplied |
+| H | `reference_url` | Optional HTTPS product or reference link (not a checkout) |
+| I | `target_amount_chf` | Optional positive amount; displayed as CHF |
+| J | `status` | `open` · `in-progress` · `fulfilled` · `paused` |
+| K | `fulfilled_by` | Optional authorised public credit |
+| L | `fulfilled_year` | Optional year |
+| M | `order` | Editorial display order |
+| N | `published` | TRUE to show on the site |
+
+Category labels on the site:
+
+| Sheet value | Label |
+|---|---|
+| `equipment` | Equipment |
+| `material` | Materials |
+| `access` | Technology & Research Access |
+| `expertise` | Expertise |
+| `time` | Time & Assistance |
+| `financial` | Financial Support |
+
+- Current needs show published `open` and `in-progress` rows, grouped by category.
+- Made possible together shows published `fulfilled` rows. Set `fulfilled_by` and `fulfilled_year` when acknowledging a contribution publicly.
+- Paused rows stay in the sheet for later reactivation but are not shown in Current needs or contribution CTAs.
+- Empty rows and unchecked-only `published` rows are ignored.
+- Page introductions, section headings, status labels and CTA labels live in `src/content/pages/wishlist.md`. The Collaborate teaser lives in `src/content/pages/collaborate.md`.
+- Route: `/collaborate/wishlist/`. Not linked from the primary navigation.
+- → `npm run refresh-feeds`.
 
 ### Media rules
 
@@ -193,4 +230,4 @@ Add Markdown files under `src/content/wishlist/` with the required frontmatter (
 
 ## Non-blocking editorial limitations
 
-Wishlist publication and workstation photographs remain open and do not block production. Public contributor acknowledgements are managed through the Contributors sheet.
+Workstation photographs remain open and do not block production. Wishlist records and public contributor acknowledgements are managed through Google Sheets.

@@ -4,6 +4,7 @@ import test from 'node:test';
 import {
   parseAndSelectArchive,
   parseAndSelectContributors,
+  parseAndSelectWishlist,
   parseAndSelectWorkstations,
   parseEventsCsv,
   parseHeroCsv,
@@ -11,6 +12,7 @@ import {
   renderContributorsMarkup,
   renderEventsMarkup,
   renderHeroCarouselMarkup,
+  renderWishlistPanels,
   renderWorkstationsMarkup,
   selectUpcomingEvents,
 } from '../src/lib/sheets/index.ts';
@@ -22,6 +24,7 @@ test('client refresh failure keeps previously rendered snapshot markup', () => {
   assert.match(homepage, /refreshArchive/);
   assert.match(homepage, /refreshWorkstations/);
   assert.match(homepage, /refreshContributors/);
+  assert.match(homepage, /refreshWishlist/);
   assert.doesNotMatch(homepage, /carouselEl\.style\.display = 'none'/);
   assert.doesNotMatch(homepage, /showEventsError/);
 
@@ -30,6 +33,7 @@ test('client refresh failure keeps previously rendered snapshot markup', () => {
   const archiveSnapshot = JSON.parse(readFileSync(new URL('../src/data/feeds/archive.json', import.meta.url), 'utf8'));
   const workstationsSnapshot = JSON.parse(readFileSync(new URL('../src/data/feeds/workstations.json', import.meta.url), 'utf8'));
   const contributorsSnapshot = JSON.parse(readFileSync(new URL('../src/data/feeds/contributors.json', import.meta.url), 'utf8'));
+  const wishlistSnapshot = JSON.parse(readFileSync(new URL('../src/data/feeds/wishlist.json', import.meta.url), 'utf8'));
   const heroHtml = renderHeroCarouselMarkup(heroSnapshot.items);
   const eventsHtml = renderEventsMarkup(selectUpcomingEvents(eventsSnapshot.items));
   const archiveHtml = renderArchiveMarkup(archiveSnapshot.items);
@@ -42,6 +46,35 @@ test('client refresh failure keeps previously rendered snapshot markup', () => {
       'technology-partner': 'Technology Partners',
     },
   });
+  const wishlistPanels = renderWishlistPanels(wishlistSnapshot.items, {
+    categoryLabels: {
+      equipment: 'Equipment',
+      material: 'Materials',
+      access: 'Technology & Research Access',
+      expertise: 'Expertise',
+      time: 'Time & Assistance',
+      financial: 'Financial Support',
+    },
+    statusLabels: {
+      open: 'Open',
+      'in-progress': 'In progress',
+      fulfilled: 'Fulfilled',
+      paused: 'Paused',
+    },
+    ctaLabels: {
+      equipment: 'Offer equipment',
+      material: 'Offer materials',
+      access: 'Discuss access',
+      expertise: 'Share your expertise',
+      time: 'Get involved',
+      financial: 'Discuss financial support',
+    },
+    contactEmail: 'hello@example.com',
+    referenceLabel: 'View reference',
+    fulfilledCreditPrefix: 'Made possible by',
+    currentEmpty: 'No open needs',
+    fulfilledEmpty: 'No fulfilled items',
+  });
 
   assert.match(heroHtml, /Your Hand Is the Prompt|hero-carousel-pause/);
   assert.match(eventsHtml, /No public events are scheduled right now/);
@@ -49,20 +82,24 @@ test('client refresh failure keeps previously rendered snapshot markup', () => {
   assert.match(archiveHtml, /Drawing Machines|Maze Circuit/);
   assert.match(archiveHtml, /archive-card-media/);
   assert.match(workstationsHtml, /BioLab|Craft Office|Wearables Lab/);
-  assert.match(workstationsHtml, /workstation-card-media--fallback/);
+  assert.match(workstationsHtml, /workstation-card-media/);
   assert.match(contributorsHtml, /City of Wetzikon|Individual Supporters|Institutional Support/);
   assert.doesNotMatch(contributorsHtml, /Research Collaborators|Technology Partners/);
+  assert.match(wishlistPanels.current, /65-inch flat-screen TV|Offer equipment/);
+  assert.match(wishlistPanels.fulfilled, /Projection screen|Nina Judge/);
 
   assert.throws(() => parseHeroCsv('bad'), /CSV is empty|headers/i);
   assert.throws(() => parseEventsCsv('bad'), /CSV is empty|headers/i);
   assert.throws(() => parseAndSelectArchive('bad'), /CSV is empty|headers/i);
   assert.throws(() => parseAndSelectWorkstations('bad'), /CSV is empty|headers/i);
   assert.throws(() => parseAndSelectContributors('bad'), /CSV is empty|headers/i);
+  assert.throws(() => parseAndSelectWishlist('bad'), /CSV is empty|headers/i);
   assert.equal(heroHtml.length > 0, true);
   assert.equal(eventsHtml.length > 0, true);
   assert.equal(archiveHtml.length > 0, true);
   assert.equal(workstationsHtml.length > 0, true);
   assert.equal(contributorsHtml.length > 0, true);
+  assert.equal(wishlistPanels.current.length > 0, true);
 });
 
 test('carousel markup includes pause control for accessibility', () => {

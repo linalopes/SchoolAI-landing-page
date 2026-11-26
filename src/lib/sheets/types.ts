@@ -65,7 +65,40 @@ export type ContributorEntry = {
   published: boolean;
 };
 
-export type FeedId = 'hero' | 'events' | 'archive' | 'workstations' | 'contributors';
+export type WishlistCategory =
+  | 'equipment'
+  | 'material'
+  | 'access'
+  | 'expertise'
+  | 'time'
+  | 'financial';
+
+export type WishlistStatus = 'open' | 'in-progress' | 'fulfilled' | 'paused';
+
+export type WishlistEntry = {
+  id: string;
+  title: string;
+  category: WishlistCategory;
+  description: string;
+  quantity: string | null;
+  imageUrl: string | null;
+  imageAlt: string | null;
+  referenceUrl: string | null;
+  targetAmountChf: number | null;
+  status: WishlistStatus;
+  fulfilledBy: string | null;
+  fulfilledYear: number | null;
+  order: number;
+  published: boolean;
+};
+
+export type FeedId =
+  | 'hero'
+  | 'events'
+  | 'archive'
+  | 'workstations'
+  | 'contributors'
+  | 'wishlist';
 
 export type FeedSnapshot<T> = {
   feed: FeedId;

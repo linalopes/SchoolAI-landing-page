@@ -13,6 +13,7 @@ export const eventsCsvUrl = `${publishedCsvBase}?gid=0&single=true&output=csv`;
 export const archiveCsvUrl = `${publishedCsvBase}?gid=20271126&single=true&output=csv`;
 export const workstationsCsvUrl = `${publishedCsvBase}?gid=20271127&single=true&output=csv`;
 export const contributorsCsvUrl = `${publishedCsvBase}?gid=20271128&single=true&output=csv`;
+export const wishlistCsvUrl = `${publishedCsvBase}?gid=20271129&single=true&output=csv`;
 
 export const heroColumns = [
   'type',
@@ -71,12 +72,46 @@ export const contributorColumns = [
   'published',
 ] as const;
 
+export const wishlistColumns = [
+  'id',
+  'title',
+  'category',
+  'description',
+  'quantity',
+  'image_url',
+  'image_alt',
+  'reference_url',
+  'target_amount_chf',
+  'status',
+  'fulfilled_by',
+  'fulfilled_year',
+  'order',
+  'published',
+] as const;
+
 /** Sheet category keys in default display order. Labels live in Markdown. */
 export const contributorCategories = [
   'supporter',
   'institutional-support',
   'research-collaborator',
   'technology-partner',
+] as const;
+
+/** Wishlist category keys in default display order. Labels live in Markdown. */
+export const wishlistCategories = [
+  'equipment',
+  'material',
+  'access',
+  'expertise',
+  'time',
+  'financial',
+] as const;
+
+export const wishlistStatuses = [
+  'open',
+  'in-progress',
+  'fulfilled',
+  'paused',
 ] as const;
 
 export const eventsVisibleCount = 4;
@@ -92,7 +127,14 @@ export const formspreeAction = 'https://formspree.io/f/mvgbznoe';
 
 export const feedClientTimeoutMs = 8000;
 
-export const requiredFeeds = ['hero', 'events', 'archive', 'workstations', 'contributors'] as const;
+export const requiredFeeds = [
+  'hero',
+  'events',
+  'archive',
+  'workstations',
+  'contributors',
+  'wishlist',
+] as const;
 
 /** Confirmed editorial workstation titles. Inverted Gallery is not a workstation. */
 export const workstationTitles = [

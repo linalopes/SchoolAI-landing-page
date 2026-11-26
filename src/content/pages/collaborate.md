@@ -43,6 +43,15 @@ pathways:
     subject: Financial support inquiry
     cta_label: Get in touch
 
+wishlist_teaser:
+  title: Research Wishlist
+  intro: >-
+    From materials and equipment to knowledge and access, discover concrete ways
+    to support ongoing research and the development of the atelier.
+  cta:
+    label: Explore the Research Wishlist
+    href: /collaborate/wishlist/
+
 contributors:
   title: Made possible by.
   intro: Independent research grows through the generosity, knowledge and contributions of others.

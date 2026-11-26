@@ -1,0 +1,43 @@
+---
+import EditorialLayout from '../../../layouts/EditorialLayout.astro';
+import WishlistDirectory from '../../../components/wishlist/WishlistDirectory.astro';
+import { resolveCtaHref, requirePage } from '../../../lib/content';
+import { site } from '../../../data/site';
+
+const entry = await requirePage('wishlist');
+const copy = entry.data.wishlist;
+if (!copy) {
+  throw new Error('wishlist.md is missing the wishlist frontmatter section.');
+}
+const pageTitle = `${entry.data.title} · ${site.title}`;
+---
+<EditorialLayout title={pageTitle} description={entry.data.description}>
+  <article class="editorial editorial--wide">
+    <header class="editorial-header fade-up">
+      {entry.data.eyebrow && <p class="t-label editorial-eyebrow">{entry.data.eyebrow}</p>}
+      <h1 class="editorial-title">{entry.data.lede ?? entry.data.title}</h1>
+      {entry.data.intro && <p class="editorial-lede">{entry.data.intro}</p>}
+    </header>
+
+    <WishlistDirectory />
+
+    <section class="editorial-panel wishlist-closing fade-up" aria-labelledby="wishlist-closing-heading">
+      {copy.closing_title && (
+        <h2 id="wishlist-closing-heading" class="editorial-subtitle">{copy.closing_title}</h2>
+      )}
+      <p class="prose-p">{copy.closing}</p>
+      <div class="section-actions">
+        <a
+          href={resolveCtaHref(copy.contact_cta.href, {
+            email: site.contactEmail,
+            subject: copy.contact_cta.subject,
+          })}
+          class="button button--primary"
+        >
+          {copy.contact_cta.label}
+        </a>
+        <a href={copy.back_cta.href} class="wishlist-back-link">{copy.back_cta.label} &#x2192;&#xFE0E;</a>
+      </div>
+    </section>
+  </article>
+</EditorialLayout>
