@@ -14,10 +14,15 @@ test('production build keeps the homepage and legacy URLs', () => {
   const html = readFileSync(dist('index.html'), 'utf8');
   assert.match(html, /Strange questions/);
   assert.match(html, /id="hero-carousel"/);
+  assert.match(html, /hero-carousel-pause|Pause/);
+  assert.match(html, /Your Hand Is the Prompt/);
+  assert.match(html, /No public events are scheduled right now/);
   assert.match(html, /https:\/\/formspree.io\/f\/mvgbznoe/);
   assert.match(html, /space3d\.html/);
   assert.match(html, /#22113E/i);
   assert.doesNotMatch(html, /stripe|twint/i);
+  // Archive feed is prepared but not published. Hero may reuse shared project titles/URLs.
+  assert.doesNotMatch(html, /Explore the Research Archive|data-feed="archive"|Mr\. Sonnet|Claw-Pilot|Drawing Machines/);
 
   for (const path of [
     'space3d.html',

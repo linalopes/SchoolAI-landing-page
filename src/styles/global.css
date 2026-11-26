@@ -255,13 +255,32 @@
     max-width: 260px;
     margin-bottom: var(--space-3);
   }
-  .hero-carousel-dots {
+  .hero-carousel-controls {
     position: absolute;
     right: 20px;
     bottom: 20px;
     z-index: 3;
     display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-carousel-pause {
+    min-height: 28px;
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+  .hero-carousel-dots {
+    display: flex;
     gap: 8px;
+  }
+  .hero-carousel-empty {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: var(--space-5);
+    color: var(--gray-green);
+    text-align: center;
   }
   .hero-carousel-dot {
     width: 6px;
@@ -1456,6 +1475,29 @@
   .fade-up.visible {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .fade-up {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .hero-slide,
+    .hero-slide-image,
+    .hero-slide-eyebrow,
+    .hero-slide-title,
+    .hero-slide-tagline,
+    .hero-slide-cta,
+    .hero-carousel-progress,
+    .marquee-inner {
+      transition: none !important;
+      animation: none !important;
+    }
+    .hero-slide.active .hero-slide-image {
+      transform: none;
+    }
   }
 
   /* ── RESPONSIVE ── */

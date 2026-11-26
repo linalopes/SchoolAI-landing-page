@@ -1,3 +1,14 @@
+---
+import {
+  loadEventsSnapshot,
+  renderEventsMarkup,
+  selectUpcomingEvents,
+} from '../../lib/sheets/index.ts';
+
+const snapshot = loadEventsSnapshot();
+const upcoming = selectUpcomingEvents(snapshot.items);
+const eventsHtml = renderEventsMarkup(upcoming);
+---
 <!-- ── EVENTS / UPDATES ── -->
 <section id="events">
   <div class="events-pattern"></div>
@@ -9,5 +20,11 @@
     </div>
   </div>
   <div class="divider"></div>
-  <div class="events-list" id="events-list"></div>
+  <div
+    class="events-list"
+    id="events-list"
+    data-feed="events"
+    data-snapshot-at={snapshot.fetchedAt}
+    set:html={eventsHtml}
+  />
 </section>

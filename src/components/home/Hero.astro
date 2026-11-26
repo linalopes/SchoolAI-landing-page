@@ -1,3 +1,9 @@
+---
+import { loadHeroSnapshot, renderHeroCarouselMarkup } from '../../lib/sheets/index.ts';
+
+const hero = loadHeroSnapshot();
+const carouselHtml = renderHeroCarouselMarkup(hero.items);
+---
 <!-- ── HERO ── -->
 <section id="hero">
   <div class="hero-pattern"></div>
@@ -20,5 +26,13 @@
       <span>Scroll</span>
     </div>
   </div>
-  <div class="hero-right" id="hero-carousel"></div>
+  <div
+    class="hero-right"
+    id="hero-carousel"
+    data-feed="hero"
+    data-snapshot-at={hero.fetchedAt}
+    aria-roledescription="carousel"
+    aria-label="Featured updates"
+    set:html={carouselHtml}
+  />
 </section>

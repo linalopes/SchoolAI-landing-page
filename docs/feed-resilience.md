@@ -1,32 +1,48 @@
 # Feed resilience
 
-Phase 2 design. Phase 1 does not fetch the spreadsheet during `npm run build`. The homepage still requests the published CSV in the browser and, as today, hides the carousel or shows the events error sentence if that request fails.
+Phase 2 implementation. Normal builds read committed snapshots and do not call Google Sheets.
+
+## Feeds
+
+| Feed | Published GID | Snapshot | Client refresh |
+|---|---|---|---|
+| Hero | `1398027263` | `src/data/feeds/hero.json` | Yes, once after load |
+| Events | `0` | `src/data/feeds/events.json` | Yes, once after load |
+| Research Archive | `20271126` | `src/data/feeds/archive.json` | No |
+
+Canonical spreadsheet: <https://docs.google.com/spreadsheets/d/1XIkDn7NrSSQbcVyYgrlcQxjFsOkraDdfJmI1qzaq54I/edit>
+
+Do not edit the live spreadsheet from the site. Column contracts live in `src/lib/sheets/contract.ts`.
 
 ## Why the build must not depend on Google
 
-A content typo, a dependency bump, or any other deploy must succeed while the published CSV is temporarily unreachable, once a valid snapshot already exists. The earlier note that every unavailable feed fails the build applies only when there is no last-known-good snapshot to serve.
+A content typo, dependency bump, or unrelated deploy must succeed while the published CSV is temporarily unreachable, once a valid snapshot already exists.
 
-## Last-known-good snapshot
+## Last-known-good snapshots
 
-Store one validated JSON snapshot per public tab, produced from the current column contract in `src/lib/sheets/contract.ts`. Hero columns today are `type`, `title`, `tagline`, `image_url`, `cta_label`, `cta_url`, `accent`. Event columns today are `date`, `time`, `title`, `tagline`, `location`, `type`, `status`, `url`. Do not rename the live sheet to match the proposed future fields.
-
-A snapshot is public editorial data, not a private export. It may be committed. Do not commit draft rows, private names, or anything that is not already on the published CSV.
+Snapshots are public, validated JSON. They may be committed under `src/data/feeds/`. They must not contain private spreadsheet material or unpublished archive rows. The archive snapshot stores only published and featured entries, sorted by `order`, limited to six. Loaders resolve that directory from `process.cwd()` so offline builds and Astro prerender do not depend on Google or on `import.meta.url` after bundling.
 
 ## Refresh and build
 
-`npm run refresh-feeds` (Phase 2) fetches the published CSV, parses it with a standards-compliant parser, and validates every required column and URL scheme.
+```sh
+npm run refresh-feeds
+```
 
-- Valid feed: replace that tab’s snapshot atomically.
-- Unavailable feed, and a valid snapshot exists: leave the snapshot untouched, print a warning, and exit successfully so an unrelated build can continue.
-- Unavailable feed, and no valid snapshot exists: fail. Shipping an empty hero or an empty events list by accident is worse than stopping.
-- Invalid feed: do not replace the snapshot. Fail the refresh command and leave the last good file in place. The normal site build keeps using that file.
+Fetches each published CSV, parses it with the shared CSV parser, validates the typed adapter, and replaces that feed’s snapshot atomically.
 
-`npm run build` reads the committed snapshots and does not call Google. It fails only if a required snapshot is missing or no longer matches the contract. That keeps a Google outage from blocking a deploy, and it keeps a broken CSV from overwriting the site.
+- Valid feed: replace the snapshot.
+- Network failure, and a valid snapshot exists: leave the snapshot, print a warning, exit 0 for that condition across feeds that only had network issues.
+- Network failure, and no valid snapshot exists: fail.
+- Invalid feed: do not replace the snapshot, print a failure, exit 1. The previous file remains for builds.
 
-Client-side refresh, added in Phase 2, requests the same CSV after load. On timeout, invalid rows, or an offline browser, it keeps the snapshot already rendered. It does not clear the hero or the events list.
+```sh
+npm run build
+```
 
-Archive, workstations, and contributor credits, when those tabs exist, follow the same snapshot rule and stay out of the client refresh path. The archive renders at most six published rows.
+Reads the committed snapshots only. It fails if a required snapshot is missing or no longer matches the contract. It does not fetch Google.
 
-## Phase 1 boundary
+Client-side hero and events refresh request the same CSV once after load, with a timeout. On timeout, invalid data, or an offline browser, the already rendered snapshot stays on screen. The archive feed is not refreshed in the browser and is not published on the homepage in Phase 2.
 
-None of the refresh script, the snapshot files, or the client fallback is implemented yet. Introducing them now would change the homepage’s failure behaviour before the parser and the column contract are tested together.
+## Parser
+
+See [csv-parser.md](csv-parser.md). External image URLs stay as HTTPS references. Refresh and build never download editorial media into the repository.

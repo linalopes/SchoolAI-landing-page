@@ -1,6 +1,6 @@
 # Implementation plan and acceptance
 
-Phase 0 audit was accepted on 26 November 2026. Phase 1 is the Astro foundation on `website-2027`. Do not start Phase 2 until that branch is reviewed. Production is still `main`.
+Phase 0 audit was accepted on 26 November 2026. Phase 1 Astro foundation was accepted the same day. Phase 2 content architecture and resilient feeds are implemented on `website-2027` and await review. Do not start Phase 3 until that work is approved. Production is still `main`.
 
 ## Phase 0 — Audit and freeze
 Create branch `website-2027` from current default branch. Capture current desktop/mobile screenshots, route inventory, current brand tokens, exact hero/event headers and behavior, Formspree workflow, 3D assets/dependencies and live hosting settings. Record source and findings; no destructive change. Confirm media hosting and gallery name before public release.
@@ -22,8 +22,8 @@ Run `npm ci`, type checks, tests and production build; test mobile/desktop, acce
 - [ ] All public copy English; official names confirmed.
 - [ ] School location Wetzikon prominent, flagship Artificial Emotion prominent.
 - [ ] Seven stations accurately represented; gallery separately identified.
-- [ ] Google Sheets hero/events read and refresh without redeploy, validated snapshot fallback works.
-- [ ] New archive/credits/stations source documented; rebuild workflow tested.
+- [x] Google Sheets hero/events read and refresh without redeploy, validated snapshot fallback works.
+- [x] Research Archive adapter and snapshot prepared (not published); rebuild via `npm run refresh-feeds`. Credits/stations remain later.
 - [ ] Markdown institutional copy and wishlist editable without changing UI code.
 - [ ] Media externally hosted; no new binary media in repo.
 - [ ] Existing links, events, newsletter, 3D and domain preserved or tested replacements approved.

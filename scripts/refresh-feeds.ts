@@ -1,0 +1,130 @@
+#!/usr/bin/env node
+/**
+ * Fetch published Google Sheets CSV feeds, validate them, and replace
+ * last-known-good snapshots atomically.
+ *
+ * Network failure with an existing snapshot: keep the snapshot, warn, exit 0.
+ * Network failure without a snapshot: exit 1.
+ * Invalid feed data: keep the previous snapshot, exit 1.
+ */
+import {
+  archiveCsvUrl,
+  createSnapshot,
+  eventsCsvUrl,
+  heroCsvUrl,
+  parseAndSelectArchive,
+  parseEventsCsv,
+  parseHeroCsv,
+  snapshotAgeMs,
+  snapshotExists,
+  writeSnapshotAtomic,
+  type FeedId,
+} from '../src/lib/sheets/index.ts';
+
+type RefreshOutcome = {
+  feed: FeedId;
+  status: 'updated' | 'kept-network' | 'invalid' | 'failed';
+  message: string;
+};
+
+const FETCH_TIMEOUT_MS = 15000;
+
+async function fetchText(url: string): Promise<string> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  try {
+    const response = await fetch(url, {
+      signal: controller.signal,
+      headers: { Accept: 'text/csv,text/plain,*/*' },
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    return await response.text();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function ageLabel(feed: FeedId): string {
+  const age = snapshotAgeMs(feed);
+  if (age === null) return 'no snapshot';
+  const hours = Math.round(age / 3_600_000);
+  if (hours < 1) return 'age <1h';
+  if (hours < 48) return `age ${hours}h`;
+  return `age ${Math.round(hours / 24)}d`;
+}
+
+async function refreshOne(
+  feed: FeedId,
+  url: string,
+  parse: (csv: string) => { items: unknown[]; warnings: string[] },
+): Promise<RefreshOutcome> {
+  let csv: string;
+  try {
+    csv = await fetchText(url);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (snapshotExists(feed)) {
+      return {
+        feed,
+        status: 'kept-network',
+        message: `${message}; kept existing snapshot (${ageLabel(feed)})`,
+      };
+    }
+    return {
+      feed,
+      status: 'failed',
+      message: `${message}; no valid snapshot`,
+    };
+  }
+
+  try {
+    const { items, warnings } = parse(csv);
+    writeSnapshotAtomic(createSnapshot(feed, url, items));
+    return {
+      feed,
+      status: 'updated',
+      message: `wrote ${items.length} items${warnings.length ? `; warnings: ${warnings.join(', ')}` : ''} (${ageLabel(feed)})`,
+    };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (snapshotExists(feed)) {
+      return {
+        feed,
+        status: 'invalid',
+        message: `${message}; previous snapshot preserved (${ageLabel(feed)})`,
+      };
+    }
+    return {
+      feed,
+      status: 'failed',
+      message: `${message}; no valid snapshot`,
+    };
+  }
+}
+
+async function main(): Promise<void> {
+  const outcomes = [
+    await refreshOne('hero', heroCsvUrl, (csv) => parseHeroCsv(csv)),
+    await refreshOne('events', eventsCsvUrl, (csv) => parseEventsCsv(csv)),
+    await refreshOne('archive', archiveCsvUrl, (csv) => parseAndSelectArchive(csv)),
+  ];
+
+  for (const outcome of outcomes) {
+    const prefix =
+      outcome.status === 'updated' ? 'OK'
+        : outcome.status === 'kept-network' ? 'WARN'
+          : 'FAIL';
+    console.log(`[${prefix}] ${outcome.feed}: ${outcome.message}`);
+  }
+
+  if (outcomes.some((outcome) => outcome.status === 'failed' || outcome.status === 'invalid')) {
+    process.exitCode = 1;
+  }
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

@@ -3,7 +3,11 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { extname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
-import { isVisibleEvent, parseCSV, sortEvents } from '../src/scripts/homepage.ts';
+import {
+  loadEventsSnapshot,
+  loadHeroSnapshot,
+  selectUpcomingEvents,
+} from '../src/lib/sheets/index.ts';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 
@@ -21,6 +25,8 @@ test('brand tokens match the SchoolAI kit', () => {
   assert.match(type, /Courier Prime/);
   const globalCss = read('src/styles/global.css');
   assert.match(globalCss, /font-family: 'Inter'/);
+  assert.match(globalCss, /prefers-reduced-motion/);
+  assert.match(globalCss, /hero-carousel-pause/);
 });
 
 test('homepage keeps the split hero, sheet carousel, atelier, and Formspree', () => {
@@ -28,14 +34,29 @@ test('homepage keeps the split hero, sheet carousel, atelier, and Formspree', ()
   const newsletter = read('src/components/home/Newsletter.astro');
   const atelier = read('src/components/home/Atelier.astro');
   const contract = read('src/lib/sheets/contract.ts');
+  const homepage = read('src/scripts/homepage.ts');
   assert.match(hero, /id="hero-carousel"/);
   assert.match(hero, /Strange questions/);
+  assert.match(hero, /loadHeroSnapshot/);
   assert.match(newsletter, /https:\/\/formspree.io\/f\/mvgbznoe/);
   assert.match(contract, /https:\/\/formspree.io\/f\/mvgbznoe/);
   assert.match(atelier, /src="space3d.html"/);
   assert.match(contract, /gid=1398027263/);
   assert.match(contract, /gid=0/);
+  assert.match(contract, /gid=20271126/);
   assert.match(contract, /1XIkDn7NrSSQbcVyYgrlcQxjFsOkraDdfJmI1qzaq54I/);
+  assert.match(homepage, /prefers-reduced-motion/);
+  assert.match(homepage, /hero-carousel-pause|Pause/);
+});
+
+test('research archive infrastructure exists but is not published on the homepage', () => {
+  const indexPage = read('src/pages/index.astro');
+  const contract = read('src/lib/sheets/contract.ts');
+  assert.doesNotMatch(indexPage, /loadArchiveSnapshot|archive\.json/);
+  assert.doesNotMatch(indexPage, /<section[^>]+id=["']research["']/);
+  assert.match(contract, /Explore the Research Archive/);
+  assert.match(contract, /blog\.linalopes\.info/);
+  assert.match(read('src/data/feeds/archive.json'), /affective-atmosphere-2046/);
 });
 
 test('navigation labels match the current site', () => {
@@ -53,7 +74,9 @@ test('navigation labels match the current site', () => {
 test('dependency set stays Astro, TypeScript, and native CSS', () => {
   const pkg = JSON.parse(read('package.json'));
   assert.deepEqual(Object.keys(pkg.dependencies), ['astro']);
-  assert.deepEqual(Object.keys(pkg.devDependencies).sort(), ['@astrojs/check', 'typescript']);
+  assert.deepEqual(Object.keys(pkg.devDependencies).sort(), ['@astrojs/check', '@types/node', 'typescript']);
+  assert.match(pkg.scripts['refresh-feeds'], /refresh-feeds/);
+  assert.match(pkg.engines.node, /22\.23\.4/);
 });
 
 test('validation workflow does not deploy', () => {
@@ -106,25 +129,11 @@ test('no editorial media was added outside the preserved legacy paths', () => {
   assert.deepEqual(unexpected, []);
 });
 
-test('parser keeps quoted commas and the current event filter', () => {
-  const csv = [
-    'type,title,tagline,image_url,cta_label,cta_url,accent',
-    'event,Your Hand Is the Prompt,A workshop,"https://images.example/a,b.png",Register,https://luma.com/example,turquoise',
-    '',
-    'reading,"Quoted ""title""",From text,https://example.com/c.webp,See,https://blog.example/post,pink',
-  ].join('\n');
-  const rows = parseCSV(csv);
-  assert.equal(rows.length, 2);
-  assert.equal(rows[0].image_url, 'https://images.example/a,b.png');
-  assert.equal(rows[1].title, 'Quoted "title"');
-
-  const events = parseCSV([
-    'date,time,title,tagline,location,type,status,url',
-    '2026-03-28,13:00,Paper,Lab,Wetzikon,event,past,arduino-day-2026.html',
-    '2026-11-21,10:00,Light,Embroidery,Wetzikon,workshop,cancel,#workshop-embroidering-light',
-    '2026-12-02,19:00,Open studio,Visit,Wetzikon,event,upcoming,https://example.com/event',
-    '2026-01-05,10:00,Earlier,Visit,Wetzikon,event,open,https://example.com/earlier',
-  ].join('\n')).filter(isVisibleEvent);
-  const sorted = sortEvents(events);
-  assert.deepEqual(sorted.map((row) => row.title), ['Earlier', 'Open studio']);
+test('offline build can read committed snapshots without Google', () => {
+  const hero = loadHeroSnapshot();
+  const events = loadEventsSnapshot();
+  assert.equal(hero.items.length > 0, true);
+  assert.equal(selectUpcomingEvents(events.items).length, 0);
+  assert.match(read('docs/feed-resilience.md'), /Last-known-good snapshots/);
+  assert.match(read('docs/csv-parser.md'), /csv-parse/);
 });

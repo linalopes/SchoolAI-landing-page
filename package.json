@@ -11,7 +11,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "node --experimental-strip-types --test test/source.test.mjs",
+    "refresh-feeds": "node --experimental-strip-types scripts/refresh-feeds.ts",
+    "test": "node --experimental-strip-types --test test/source.test.mjs test/feeds.test.mjs test/client-refresh.test.mjs test/refresh-resilience.test.mjs",
     "test:dist": "node --test test/dist.test.mjs"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.12",
+    "@types/node": "^22.20.7",
     "typescript": "5.9.3"
   }
 }

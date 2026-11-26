@@ -1,7 +1,6 @@
 /**
- * Live published endpoints. Do not rename columns or edit the sheet from code.
- * Phase 2 snapshot behaviour is specified in docs/feed-resilience.md.
- * Phase 1 still reads these URLs in the browser, as the current site does.
+ * Live published endpoints and column contracts.
+ * Do not rename columns or edit the spreadsheet from code.
  */
 export const canonicalSpreadsheetUrl =
   'https://docs.google.com/spreadsheets/d/1XIkDn7NrSSQbcVyYgrlcQxjFsOkraDdfJmI1qzaq54I/edit';
@@ -11,6 +10,7 @@ const publishedCsvBase =
 
 export const heroCsvUrl = `${publishedCsvBase}?gid=1398027263&single=true&output=csv`;
 export const eventsCsvUrl = `${publishedCsvBase}?gid=0&single=true&output=csv`;
+export const archiveCsvUrl = `${publishedCsvBase}?gid=20271126&single=true&output=csv`;
 
 export const heroColumns = [
   'type',
@@ -33,6 +33,32 @@ export const eventColumns = [
   'url',
 ] as const;
 
+export const archiveColumns = [
+  'id',
+  'title',
+  'year',
+  'category',
+  'description',
+  'image_url',
+  'image_alt',
+  'url',
+  'github_url',
+  'featured',
+  'published',
+  'order',
+] as const;
+
 export const eventsVisibleCount = 4;
+export const archiveVisibleCount = 6;
+
+/** Reserved for Phase 3. Not rendered in Phase 2. */
+export const archiveCta = {
+  label: 'Explore the Research Archive',
+  url: 'https://blog.linalopes.info/',
+} as const;
 
 export const formspreeAction = 'https://formspree.io/f/mvgbznoe';
+
+export const feedClientTimeoutMs = 8000;
+
+export const requiredFeeds = ['hero', 'events', 'archive'] as const;

@@ -39,7 +39,7 @@ jobs:
       - name: Test
         run: npm test
 
-      - name: Build
+      - name: Build offline from snapshots
         run: npm run build
 
       - name: Test build output

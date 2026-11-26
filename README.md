@@ -1,6 +1,6 @@
 # School of Tomorrow’s AI
 
-Institutional website for [schoolai.linalopes.info](https://schoolai.linalopes.info/). Phase 1 lives on `website-2027`. Production GitHub Pages still publishes `main` from the repository root. This branch does not change that.
+Institutional website for [schoolai.linalopes.info](https://schoolai.linalopes.info/). Phase 2 lives on `website-2027`. Production GitHub Pages still publishes `main` from the repository root. This branch does not change that.
 
 ## Read first
 
@@ -18,21 +18,26 @@ Institutional website for [schoolai.linalopes.info](https://schoolai.linalopes.i
 
 [AGENTS.md](AGENTS.md) is mandatory.
 
-## Phase 1
+## Current phase
 
-Astro 7 static output, TypeScript, and the current homepage CSS. The homepage reproduces the live page: split hero, spreadsheet carousel, events list, Formspree, and the Three.js atelier. Legacy HTML, JSON, photographs, and `CNAME` are in `public/` at their existing URLs. Wishlist and archive collections exist and publish nothing.
+Astro 7 static output, TypeScript, and the current homepage CSS. The homepage reproduces the live page: split hero, spreadsheet carousel with pause/resume and reduced-motion support, events list, Formspree, and the Three.js atelier. Legacy HTML, JSON, photographs, and `CNAME` are in `public/` at their existing URLs. Wishlist Markdown and the Research Archive snapshot exist; neither is published on the homepage yet.
+
+Editorial feeds use last-known-good snapshots in `src/data/feeds/`. Builds do not call Google Sheets. Refresh with `npm run refresh-feeds` before committing updated snapshots.
 
 ```sh
 npm ci
-npm run dev       # http://localhost:4321
+npm run refresh-feeds   # fetch and validate public CSV feeds
+npm run dev             # http://localhost:4321
 npm run check
 npm test
-npm run build
+npm run build           # offline against committed snapshots
 npm run preview
 npm run test:dist
 ```
 
 Node 22.23.4 or newer. Astro 7 refuses older Node 22 releases. The lockfile is the dependency source. `.github/workflows/validate.yml` runs check, test, and build. It does not deploy.
+
+Read [feed resilience](docs/feed-resilience.md) and [CSV parser](docs/csv-parser.md) before changing feed code.
 
 ## Still open
 
