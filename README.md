@@ -25,7 +25,7 @@ Institutional website for [schoolai.linalopes.info](https://schoolai.linalopes.i
 
 - **Stack:** Astro 7 static output, TypeScript, native CSS (SchoolAI Brand Kit).
 - **Editorial Markdown:** `src/content/` for institutional pages, homepage copy, gallery rates/photos, financial support.
-- **Google Sheets feeds:** hero, events, research archive, workstations — validated snapshots in `src/data/feeds/`.
+- **Google Sheets feeds:** hero, events, research archive, workstations, contributors — validated snapshots in `src/data/feeds/`.
 - **Builds:** offline against committed snapshots. Production deploy never calls Google Sheets.
 - **Hosting:** GitHub Pages via `.github/workflows/deploy.yml` on `refs/heads/main` only (push or manual dispatch).
 - **Domain:** `schoolai.linalopes.info` (no repository-name base path).
@@ -72,7 +72,7 @@ Release and rollback: [docs/production-release.md](docs/production-release.md).
 | Source | What it controls | How changes appear |
 |---|---|---|
 | **Markdown** in `src/content/` | Institutional text, homepage copy, gallery rates, gallery photos, financial support, CTAs, SEO descriptions | Requires a new **build and deployment** |
-| **Google Sheets** (public CSV) | Hero carousel, events, selected research archive, workstations | After `npm run refresh-feeds` and deploy for snapshots; live pages also refresh once in the browser and keep the last good content if the request fails |
+| **Google Sheets** (public CSV) | Hero carousel, events, selected research archive, workstations, contributors | After `npm run refresh-feeds` and deploy for snapshots; live pages also refresh once in the browser and keep the last good content if the request fails |
 
 Do **not** edit `.astro` or `.ts` files to change institutional wording, prices, payment labels or photograph URLs.
 
@@ -87,11 +87,13 @@ src/content/
     atelier.md              # Atelier page + workstation intro
     programme.md            # Programme offerings + event labels
     inverted-gallery.md     # Gallery narrative, rental CTAs, optional photos
-    collaborate.md          # Pathways + contact copy
+    collaborate.md          # Pathways, Made possible by copy, contact
   gallery/
     rental-rates.md         # Dimensions, category copy, CHF rate table
   support/
     financial-support.md    # TWINT / Stripe copy, images, Payment Link, enabled flags
+  site/
+    footer.md               # Footer address, maps link, external + social links
   wishlist/                 # Empty until approved needs exist
 ```
 
@@ -109,8 +111,11 @@ Published CSV endpoints:
 | Hero carousel | `1398027263` | https://docs.google.com/spreadsheets/d/e/2PACX-1vSpM1GYZ-ohq9jHkppGkz4hCx_p3vuCDjekln1apcu1nV2KILUmDeoT3xeLTSprREAXWjiWY8AovP4y/pub?gid=1398027263&single=true&output=csv |
 | Research Archive | `20271126` | https://docs.google.com/spreadsheets/d/e/2PACX-1vSpM1GYZ-ohq9jHkppGkz4hCx_p3vuCDjekln1apcu1nV2KILUmDeoT3xeLTSprREAXWjiWY8AovP4y/pub?gid=20271126&single=true&output=csv |
 | Workstations | `20271127` | https://docs.google.com/spreadsheets/d/e/2PACX-1vSpM1GYZ-ohq9jHkppGkz4hCx_p3vuCDjekln1apcu1nV2KILUmDeoT3xeLTSprREAXWjiWY8AovP4y/pub?gid=20271127&single=true&output=csv |
+| Contributors | `20271128` | https://docs.google.com/spreadsheets/d/e/2PACX-1vSpM1GYZ-ohq9jHkppGkz4hCx_p3vuCDjekln1apcu1nV2KILUmDeoT3xeLTSprREAXWjiWY8AovP4y/pub?gid=20271128&single=true&output=csv |
 
 After sheet edits, run `npm run refresh-feeds`, commit the updated files under `src/data/feeds/`, then deploy when approved.
+
+**Important:** A public CSV is not a private contributor register. Rows in the public spreadsheet are public even when unpublished. The published checkbox controls website visibility, not confidentiality. Only authorised public names may appear in the published spreadsheet.
 
 ### Common editorial tasks
 
@@ -131,6 +136,21 @@ Edit the Research Archive tab (`featured`, `published`, `order`). At most six pu
 
 **Update workstation descriptions and images**  
 Edit the Workstations tab. Use public HTTPS image URLs only. → `npm run refresh-feeds`.
+
+**Add or update public contributors (Made possible by)**  
+Edit the Contributors tab (`id`, `name`, `category`, optional `url`, `year`, `order`, `published`). Categories:
+
+| Sheet value | Label on the site |
+|---|---|
+| `supporter` | Individual Supporters |
+| `institutional-support` | Institutional Support |
+| `research-collaborator` | Research Collaborators |
+| `technology-partner` | Technology Partners |
+
+Set `published` to TRUE only for authorised public acknowledgements. Order with the `order` column. Empty rows and unchecked-only rows are ignored. Section titles and category labels live in `src/content/pages/collaborate.md`. → `npm run refresh-feeds`.
+
+**Edit the footer address and directions**  
+Edit `src/content/site/footer.md` — physical address lines, Wetzikon-Zürich line, Get directions URL/label, external links (including GitHub) and social links. Rebuild to publish. Do not put the contact email in the footer; keep email for inquiry buttons elsewhere.
 
 **Add gallery photographs**  
 In `src/content/pages/inverted-gallery.md`, add items under `photos:`:
@@ -169,4 +189,4 @@ Add Markdown files under `src/content/wishlist/` with the required frontmatter (
 
 ## Non-blocking editorial limitations
 
-Wishlist publication, contributor credits with permission, and workstation photographs remain open and do not block production.
+Wishlist publication and workstation photographs remain open and do not block production. Public contributor acknowledgements are managed through the Contributors sheet.

@@ -1,0 +1,71 @@
+{
+  "feed": "contributors",
+  "fetchedAt": "2026-11-26T14:40:53.571Z",
+  "sourceUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpM1GYZ-ohq9jHkppGkz4hCx_p3vuCDjekln1apcu1nV2KILUmDeoT3xeLTSprREAXWjiWY8AovP4y/pub?gid=20271128&single=true&output=csv",
+  "itemCount": 7,
+  "items": [
+    {
+      "id": "wetzikon-culture",
+      "name": "City of Wetzikon — Department of Culture",
+      "category": "institutional-support",
+      "url": null,
+      "year": 2026,
+      "order": 1,
+      "published": true
+    },
+    {
+      "id": "fadri-pestalozzi",
+      "name": "Fadri Pestalozzi",
+      "category": "supporter",
+      "url": null,
+      "year": 2026,
+      "order": 2,
+      "published": true
+    },
+    {
+      "id": "thomas-stauffer",
+      "name": "Thomas Stauffer",
+      "category": "supporter",
+      "url": null,
+      "year": 2026,
+      "order": 3,
+      "published": true
+    },
+    {
+      "id": "nina-judge",
+      "name": "Nina Judge",
+      "category": "supporter",
+      "url": null,
+      "year": 2026,
+      "order": 4,
+      "published": true
+    },
+    {
+      "id": "rachel-aronoff",
+      "name": "Rachel Aronoff",
+      "category": "supporter",
+      "url": null,
+      "year": 2026,
+      "order": 5,
+      "published": true
+    },
+    {
+      "id": "esther-vincent",
+      "name": "Esther & Vincent",
+      "category": "supporter",
+      "url": null,
+      "year": 2026,
+      "order": 6,
+      "published": true
+    },
+    {
+      "id": "karla-fernandes",
+      "name": "Karla Fernandes",
+      "category": "supporter",
+      "url": null,
+      "year": 2026,
+      "order": 7,
+      "published": true
+    }
+  ]
+}

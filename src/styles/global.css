@@ -1506,8 +1506,111 @@
   }
 
   .support-disclaimer {
-    opacity: 0.6;
+    opacity: 0.78;
     font-size: 15px;
+    color: var(--deep-purple);
+  }
+
+  .support-method-title,
+  .support-method-desc {
+    color: var(--deep-purple);
+  }
+
+  .contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  /* Contributors — dark acknowledgement band on Collaborate */
+  .contributors-section {
+    background: var(--deep-purple);
+    color: var(--white);
+    padding: var(--space-6) var(--space-5);
+    margin: var(--space-5) 0 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .contributors-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 920px;
+  }
+  .contributors-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: clamp(32px, 4vw, 48px);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--white);
+    margin-bottom: var(--space-3);
+  }
+  .contributors-intro,
+  .contributors-closing,
+  .contributors-note {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--white);
+    opacity: 0.88;
+    max-width: 42rem;
+  }
+  .contributors-intro { margin-bottom: var(--space-5); }
+  .contributors-closing { margin-top: var(--space-5); }
+  .contributors-note {
+    margin-top: var(--space-3);
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    opacity: 0.75;
+  }
+  .contributors-feed {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+  .contributor-group { margin: 0; }
+  .contributor-category {
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--turquoise);
+    margin-bottom: var(--space-3);
+  }
+  .contributor-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--space-3) var(--space-4);
+    margin: 0;
+    padding: 0;
+  }
+  .contributor-item { margin: 0; }
+  .contributor-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: clamp(18px, 2vw, 22px);
+    letter-spacing: -0.01em;
+    line-height: 1.35;
+    color: var(--white);
+    text-decoration: none;
+  }
+  a.contributor-name {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  a.contributor-name:hover {
+    color: var(--pink);
+    border-bottom-color: var(--pink);
+  }
+  a.contributor-name:focus-visible {
+    outline: 2px solid var(--pink);
+    outline-offset: 4px;
+  }
+  .contributors-empty {
+    color: var(--white);
+    opacity: 0.8;
   }
 
   .rental-category-grid {
@@ -1891,13 +1994,21 @@
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
+  /* Readable contact link on light editorial pages (not turquoise-on-white). */
+  .editorial .contact-email {
+    color: var(--color-link);
+  }
+  .editorial .contact-email:hover {
+    color: var(--color-link-hover);
+    border-bottom-color: var(--color-link-hover);
+  }
 
   /* ── FOOTER ── */
   footer {
     background: var(--deep-purple);
     padding: 36px var(--space-6);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: var(--space-4);
@@ -1909,44 +2020,69 @@
     inset: 0;
     background-image: url('https://raw.githubusercontent.com/linalopes/SchoolAI-brand-kit/main/patterns/pattern-6.png');
     background-size: cover;
-    opacity: 1;
+    opacity: 0.35;
     pointer-events: none;
   }
   .footer-brand {
     position: relative;
     z-index: 1;
+    max-width: 280px;
   }
   .footer-program-link {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 300;
     font-size: 18px;
     color: var(--white);
-    opacity: 0.5;
     letter-spacing: -0.01em;
-    transition: opacity 0.2s;
+    transition: color 0.2s;
   }
-  .footer-program-link:hover {
-    opacity: 1;
+  .footer-program-link:hover,
+  .footer-program-link:focus-visible {
+    color: var(--pink);
   }
+  .footer-program-link:focus-visible,
+  .footer-text-link:focus-visible,
+  .footer-social-link:focus-visible,
+  .footer-directions:focus-visible {
+    outline: 2px solid var(--pink);
+    outline-offset: 4px;
+  }
+  .footer-tagline,
   .footer-place,
-  .footer-contact,
-  .footer-lead {
+  .footer-address,
+  .footer-directions {
     font-family: 'Courier Prime', monospace;
     font-size: 13px;
     color: var(--white);
-    opacity: 0.35;
     margin-top: 6px;
     position: relative;
     z-index: 1;
   }
-  .footer-contact {
-    display: inline-block;
-    opacity: 0.45;
-    transition: opacity 0.2s, color 0.2s;
+  .footer-tagline,
+  .footer-place {
+    opacity: 0.88;
   }
-  .footer-contact:hover {
-    opacity: 1;
+  .footer-address {
+    font-style: normal;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 10px;
+    opacity: 0.92;
+    line-height: 1.45;
+  }
+  .footer-address-line { display: block; }
+  .footer-directions {
+    display: inline-block;
+    margin-top: 10px;
+    color: var(--turquoise);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(8, 242, 219, 0.45);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .footer-directions:hover {
     color: var(--pink);
+    border-bottom-color: var(--pink);
   }
   .footer-text-links {
     display: flex;
@@ -1954,12 +2090,13 @@
     gap: 16px;
     position: relative;
     z-index: 1;
+    max-width: 420px;
   }
   .footer-text-link {
     font-family: 'Courier Prime', monospace;
     font-size: 13px;
     color: var(--white);
-    opacity: 0.4;
+    opacity: 0.88;
     transition: opacity 0.2s, color 0.2s;
   }
   .footer-text-link:hover {
@@ -1975,7 +2112,7 @@
   }
   .footer-social-link {
     color: var(--white);
-    opacity: 0.4;
+    opacity: 0.9;
     transition: opacity 0.2s, color 0.2s;
     display: flex;
     align-items: center;
@@ -1988,9 +2125,10 @@
     font-family: 'Courier Prime', monospace;
     font-size: 13px;
     color: var(--white);
-    opacity: 0.2;
+    opacity: 0.72;
     position: relative;
     z-index: 1;
+    width: 100%;
   }
 
   /* ── ANIMATIONS ── */

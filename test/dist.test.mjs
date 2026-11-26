@@ -106,7 +106,23 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   assert.match(collaborate, /https:\/\/buy\.stripe\.com\/4gMfZg6gLchX71P2wRcwg01/);
   assert.match(collaborate, /Make a contribution/);
   assert.match(collaborate, /not presented as tax-deductible/);
-  assert.doesNotMatch(collaborate, /wishlist|Made possible by/i);
+  assert.match(collaborate, /Made possible by/);
+  assert.match(collaborate, /data-feed="contributors"/);
+  assert.match(collaborate, /City of Wetzikon/);
+  assert.match(collaborate, /Individual Supporters/);
+  assert.match(collaborate, /Let(?:'|’|&#39;)s start a conversation/);
+  assert.match(collaborate, /Arrange a visit/);
+  assert.doesNotMatch(collaborate, /wishlist/i);
+  assert.doesNotMatch(collaborate, /formal employment|residency programmes|internships/);
+
+  const footer = readFileSync(dist('index.html'), 'utf8');
+  assert.match(footer, /Schönaustrasse 13/);
+  assert.match(footer, /8620 Wetzikon/);
+  assert.match(footer, /Get directions/);
+  assert.match(footer, /maps\.google\.com/);
+  assert.match(footer, /github\.com\/linalopes/);
+  assert.doesNotMatch(footer, /<footer[\s\S]*lilothink\.science@gmail\.com/);
+  assert.doesNotMatch(footer, /Founded in September 2025 by Lina Lopes/);
 
   assert.equal(statSync(dist('imgs/contact-twint.png')).isFile(), true);
   assert.equal(statSync(dist('imgs/stripe.png')).isFile(), true);

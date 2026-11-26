@@ -1,7 +1,10 @@
 import { mkdirSync, readFileSync, renameSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { contributorCategories } from './contract.ts';
 import type {
   ArchiveEntry,
+  ContributorCategory,
+  ContributorEntry,
   EventItem,
   FeedId,
   FeedSnapshot,
@@ -9,6 +12,8 @@ import type {
   WorkstationEntry,
 } from './types.ts';
 import { FeedValidationError } from './types.ts';
+
+const contributorCategorySet = new Set<string>(contributorCategories);
 
 // Resolve from process.cwd() so Astro prerender bundles still find the
 // committed snapshots. import.meta.url points inside dist/.prerender after build.
@@ -206,6 +211,42 @@ export function loadWorkstationsSnapshot(): FeedSnapshot<WorkstationEntry> {
   const text = readSnapshotFile('workstations');
   if (!text) throw new FeedValidationError('Required workstations snapshot is missing');
   return parseWorkstationsSnapshot(JSON.parse(text));
+}
+
+export function parseContributorsSnapshot(raw: unknown): FeedSnapshot<ContributorEntry> {
+  return assertSnapshotShape('contributors', raw, (item, index) => {
+    if (!isObject(item)) throw new FeedValidationError(`contributors snapshot item ${index} is invalid`);
+    const year = item.year;
+    const order = item.order;
+    if (typeof year !== 'number' || !Number.isInteger(year)) {
+      throw new FeedValidationError(`contributors snapshot item ${index} has an invalid year`);
+    }
+    if (typeof order !== 'number' || !Number.isInteger(order)) {
+      throw new FeedValidationError(`contributors snapshot item ${index} has an invalid order`);
+    }
+    if (typeof item.published !== 'boolean') {
+      throw new FeedValidationError(`contributors snapshot item ${index} has invalid published`);
+    }
+    const category = requireString(item, 'category', `contributors item ${index}`);
+    if (!contributorCategorySet.has(category)) {
+      throw new FeedValidationError(`contributors snapshot item ${index} has an unknown category`, [category]);
+    }
+    return {
+      id: requireString(item, 'id', `contributors item ${index}`),
+      name: requireString(item, 'name', `contributors item ${index}`),
+      category: category as ContributorCategory,
+      url: requireNullableString(item, 'url', `contributors item ${index}`),
+      year,
+      order,
+      published: item.published,
+    };
+  });
+}
+
+export function loadContributorsSnapshot(): FeedSnapshot<ContributorEntry> {
+  const text = readSnapshotFile('contributors');
+  if (!text) throw new FeedValidationError('Required contributors snapshot is missing');
+  return parseContributorsSnapshot(JSON.parse(text));
 }
 
 export function writeSnapshotAtomic<T>(snapshot: FeedSnapshot<T>): void {

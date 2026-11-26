@@ -4,17 +4,21 @@ import { join } from 'node:path';
 import test from 'node:test';
 import {
   FeedValidationError,
+  groupContributorsByCategory,
   parseAndSelectArchive,
   parseAndSelectWorkstations,
   parseArchiveCsv,
+  parseContributorsCsv,
   parseCsvObjects,
   parseCsvRecords,
   parseEventsCsv,
   parseHeroCsv,
   parseHeroSnapshot,
   parseWorkstationsCsv,
+  renderContributorsMarkup,
   selectArchiveEntries,
   resolvePublicEventUrl,
+  selectContributors,
   selectPastEvents,
   selectPastEventsPreview,
   selectUpcomingEvents,
@@ -241,7 +245,78 @@ test('refresh script distinguishes network keep from invalid failure', async () 
   assert.match(source, /writeSnapshotAtomic/);
   assert.match(source, /parseAndSelectArchive/);
   assert.match(source, /parseAndSelectWorkstations/);
+  assert.match(source, /parseAndSelectContributors/);
   assert.match(source, /workstationsCsvUrl/);
+  assert.match(source, /contributorsCsvUrl/);
+});
+
+test('contributors adapter filters published rows, ignores empty checkbox rows, groups and orders', () => {
+  const csv = [
+    'id,name,category,url,year,order,published',
+    'alpha,Alpha,supporter,,2026,2,TRUE',
+    'beta,Beta Org,institutional-support,https://example.com,2026,1,TRUE',
+    'draft,Draft,supporter,,2026,9,FALSE',
+    ',,,,,,FALSE',
+    ',,,,,,',
+    'gamma,Gamma Lab,research-collaborator,,2025,3,TRUE',
+    'delta,Delta Tech,technology-partner,https://example.org,2024,4,TRUE',
+  ].join('\n');
+
+  const parsed = parseContributorsCsv(csv);
+  assert.equal(parsed.items.length, 5);
+  assert.deepEqual(selectContributors(parsed.items).map((item) => item.id), [
+    'beta',
+    'alpha',
+    'gamma',
+    'delta',
+  ]);
+
+  const groups = groupContributorsByCategory(parsed.items, [
+    'institutional-support',
+    'research-collaborator',
+    'technology-partner',
+    'supporter',
+  ]);
+  assert.deepEqual(groups.map((group) => group.category), [
+    'institutional-support',
+    'research-collaborator',
+    'technology-partner',
+    'supporter',
+  ]);
+  assert.equal(groups.find((group) => group.category === 'supporter')?.items.length, 1);
+
+  const html = renderContributorsMarkup(selectContributors(parsed.items), {
+    categoryLabels: {
+      supporter: 'Individual Supporters',
+      'institutional-support': 'Institutional Support',
+      'research-collaborator': 'Research Collaborators',
+      'technology-partner': 'Technology Partners',
+    },
+    categoryOrder: ['institutional-support', 'supporter'],
+  });
+  assert.match(html, /Institutional Support/);
+  assert.match(html, /Individual Supporters/);
+  assert.doesNotMatch(html, /Research Collaborators/);
+  assert.match(html, /Beta Org, 2026/);
+  assert.match(html, /https:\/\/example\.com/);
+  assert.doesNotMatch(html, /Draft/);
+});
+
+test('contributors adapter rejects unknown categories and unsafe urls', () => {
+  assert.throws(
+    () => parseContributorsCsv([
+      'id,name,category,url,year,order,published',
+      'x,Name,unknown-category,,2026,1,TRUE',
+    ].join('\n')),
+    /unknown category/i,
+  );
+  assert.throws(
+    () => parseContributorsCsv([
+      'id,name,category,url,year,order,published',
+      'x,Name,supporter,javascript:alert(1),2026,1,TRUE',
+    ].join('\n')),
+    /Unsafe URL scheme/i,
+  );
 });
 
 test('committed snapshots contain only public feed material', () => {
@@ -283,6 +358,13 @@ test('committed snapshots contain only public feed material', () => {
   const hero = JSON.parse(readFileSync(new URL('../src/data/feeds/hero.json', import.meta.url), 'utf8'));
   assert.equal(hero.items.length, 3);
   const events = JSON.parse(readFileSync(new URL('../src/data/feeds/events.json', import.meta.url), 'utf8'));
-  assert.equal(events.items.length, 24);
+  assert.equal(events.items.length, 25);
   assert.equal(selectUpcomingEvents(events.items).length, 0);
+
+  const contributors = JSON.parse(readFileSync(new URL('../src/data/feeds/contributors.json', import.meta.url), 'utf8'));
+  assert.equal(contributors.feed, 'contributors');
+  assert.equal(contributors.items.length, 7);
+  assert.equal(contributors.items.every((item) => item.published === true), true);
+  assert.equal(contributors.items[0].id, 'wetzikon-culture');
+  assert.match(contributors.items[0].name, /City of Wetzikon/);
 });

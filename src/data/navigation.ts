@@ -24,5 +24,4 @@ export const footerNavItems = [
 /** Prepared routes — not linked until pages and approved content exist. */
 export const plannedRoutes = [
   { href: '/collaborate/wishlist/', label: 'Research Wishlist' },
-  { href: '/collaborate/contributors/', label: 'Made possible by' },
 ] as const;

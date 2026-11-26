@@ -206,6 +206,31 @@ const pages = defineCollection({
       })
       .optional(),
 
+    contributors: z
+      .object({
+        title: z.string(),
+        intro: z.string(),
+        closing: z.string(),
+        note: z.string().optional(),
+        categories: z.object({
+          supporter: z.string(),
+          'institutional-support': z.string(),
+          'research-collaborator': z.string(),
+          'technology-partner': z.string(),
+        }),
+        category_order: z
+          .array(
+            z.enum([
+              'supporter',
+              'institutional-support',
+              'research-collaborator',
+              'technology-partner',
+            ]),
+          )
+          .optional(),
+      })
+      .optional(),
+
     concept: z
       .object({
         title: z.string(),
@@ -326,4 +351,30 @@ const wishlist = defineCollection({
   }),
 });
 
-export const collections = { pages, gallery, support, wishlist };
+const siteContent = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/site' }),
+  schema: z.object({
+    title: z.string(),
+    tagline: z.string(),
+    location_line: z.string(),
+    address_lines: z.array(z.string()).min(1),
+    maps_url: z.string().startsWith('https://'),
+    maps_label: z.string(),
+    external_links: z.array(
+      z.object({
+        label: z.string(),
+        href: z.string().startsWith('https://'),
+        external: z.boolean().optional(),
+      }),
+    ),
+    social_links: z.array(
+      z.object({
+        label: z.string(),
+        href: z.string().startsWith('https://'),
+      }),
+    ),
+    copyright: z.string(),
+  }),
+});
+
+export const collections = { pages, gallery, support, wishlist, site: siteContent };

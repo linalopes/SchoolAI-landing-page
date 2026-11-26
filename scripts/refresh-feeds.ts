@@ -9,10 +9,12 @@
  */
 import {
   archiveCsvUrl,
+  contributorsCsvUrl,
   createSnapshot,
   eventsCsvUrl,
   heroCsvUrl,
   parseAndSelectArchive,
+  parseAndSelectContributors,
   parseAndSelectWorkstations,
   parseEventsCsv,
   parseHeroCsv,
@@ -138,6 +140,7 @@ async function main(): Promise<void> {
     await refreshOne('events', eventsCsvUrl, (csv) => parseEventsCsv(csv)),
     await refreshOne('archive', archiveCsvUrl, (csv) => parseAndSelectArchive(csv)),
     await refreshOne('workstations', workstationsCsvUrl, (csv) => parseAndSelectWorkstations(csv)),
+    await refreshOne('contributors', contributorsCsvUrl, (csv) => parseAndSelectContributors(csv)),
   ];
 
   for (const outcome of outcomes) {

@@ -4,6 +4,9 @@ export {
   archiveCta,
   archiveVisibleCount,
   canonicalSpreadsheetUrl,
+  contributorCategories,
+  contributorColumns,
+  contributorsCsvUrl,
   eventColumns,
   eventsCsvUrl,
   eventsPastPreviewCount,
@@ -18,6 +21,13 @@ export {
   workstationsCsvUrl,
 } from './contract.ts';
 export { parseAndSelectArchive, parseArchiveCsv, selectArchiveEntries } from './archive.ts';
+export {
+  adaptContributorRows,
+  groupContributorsByCategory,
+  parseAndSelectContributors,
+  parseContributorsCsv,
+  selectContributors,
+} from './contributors.ts';
 export { parseCsvObjects, parseCsvRecords } from './csv.ts';
 export {
   adaptEventRows,
@@ -38,6 +48,7 @@ export {
   getCarouselAccentConfig,
   renderArchiveMarkup,
   renderArchiveSectionCta,
+  renderContributorsMarkup,
   renderEventsEmptyMarkup,
   renderEventsMarkup,
   renderHeroCarouselMarkup,
@@ -50,10 +61,12 @@ export {
   createSnapshot,
   feedsDirectory,
   loadArchiveSnapshot,
+  loadContributorsSnapshot,
   loadEventsSnapshot,
   loadHeroSnapshot,
   loadWorkstationsSnapshot,
   parseArchiveSnapshot,
+  parseContributorsSnapshot,
   parseEventsSnapshot,
   parseHeroSnapshot,
   parseWorkstationsSnapshot,
@@ -70,6 +83,8 @@ export {
 } from './workstations.ts';
 export type {
   ArchiveEntry,
+  ContributorCategory,
+  ContributorEntry,
   EventItem,
   FeedId,
   FeedResult,

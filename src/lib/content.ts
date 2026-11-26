@@ -24,6 +24,14 @@ export async function requireSupportDoc(id: string) {
   return entry;
 }
 
+export async function requireSiteDoc(id: string) {
+  const entry = await getEntry('site', id);
+  if (!entry) {
+    throw new Error(`Missing Markdown source: src/content/site/${id}.md`);
+  }
+  return entry;
+}
+
 export function mailtoHref(email: string, subject?: string): string {
   if (!subject) return `mailto:${email}`;
   return `mailto:${email}?subject=${encodeURIComponent(subject)}`;

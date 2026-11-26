@@ -1,5 +1,6 @@
 ---
 import EditorialLayout from '../../layouts/EditorialLayout.astro';
+import Contributors from '../../components/collaborate/Contributors.astro';
 import FinancialSupport from '../../components/support/FinancialSupport.astro';
 import { resolveCtaHref, requirePage } from '../../lib/content';
 import { site } from '../../data/site';
@@ -43,10 +44,13 @@ const pageTitle = `${entry.data.title} · ${site.title}`;
 
     <FinancialSupport />
 
-    <section class="editorial-panel fade-up">
-      <h2 class="editorial-subtitle">{contact_section.title}</h2>
+    <Contributors />
+
+    <section class="editorial-panel fade-up" aria-labelledby="contact-heading">
+      <h2 id="contact-heading" class="editorial-subtitle">{contact_section.title}</h2>
       <p class="prose-p">{contact_section.note}</p>
-      <div class="section-actions">
+      <div class="section-actions contact-actions">
+        <a href={`mailto:${site.contactEmail}`} class="contact-email">{site.contactEmail}</a>
         {contact_section.ctas.map((cta) => (
           <a
             href={resolveCtaHref(cta.href, {
@@ -58,7 +62,6 @@ const pageTitle = `${entry.data.title} · ${site.title}`;
             {cta.label}
           </a>
         ))}
-        <a href={`mailto:${site.contactEmail}`} class="contact-email">{site.contactEmail}</a>
       </div>
     </section>
   </article>

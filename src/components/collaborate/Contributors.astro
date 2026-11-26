@@ -1,0 +1,42 @@
+---
+import {
+  loadContributorsSnapshot,
+  renderContributorsMarkup,
+  type ContributorCategory,
+} from '../../lib/sheets/index.ts';
+import { requirePage } from '../../lib/content';
+
+const page = await requirePage('collaborate');
+const copy = page.data.contributors;
+if (!copy) {
+  throw new Error('collaborate.md is missing the contributors frontmatter section.');
+}
+
+const snapshot = loadContributorsSnapshot();
+const categoryLabels = copy.categories;
+const categoryOrder = (copy.category_order ?? Object.keys(categoryLabels)) as ContributorCategory[];
+const markup = renderContributorsMarkup(snapshot.items, {
+  categoryLabels,
+  categoryOrder,
+});
+---
+<section id="made-possible-by" class="contributors-section fade-up" aria-labelledby="contributors-heading">
+  <div class="contributors-inner">
+    <header class="contributors-header">
+      <h2 id="contributors-heading" class="contributors-title">{copy.title}</h2>
+      <p class="contributors-intro">{copy.intro}</p>
+    </header>
+
+    <div
+      class="contributors-feed"
+      data-feed="contributors"
+      data-snapshot-at={snapshot.fetchedAt}
+      data-category-labels={JSON.stringify(categoryLabels)}
+      data-category-order={JSON.stringify(categoryOrder)}
+      set:html={markup}
+    />
+
+    <p class="contributors-closing">{copy.closing}</p>
+    {copy.note && <p class="contributors-note">{copy.note}</p>}
+  </div>
+</section>

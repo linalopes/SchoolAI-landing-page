@@ -43,13 +43,28 @@ pathways:
     subject: Financial support inquiry
     cta_label: Get in touch
 
+contributors:
+  title: Made possible by.
+  intro: Independent research grows through the generosity, knowledge and contributions of others.
+  closing: >-
+    We also extend our gratitude to those who choose to remain unnamed. Anonymous contributions are equally welcome.
+  note: Public acknowledgement is optional and must never be a condition for contributing.
+  categories:
+    supporter: Individual Supporters
+    institutional-support: Institutional Support
+    research-collaborator: Research Collaborators
+    technology-partner: Technology Partners
+  category_order:
+    - institutional-support
+    - research-collaborator
+    - technology-partner
+    - supporter
+
 contact_section:
-  title: Contact the School
+  title: Let's start a conversation.
   note: >-
-    Access is arranged through conversation. The School does not offer formal employment, residency programmes, internships or unrestricted public entry.
+    Tell us about your interests, research questions or ideas for collaboration. Visits and research collaborations are arranged individually.
   ctas:
-    - label: Contact the School
-      href: mailto
     - label: Arrange a visit
       href: mailto
       subject: Atelier visit

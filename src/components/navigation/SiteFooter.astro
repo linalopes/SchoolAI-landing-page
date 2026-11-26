@@ -1,45 +1,80 @@
 ---
 import { footerNavItems, homeHref } from '../../data/navigation';
-import { site } from '../../data/site';
+import { requireSiteDoc } from '../../lib/content';
+
+const footer = await requireSiteDoc('footer');
+const {
+  title,
+  tagline,
+  location_line,
+  address_lines,
+  maps_url,
+  maps_label,
+  external_links,
+  social_links,
+  copyright,
+} = footer.data;
 ---
 <footer>
-  <div class="footer-pattern"></div>
+  <div class="footer-pattern" aria-hidden="true"></div>
   <div class="footer-brand">
-    <a href={homeHref} class="footer-program-link">{site.title}</a>
-    <p class="footer-place">{site.locationLine}</p>
-    <a href={`mailto:${site.contactEmail}`} class="footer-contact">{site.contactEmail}</a>
-    <p class="footer-lead">Founded in {site.founded} by Lina Lopes. Independent research atelier.</p>
+    <a href={homeHref} class="footer-program-link">{title}</a>
+    <p class="footer-tagline">{tagline}</p>
+    <p class="footer-place">{location_line}</p>
+    <address class="footer-address">
+      {address_lines.map((line) => (
+        <span class="footer-address-line">{line}</span>
+      ))}
+    </address>
+    <a href={maps_url} class="footer-directions" target="_blank" rel="noopener">
+      {maps_label} &#x2197;&#xFE0E;
+    </a>
   </div>
   <div class="footer-text-links">
     {footerNavItems.map((item) => (
       <a href={item.href} class="footer-text-link">{item.label}</a>
     ))}
-    <a href={site.founderUrl} target="_blank" rel="noopener" class="footer-text-link">Lina Lopes &#x2197;&#xFE0E;</a>
-    <a href="https://blog.linalopes.info" target="_blank" rel="noopener" class="footer-text-link">Blog &#x2197;&#xFE0E;</a>
+    {external_links.map((link) => (
+      <a
+        href={link.href}
+        class="footer-text-link"
+        target={link.external === false ? undefined : '_blank'}
+        rel={link.external === false ? undefined : 'noopener'}
+      >
+        {link.label}{link.external === false ? '' : ' \u2197\uFE0E'}
+      </a>
+    ))}
   </div>
   <div class="footer-social">
-    <a href="https://instagram.com/school.of.tomorrows.ai" target="_blank" rel="noopener" aria-label="Instagram" class="footer-social-link">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="2" y="2" width="20" height="20" rx="5"/>
-        <circle cx="12" cy="12" r="4"/>
-        <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/>
-      </svg>
-    </a>
-    <a href="https://youtube.com/@lina_lopes" target="_blank" rel="noopener" aria-label="YouTube" class="footer-social-link">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="2" y="5" width="20" height="14" rx="4"/>
-        <polygon points="10,9 16,12 10,15" fill="currentColor" stroke="none"/>
-      </svg>
-    </a>
-    <a href="https://linkedin.com/in/linalopes" target="_blank" rel="noopener" aria-label="LinkedIn" class="footer-social-link">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="2" y="2" width="20" height="20" rx="4"/>
-        <line x1="8" y1="11" x2="8" y2="16"/>
-        <line x1="8" y1="8" x2="8" y2="8.5"/>
-        <path d="M12 16v-5"/>
-        <path d="M12 11c0-1 1-2 2.5-2s2.5 1 2.5 3v4"/>
-      </svg>
-    </a>
+    {social_links.map((link) => (
+      <a href={link.href} target="_blank" rel="noopener" aria-label={link.label} class="footer-social-link">
+        {link.label === 'Instagram' && (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/>
+          </svg>
+        )}
+        {link.label === 'YouTube' && (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="5" width="20" height="14" rx="4"/>
+            <polygon points="10,9 16,12 10,15" fill="currentColor" stroke="none"/>
+          </svg>
+        )}
+        {link.label === 'LinkedIn' && (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="4"/>
+            <line x1="8" y1="11" x2="8" y2="16"/>
+            <line x1="8" y1="8" x2="8" y2="8.5"/>
+            <path d="M12 16v-5"/>
+            <path d="M12 11c0-1 1-2 2.5-2s2.5 1 2.5 3v4"/>
+          </svg>
+        )}
+        {link.label !== 'Instagram' && link.label !== 'YouTube' && link.label !== 'LinkedIn' && (
+          <span>{link.label}</span>
+        )}
+      </a>
+    ))}
   </div>
-  <p class="footer-copy">© 2026 Lina Lopes · {site.title}</p>
+  <p class="footer-copy">{copyright}</p>
 </footer>

@@ -12,6 +12,7 @@ export const heroCsvUrl = `${publishedCsvBase}?gid=1398027263&single=true&output
 export const eventsCsvUrl = `${publishedCsvBase}?gid=0&single=true&output=csv`;
 export const archiveCsvUrl = `${publishedCsvBase}?gid=20271126&single=true&output=csv`;
 export const workstationsCsvUrl = `${publishedCsvBase}?gid=20271127&single=true&output=csv`;
+export const contributorsCsvUrl = `${publishedCsvBase}?gid=20271128&single=true&output=csv`;
 
 export const heroColumns = [
   'type',
@@ -60,6 +61,24 @@ export const workstationColumns = [
   'published',
 ] as const;
 
+export const contributorColumns = [
+  'id',
+  'name',
+  'category',
+  'url',
+  'year',
+  'order',
+  'published',
+] as const;
+
+/** Sheet category keys in default display order. Labels live in Markdown. */
+export const contributorCategories = [
+  'supporter',
+  'institutional-support',
+  'research-collaborator',
+  'technology-partner',
+] as const;
+
 export const eventsVisibleCount = 4;
 export const eventsPastPreviewCount = 6;
 export const archiveVisibleCount = 6;
@@ -73,7 +92,7 @@ export const formspreeAction = 'https://formspree.io/f/mvgbznoe';
 
 export const feedClientTimeoutMs = 8000;
 
-export const requiredFeeds = ['hero', 'events', 'archive', 'workstations'] as const;
+export const requiredFeeds = ['hero', 'events', 'archive', 'workstations', 'contributors'] as const;
 
 /** Confirmed editorial workstation titles. Inverted Gallery is not a workstation. */
 export const workstationTitles = [

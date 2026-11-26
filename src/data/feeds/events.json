@@ -1,8 +1,8 @@
 {
   "feed": "events",
-  "fetchedAt": "2026-11-26T13:10:17.681Z",
+  "fetchedAt": "2026-11-26T14:40:51.911Z",
   "sourceUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpM1GYZ-ohq9jHkppGkz4hCx_p3vuCDjekln1apcu1nV2KILUmDeoT3xeLTSprREAXWjiWY8AovP4y/pub?gid=0&single=true&output=csv",
-  "itemCount": 24,
+  "itemCount": 25,
   "items": [
     {
       "date": "2026-03-15",
@@ -31,7 +31,7 @@
       "tagline": "Turning the studio into an expanded cinema",
       "location": "Zoom",
       "type": "workshop",
-      "status": "past",
+      "status": "cancel",
       "url": "#workshop-augmented-cinema"
     },
     {
@@ -41,7 +41,7 @@
       "tagline": "Turning the studio into an expanded cinema",
       "location": "Zoom",
       "type": "workshop",
-      "status": "past",
+      "status": "cancel",
       "url": "#workshop-augmented-cinema"
     },
     {
@@ -51,7 +51,7 @@
       "tagline": "Turning the studio into an expanded cinema",
       "location": "Wetzikon",
       "type": "workshop",
-      "status": "past",
+      "status": "cancel",
       "url": "#workshop-augmented-cinema"
     },
     {
@@ -61,7 +61,7 @@
       "tagline": "A collaborative game where connection powers the play",
       "location": "Wetzikon",
       "type": "workshop",
-      "status": "past",
+      "status": "cancel",
       "url": "#workshop-maze-circuit"
     },
     {
@@ -243,6 +243,16 @@
       "type": "workshop",
       "status": "cancel",
       "url": "#workshop-embroidering-light"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "14:00 - 18:00",
+      "title": "Artificial Emotion - Open Research Studio",
+      "tagline": "An open day of experiments, prototypes and conversations. All welcome.",
+      "location": "Wetzikon",
+      "type": "gathering",
+      "status": "past",
+      "url": "https://emotion.linalopes.info/events/open-research-studio/"
     }
   ]
 }

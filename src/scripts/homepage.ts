@@ -1,19 +1,23 @@
 import {
   archiveCsvUrl,
+  contributorsCsvUrl,
   eventsCsvUrl,
   feedClientTimeoutMs,
   heroCsvUrl,
   workstationsCsvUrl,
 } from '../lib/sheets/contract.ts';
 import { parseAndSelectArchive } from '../lib/sheets/archive.ts';
+import { parseAndSelectContributors } from '../lib/sheets/contributors.ts';
 import { parseEventsCsv, selectUpcomingEvents } from '../lib/sheets/events.ts';
 import { parseHeroCsv } from '../lib/sheets/hero.ts';
 import {
   renderArchiveMarkup,
+  renderContributorsMarkup,
   renderEventsMarkup,
   renderHeroCarouselMarkup,
   renderWorkstationsMarkup,
 } from '../lib/sheets/html.ts';
+import type { ContributorCategory } from '../lib/sheets/types.ts';
 import { parseAndSelectWorkstations } from '../lib/sheets/workstations.ts';
 
 function prefersReducedMotion(): boolean {
@@ -186,6 +190,38 @@ async function refreshWorkstations(hostEl: HTMLElement): Promise<void> {
   }
 }
 
+function readContributorRenderOptions(hostEl: HTMLElement): {
+  categoryLabels: Partial<Record<ContributorCategory, string>>;
+  categoryOrder?: ContributorCategory[];
+} {
+  let categoryLabels: Partial<Record<ContributorCategory, string>> = {};
+  let categoryOrder: ContributorCategory[] | undefined;
+  try {
+    categoryLabels = JSON.parse(hostEl.dataset.categoryLabels || '{}') as Partial<
+      Record<ContributorCategory, string>
+    >;
+  } catch {
+    categoryLabels = {};
+  }
+  try {
+    const order = JSON.parse(hostEl.dataset.categoryOrder || '[]') as ContributorCategory[];
+    if (Array.isArray(order) && order.length) categoryOrder = order;
+  } catch {
+    categoryOrder = undefined;
+  }
+  return { categoryLabels, categoryOrder };
+}
+
+async function refreshContributors(hostEl: HTMLElement): Promise<void> {
+  try {
+    const csv = await fetchCsv(contributorsCsvUrl);
+    const { items } = parseAndSelectContributors(csv);
+    hostEl.innerHTML = renderContributorsMarkup(items, readContributorRenderOptions(hostEl));
+  } catch {
+    // Keep the last rendered snapshot.
+  }
+}
+
 export function startHomepage(): void {
   const nav = document.getElementById('nav');
   if (!nav) return;
@@ -221,6 +257,10 @@ export function startHomepage(): void {
 
   document.querySelectorAll<HTMLElement>('[data-feed="workstations"]').forEach((el) => {
     void refreshWorkstations(el);
+  });
+
+  document.querySelectorAll<HTMLElement>('[data-feed="contributors"]').forEach((el) => {
+    void refreshContributors(el);
   });
 
   const hamburger = document.getElementById('nav-hamburger');

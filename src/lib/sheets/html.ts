@@ -1,5 +1,13 @@
-import { archiveCta } from './contract.ts';
-import type { ArchiveEntry, EventItem, HeroSlide, WorkstationEntry } from './types.ts';
+import { archiveCta, contributorCategories } from './contract.ts';
+import { groupContributorsByCategory } from './contributors.ts';
+import type {
+  ArchiveEntry,
+  ContributorCategory,
+  ContributorEntry,
+  EventItem,
+  HeroSlide,
+  WorkstationEntry,
+} from './types.ts';
 import { resolvePublicEventUrl } from './urls.ts';
 
 export function escapeHTML(value: string): string {
@@ -232,4 +240,42 @@ export function renderWorkstationsMarkup(entries: WorkstationEntry[]): string {
       }).join('')}
     </div>
   `;
+}
+
+export type ContributorRenderOptions = {
+  categoryLabels: Partial<Record<ContributorCategory, string>>;
+  categoryOrder?: readonly ContributorCategory[];
+};
+
+export function renderContributorsMarkup(
+  entries: ContributorEntry[],
+  options: ContributorRenderOptions,
+): string {
+  const order = options.categoryOrder?.length
+    ? options.categoryOrder
+    : contributorCategories;
+  const groups = groupContributorsByCategory(entries, order);
+  if (!groups.length) {
+    return '<p class="contributors-empty">Acknowledgements appear here when contributors are published.</p>';
+  }
+
+  return groups.map((group) => {
+    const label = options.categoryLabels[group.category] ?? group.category;
+    const names = group.items.map((entry) => {
+      const display = entry.year
+        ? `${escapeHTML(entry.name)}, ${entry.year}`
+        : escapeHTML(entry.name);
+      if (entry.url) {
+        return `<li class="contributor-item"><a class="contributor-name" href="${escapeHTML(entry.url)}" target="_blank" rel="noopener">${display} &#x2197;&#xFE0E;</a></li>`;
+      }
+      return `<li class="contributor-item"><span class="contributor-name">${display}</span></li>`;
+    }).join('');
+
+    return `
+      <div class="contributor-group">
+        <h3 class="contributor-category t-label">${escapeHTML(label)}</h3>
+        <ul class="contributor-list">${names}</ul>
+      </div>
+    `;
+  }).join('');
 }

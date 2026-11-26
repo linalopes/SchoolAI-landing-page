@@ -49,7 +49,23 @@ export type WorkstationEntry = {
   published: boolean;
 };
 
-export type FeedId = 'hero' | 'events' | 'archive' | 'workstations';
+export type ContributorCategory =
+  | 'supporter'
+  | 'institutional-support'
+  | 'research-collaborator'
+  | 'technology-partner';
+
+export type ContributorEntry = {
+  id: string;
+  name: string;
+  category: ContributorCategory;
+  url: string | null;
+  year: number;
+  order: number;
+  published: boolean;
+};
+
+export type FeedId = 'hero' | 'events' | 'archive' | 'workstations' | 'contributors';
 
 export type FeedSnapshot<T> = {
   feed: FeedId;

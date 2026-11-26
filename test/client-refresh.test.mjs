@@ -3,10 +3,12 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import {
   parseAndSelectArchive,
+  parseAndSelectContributors,
   parseAndSelectWorkstations,
   parseEventsCsv,
   parseHeroCsv,
   renderArchiveMarkup,
+  renderContributorsMarkup,
   renderEventsMarkup,
   renderHeroCarouselMarkup,
   renderWorkstationsMarkup,
@@ -19,6 +21,7 @@ test('client refresh failure keeps previously rendered snapshot markup', () => {
   assert.match(homepage, /feedClientTimeoutMs/);
   assert.match(homepage, /refreshArchive/);
   assert.match(homepage, /refreshWorkstations/);
+  assert.match(homepage, /refreshContributors/);
   assert.doesNotMatch(homepage, /carouselEl\.style\.display = 'none'/);
   assert.doesNotMatch(homepage, /showEventsError/);
 
@@ -26,10 +29,19 @@ test('client refresh failure keeps previously rendered snapshot markup', () => {
   const eventsSnapshot = JSON.parse(readFileSync(new URL('../src/data/feeds/events.json', import.meta.url), 'utf8'));
   const archiveSnapshot = JSON.parse(readFileSync(new URL('../src/data/feeds/archive.json', import.meta.url), 'utf8'));
   const workstationsSnapshot = JSON.parse(readFileSync(new URL('../src/data/feeds/workstations.json', import.meta.url), 'utf8'));
+  const contributorsSnapshot = JSON.parse(readFileSync(new URL('../src/data/feeds/contributors.json', import.meta.url), 'utf8'));
   const heroHtml = renderHeroCarouselMarkup(heroSnapshot.items);
   const eventsHtml = renderEventsMarkup(selectUpcomingEvents(eventsSnapshot.items));
   const archiveHtml = renderArchiveMarkup(archiveSnapshot.items);
   const workstationsHtml = renderWorkstationsMarkup(workstationsSnapshot.items);
+  const contributorsHtml = renderContributorsMarkup(contributorsSnapshot.items, {
+    categoryLabels: {
+      supporter: 'Individual Supporters',
+      'institutional-support': 'Institutional Support',
+      'research-collaborator': 'Research Collaborators',
+      'technology-partner': 'Technology Partners',
+    },
+  });
 
   assert.match(heroHtml, /Your Hand Is the Prompt|hero-carousel-pause/);
   assert.match(eventsHtml, /No public events are scheduled right now/);
@@ -38,15 +50,19 @@ test('client refresh failure keeps previously rendered snapshot markup', () => {
   assert.match(archiveHtml, /archive-card-media/);
   assert.match(workstationsHtml, /BioLab|Craft Office|Wearables Lab/);
   assert.match(workstationsHtml, /workstation-card-media--fallback/);
+  assert.match(contributorsHtml, /City of Wetzikon|Individual Supporters|Institutional Support/);
+  assert.doesNotMatch(contributorsHtml, /Research Collaborators|Technology Partners/);
 
   assert.throws(() => parseHeroCsv('bad'), /CSV is empty|headers/i);
   assert.throws(() => parseEventsCsv('bad'), /CSV is empty|headers/i);
   assert.throws(() => parseAndSelectArchive('bad'), /CSV is empty|headers/i);
   assert.throws(() => parseAndSelectWorkstations('bad'), /CSV is empty|headers/i);
+  assert.throws(() => parseAndSelectContributors('bad'), /CSV is empty|headers/i);
   assert.equal(heroHtml.length > 0, true);
   assert.equal(eventsHtml.length > 0, true);
   assert.equal(archiveHtml.length > 0, true);
   assert.equal(workstationsHtml.length > 0, true);
+  assert.equal(contributorsHtml.length > 0, true);
 });
 
 test('carousel markup includes pause control for accessibility', () => {

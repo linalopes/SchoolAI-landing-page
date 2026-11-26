@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import {
   loadArchiveSnapshot,
+  loadContributorsSnapshot,
   loadEventsSnapshot,
   loadHeroSnapshot,
   loadWorkstationsSnapshot,
@@ -132,8 +133,10 @@ test('navigation promotes all seven institutional routes while keeping homepage 
   assert.match(nav, /href: '\/inverted-gallery\/'/);
   const planned = nav.slice(nav.indexOf('export const plannedRoutes'));
   assert.match(planned, /wishlist/);
-  assert.match(planned, /contributors/);
+  assert.doesNotMatch(planned, /\/collaborate\/contributors\//);
   assert.doesNotMatch(planned, /href: '\/programme\/'/);
+  assert.match(read('src/content/pages/collaborate.md'), /Made possible by/);
+  assert.match(read('src/pages/collaborate/index.astro'), /Contributors/);
   assert.match(researchHome, /id="research"/);
   assert.match(atelierHome, /id="atelier"/);
   assert.match(programmeHome, /id="programme"/);
@@ -166,6 +169,7 @@ test('institutional editorial content is sourced from Markdown', () => {
   }
   assert.equal(statSync(join(root, 'src/content/gallery/rental-rates.md')).isFile(), true);
   assert.equal(statSync(join(root, 'src/content/support/financial-support.md')).isFile(), true);
+  assert.equal(statSync(join(root, 'src/content/site/footer.md')).isFile(), true);
 
   const researchMd = read('src/content/pages/research.md');
   assert.match(researchMd, /Artificial Emotion/);
@@ -186,6 +190,15 @@ test('institutional editorial content is sourced from Markdown', () => {
   assert.match(collaborateMd, /Commissioned Research/);
   assert.match(collaborateMd, /Hands-on Contributions/);
   assert.match(collaborateMd, /Financial Support/);
+  assert.match(collaborateMd, /Made possible by/);
+  assert.match(collaborateMd, /Let's start a conversation/);
+  assert.doesNotMatch(collaborateMd, /formal employment|residency programmes|internships/);
+  const footerMd = read('src/content/site/footer.md');
+  assert.match(footerMd, /Schönaustrasse 13/);
+  assert.match(footerMd, /8620 Wetzikon/);
+  assert.match(footerMd, /Get directions/);
+  assert.match(footerMd, /github\.com\/linalopes/);
+  assert.doesNotMatch(footerMd, /lilothink\.science@gmail\.com/);
 
   const researchPage = read('src/pages/research/index.astro');
   const atelierPage = read('src/pages/atelier/index.astro');
@@ -352,16 +365,19 @@ test('no unauthorised editorial media was added outside preserved and functional
   assert.deepEqual(unexpected, []);
 });
 
-test('offline build can read all four committed snapshots without Google', () => {
+test('offline build can read all five committed snapshots without Google', () => {
   const hero = loadHeroSnapshot();
   const events = loadEventsSnapshot();
   const archive = loadArchiveSnapshot();
   const workstations = loadWorkstationsSnapshot();
+  const contributors = loadContributorsSnapshot();
   assert.equal(hero.items.length > 0, true);
   assert.equal(selectUpcomingEvents(events.items).length, 0);
   assert.equal(archive.items.length, 6);
   assert.equal(workstations.items.length, 8);
   assert.deepEqual(workstations.items.map((item) => item.title), [...workstationTitles]);
+  assert.equal(contributors.items.length, 7);
+  assert.equal(contributors.items.every((item) => item.published), true);
   assert.match(read('docs/feed-resilience.md'), /Last-known-good snapshots/);
   assert.match(read('docs/csv-parser.md'), /csv-parse/);
 });
@@ -376,6 +392,10 @@ test('README includes the editorial administration guide', () => {
   assert.match(readme, /gid=1398027263/);
   assert.match(readme, /gid=20271126/);
   assert.match(readme, /gid=20271127/);
+  assert.match(readme, /gid=20271128/);
+  assert.match(readme, /Contributors|Made possible by/);
+  assert.match(readme, /src\/content\/site\/footer\.md/);
+  assert.match(readme, /published checkbox|not a private contributor register/i);
   assert.match(readme, /refresh once in the browser|Requires a new \*\*build and deployment\*\*/i);
   assert.match(readme, /Deploy production site|deploy\.yml/);
   assert.match(readme, /legacy-html-2026/);
