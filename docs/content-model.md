@@ -5,7 +5,7 @@ Markdown is canonical for long-form institutional text and the Research Wishlist
 
 Canonical spreadsheet, do not edit it from the site: `https://docs.google.com/spreadsheets/d/1XIkDn7NrSSQbcVyYgrlcQxjFsOkraDdfJmI1qzaq54I/edit`
 
-The Research Archive, when published, shows at most six selected rows from its sheet. The wishlist is Markdown and stays empty until a later phase. Donations will later use a TWINT personal-contact QR code and Stripe Payment Links. Neither is implemented now.
+The Research Archive shows at most six selected rows from its sheet. The wishlist is Markdown in `src/content/wishlist/` and stays empty until approved needs exist. Contributor credits and payment integrations are described in `src/data/support.ts` (TWINT personal-contact QR and Stripe Payment Links) but are not published.
 
 ## Existing integrations (preserved)
 - Published Google Sheets CSV base: `https://docs.google.com/spreadsheets/d/e/2PACX-1vSpM1GYZ-ohq9jHkppGkz4hCx_p3vuCDjekln1apcu1nV2KILUmDeoT3xeLTSprREAXWjiWY8AovP4y/pub`

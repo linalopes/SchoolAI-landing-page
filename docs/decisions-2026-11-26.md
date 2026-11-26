@@ -16,9 +16,11 @@ These decisions amend the planning baseline. Phase 1 records them and does not t
 - Research Archive GID `20271126` is active. The public CTA label is “Explore the Research Archive”, linking to https://blog.linalopes.info/. The archive section is not published in Phase 2.
 - CSV parsing uses the shared `src/lib/sheets/csv.ts` parser (no `csv-parse`). See [csv-parser.md](csv-parser.md).
 - Node runtime for this branch is 22.23.4 or newer (`engines.node`).
-- Navigation labels are The School, Research, The Atelier, Programme, Inverted Gallery, Collaborate. Research → `/research/`; The Atelier → `/atelier/`.
+- Navigation labels are The School, Research, The Atelier, Programme, Inverted Gallery, Collaborate. Live routes: Research → `/research/`; The Atelier → `/atelier/`; Programme → `/programme/`; Inverted Gallery → `/inverted-gallery/`; Collaborate → `/collaborate/`.
 - The School institutional page is `/about/`, sourced from Markdown in `src/content/pages/about.md`.
 - Founder biography and portfolio remain on https://www.linalopes.info/.
 - Artificial Emotion notebook remains on https://emotion.linalopes.info/.
 - There are eight editorial research workstations: BioLab, Makerspace, Dirty Workshop, Electronics Bench, Wearables Lab, Craft Office, Studio, Saloon. Electronics Bench and Wearables Lab are separate entries sharing a physical area. Craft Office replaces the former Office label. Inverted Gallery is not a workstation.
 - Workstations sheet GID `20271127` is active. Archive and workstations refresh once in the browser and keep snapshot markup on failure.
+- Programme past-event history shows status `past` only, excludes cancelled rows, sorts descending, and omits bare fragment URLs from public links.
+- Wishlist (`src/content/wishlist/`), contributors credits and payment extensions (`src/data/support.ts`) remain unpublished until approved content and payment details exist.

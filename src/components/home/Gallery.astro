@@ -2,7 +2,6 @@
 import { site } from '../../data/site';
 
 const inquireHref = `mailto:${site.contactEmail}?subject=${encodeURIComponent('Inverted Gallery inquiry')}`;
-const curatorHref = `mailto:${site.contactEmail}?subject=${encodeURIComponent('Curatorial collaboration')}`;
 ---
 <section id="gallery">
   <div class="section-header fade-up">
@@ -11,14 +10,11 @@ const curatorHref = `mailto:${site.contactEmail}?subject=${encodeURIComponent('C
       <h2 class="section-title">Inverted<br>Gallery</h2>
       <p class="section-intro">A gallery inside a working atelier.</p>
       <p class="callout">
-        Inverted Gallery reverses the usual relationship between studio and exhibition space. Visitors pass through part of an active research atelier before reaching the gallery, encountering the environment in which ideas are made before encountering the space in which work is presented.
-      </p>
-      <p class="section-intro">
-        Managed by School of Tomorrow’s AI, the gallery welcomes inquiries for exhibitions, rehearsals, events and other cultural activities. Only the Inverted Gallery is offered for rental — not the research atelier or its workstations.
+        Visitors pass through part of an active research atelier before reaching the gallery — encountering where ideas are made before where work is shown. Only Inverted Gallery is available for rental.
       </p>
       <div class="section-actions">
+        <a href="/inverted-gallery/" class="button button--primary">Visit Inverted Gallery</a>
         <a href={inquireHref} class="button button--primary">Inquire about the space</a>
-        <a href={curatorHref} class="button button--primary">Discuss curatorial collaboration</a>
       </div>
     </div>
   </div>

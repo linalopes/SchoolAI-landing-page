@@ -16,6 +16,9 @@ import {
   parseHeroSnapshot,
   parseWorkstationsCsv,
   selectArchiveEntries,
+  resolvePublicEventUrl,
+  selectPastEvents,
+  selectPastEventsPreview,
   selectUpcomingEvents,
   selectWorkstations,
   snapshotExists,
@@ -91,6 +94,28 @@ test('events adapter preserves empty upcoming state and relative legacy urls', (
   const upcoming = selectUpcomingEvents(items);
   assert.deepEqual(upcoming.map((row) => row.title), ['Earlier', 'Open studio']);
   assert.equal(selectUpcomingEvents(items.filter((row) => row.status === 'past')).length, 0);
+});
+
+test('past events exclude cancelled entries, sort descending, and omit fragment links', () => {
+  const { items } = parseEventsCsv([
+    'date,time,title,tagline,location,type,status,url',
+    '2026-03-15,13:30,Women,Circle,Wetzikon,gathering,past,',
+    '2026-03-28,13:00,Paper,Lab,Wetzikon,event,past,arduino-day-2026.html',
+    '2026-04-07,19:00,Cinema,Online,Zoom,workshop,past,#workshop-augmented-cinema',
+    '2026-06-02,19:00,Garden,Online,Zoom,workshop,cancel,#workshop-singing-to-a-garden',
+    '2026-08-28,13:00,Maze,Game,Wetzikon,workshop,past,https://example.com/maze',
+  ].join('\n'));
+  const past = selectPastEvents(items);
+  assert.deepEqual(past.map((row) => row.title), ['Maze', 'Cinema', 'Paper', 'Women']);
+  assert.equal(past.some((row) => row.title === 'Garden'), false);
+  assert.equal(resolvePublicEventUrl(past[0].url), 'https://example.com/maze');
+  assert.equal(resolvePublicEventUrl(past[1].url), null);
+  assert.equal(resolvePublicEventUrl(past[2].url), '/arduino-day-2026.html');
+  assert.equal(resolvePublicEventUrl('#workshop-augmented-cinema'), null);
+  const { recent, earlier } = selectPastEventsPreview(items, 2);
+  assert.equal(recent.length, 2);
+  assert.equal(earlier.length, 2);
+  assert.deepEqual(recent.map((row) => row.title), ['Maze', 'Cinema']);
 });
 
 test('archive adapter filters, sorts, limits to six, and allows missing images', () => {

@@ -1,0 +1,85 @@
+---
+import EditorialLayout from '../../layouts/EditorialLayout.astro';
+import { site } from '../../data/site';
+
+const pageTitle = `Inverted Gallery · ${site.title}`;
+const description =
+  'Inverted Gallery — a gallery inside a working atelier at School of Tomorrow’s AI in Wetzikon-Zürich.';
+const inquireHref = `mailto:${site.contactEmail}?subject=${encodeURIComponent('Inverted Gallery rental inquiry')}`;
+const culturalHref = `mailto:${site.contactEmail}?subject=${encodeURIComponent('Inverted Gallery — cultural use')}`;
+const commercialHref = `mailto:${site.contactEmail}?subject=${encodeURIComponent('Inverted Gallery — commercial use')}`;
+const curatorHref = `mailto:${site.contactEmail}?subject=${encodeURIComponent('Curatorial collaboration')}`;
+const showGalleryImage = Boolean(site.galleryImageUrl);
+---
+<EditorialLayout title={pageTitle} description={description}>
+  <article class="editorial editorial--wide">
+    <header class="editorial-header fade-up">
+      <p class="t-label editorial-eyebrow">Cultural space</p>
+      <h1 class="editorial-title">Inverted Gallery</h1>
+      <p class="editorial-lede">A gallery inside a working atelier.</p>
+    </header>
+
+    {showGalleryImage && (
+      <figure class="gallery-figure fade-up">
+        <div
+          class="gallery-figure-media"
+          style={`background-image:url('${site.galleryImageUrl}');`}
+          role="img"
+          aria-label={site.galleryImageAlt}
+        ></div>
+      </figure>
+    )}
+
+    <section class="editorial-panel fade-up">
+      <h2 class="editorial-subtitle">Production and exhibition, reversed</h2>
+      <p class="prose-p">
+        Inverted Gallery reverses the usual relationship between studio and exhibition space. Visitors pass through part of an active research atelier before reaching the gallery, encountering the environment in which ideas are made before encountering the space in which work is presented.
+      </p>
+      <p class="prose-p">
+        Managed by School of Tomorrow’s AI, the gallery sits within the School’s research environment in Wetzikon-Zürich. It welcomes proposals for exhibitions, rehearsals, events and other cultural activities connected to art, science and creative technology.
+      </p>
+    </section>
+
+    <section class="editorial-panel fade-up">
+      <h2 class="editorial-subtitle">Space rental</h2>
+      <p class="prose-p">
+        Only Inverted Gallery is available for rental. The research atelier and its workstations are not rental spaces.
+      </p>
+      <div class="rental-grid">
+        <article class="rental-card">
+          <p class="t-label rental-card-label">Cultural use</p>
+          <h3 class="rental-card-title">Exhibitions, rehearsals and cultural events</h3>
+          <p class="rental-card-desc">
+            Inquiries for exhibitions, performances, rehearsals and other cultural activities in the gallery.
+          </p>
+          <a href={culturalHref} class="button button--primary button--sm">Inquire about cultural use</a>
+        </article>
+        <article class="rental-card">
+          <p class="t-label rental-card-label">Commercial use</p>
+          <h3 class="rental-card-title">Commercial and multi-use gatherings</h3>
+          <p class="rental-card-desc">
+            Inquiries for commercial presentations, gatherings and other multi-use activities suited to the gallery.
+          </p>
+          <a href={commercialHref} class="button button--primary button--sm">Inquire about commercial use</a>
+        </article>
+      </div>
+      <p class="prose-p gallery-note">
+        Availability, conditions and fees are confirmed individually. Get in touch to discuss your proposal.
+      </p>
+      <div class="section-actions">
+        <a href={inquireHref} class="button button--primary">Inquire about the space</a>
+      </div>
+    </section>
+
+    <section class="editorial-panel fade-up">
+      <h2 class="editorial-subtitle">Curatorial collaboration</h2>
+      <p class="prose-p">
+        The School is interested in working with an associated curator whose interests connect with art, science and technology. Get in touch to discuss possible curatorial collaborations and the development of a cultural programme.
+      </p>
+      <div class="section-actions">
+        <a href={curatorHref} class="button button--primary">Discuss curatorial collaboration</a>
+        <a href={`mailto:${site.contactEmail}`} class="button button--primary">{site.contactEmail}</a>
+      </div>
+    </section>
+  </article>
+</EditorialLayout>

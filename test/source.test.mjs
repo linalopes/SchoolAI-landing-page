@@ -84,33 +84,62 @@ test('Selected Research uses the archive feed without hardcoded project cards', 
   assert.match(read('src/data/feeds/archive.json'), /affective-atmosphere-2046/);
 });
 
-test('navigation promotes Research and Atelier pages while keeping homepage anchors', () => {
+test('navigation promotes all seven institutional routes while keeping homepage anchors', () => {
   const nav = read('src/data/navigation.ts');
   const view = read('src/components/navigation/SiteNav.astro');
+  const footer = read('src/components/navigation/SiteFooter.astro');
+  const hero = read('src/components/home/Hero.astro');
   const researchHome = read('src/components/home/ArtificialEmotion.astro');
   const atelierHome = read('src/components/home/Atelier.astro');
+  const programmeHome = read('src/components/home/Programme.astro');
+  const galleryHome = read('src/components/home/Gallery.astro');
+  const collaborateHome = read('src/components/home/Collaborate.astro');
   for (const label of ['The School', 'Research', 'The Atelier', 'Programme', 'Inverted Gallery', 'Collaborate']) {
     assert.match(nav, new RegExp(label));
   }
   assert.match(nav, /href: '\/about\/'/);
   assert.match(nav, /href: '\/research\/'/);
   assert.match(nav, /href: '\/atelier\/'/);
-  assert.match(nav, /href: '\/#programme'/);
-  assert.match(nav, /href: '\/#gallery'/);
-  assert.match(nav, /href: '\/#collaborate'/);
+  assert.match(nav, /href: '\/programme\/'/);
+  assert.match(nav, /href: '\/inverted-gallery\/'/);
+  assert.match(nav, /href: '\/collaborate\/'/);
   assert.match(nav, /plannedRoutes/);
+  const planned = nav.slice(nav.indexOf('export const plannedRoutes'));
+  assert.match(planned, /wishlist/);
+  assert.match(planned, /contributors/);
+  assert.doesNotMatch(planned, /href: '\/programme\/'/);
+  assert.doesNotMatch(planned, /href: '\/inverted-gallery\/'/);
+  assert.doesNotMatch(planned, /href: '\/collaborate\/'/);
+  assert.doesNotMatch(nav, /href: '\/#programme'/);
+  assert.doesNotMatch(nav, /href: '\/#gallery'/);
+  assert.doesNotMatch(nav, /href: '\/#collaborate'/);
   assert.doesNotMatch(nav, /href: '\/#research'/);
   assert.doesNotMatch(nav, /href: '\/#atelier'/);
   assert.match(researchHome, /id="research"/);
   assert.match(atelierHome, /id="atelier"/);
+  assert.match(programmeHome, /id="programme"/);
+  assert.match(galleryHome, /id="gallery"/);
+  assert.match(collaborateHome, /id="collaborate"/);
+  assert.match(programmeHome, /href="\/programme\/"/);
+  assert.match(galleryHome, /href="\/inverted-gallery\/"/);
+  assert.match(collaborateHome, /href="\/collaborate\/"/);
+  assert.match(hero, /href="\/research\/"/);
+  assert.match(hero, /href="\/collaborate\/"/);
+  assert.match(footer, /href="\/programme\/"/);
+  assert.match(footer, /href="\/inverted-gallery\/"/);
+  assert.match(footer, /href="\/collaborate\/"/);
   assert.match(view, /navItems/);
   assert.match(view, /homeHref/);
   assert.match(view, /id="nav-hamburger"/);
 });
 
-test('Research and Atelier pages exist with approved institutional content', () => {
+test('Research, Atelier, Programme, Gallery and Collaborate pages exist with approved content', () => {
   const research = read('src/pages/research/index.astro');
   const atelier = read('src/pages/atelier/index.astro');
+  const programme = read('src/pages/programme/index.astro');
+  const gallery = read('src/pages/inverted-gallery/index.astro');
+  const collaborate = read('src/pages/collaborate/index.astro');
+  const support = read('src/data/support.ts');
   assert.match(research, /Artificial Emotion/);
   assert.match(research, /Kinetic Studies/);
   assert.match(research, /Soft Mechanisms/);
@@ -125,7 +154,38 @@ test('Research and Atelier pages exist with approved institutional content', () 
   assert.match(atelier, /Arrange a visit/);
   assert.match(atelier, /Propose a research collaboration/);
   assert.match(atelier, /not available for rental/);
-  assert.doesNotMatch(atelier, /seven workstation|phase 3|snapshot|planned route/i);
+  assert.doesNotMatch(atelier, /seven workstation|phase 3|snapshot|planned route|one-to-one correspondence|data model/i);
+  assert.match(programme, /Open Research Studio/);
+  assert.match(programme, /Research-based workshops/);
+  assert.match(programme, /selectPastEventsPreview|Past events/);
+  assert.match(programme, /room-for-interaction\.html/);
+  assert.match(programme, /arduino-day-2026\.html/);
+  assert.match(programme, /Newsletter/);
+  assert.match(gallery, /Inverted Gallery/);
+  assert.match(gallery, /Space rental|space rental/i);
+  assert.match(gallery, /Cultural use/);
+  assert.match(gallery, /Commercial use/);
+  assert.match(gallery, /Curatorial collaboration/);
+  assert.match(gallery, /Only Inverted Gallery is available for rental/);
+  assert.match(gallery, /galleryImageUrl/);
+  assert.doesNotMatch(gallery, /CHF|price|calendar|booking system|placeholder image/i);
+  assert.match(collaborate, /Research grows through exchange/);
+  assert.match(collaborate, /Research Collaboration/);
+  assert.match(collaborate, /Student Research/);
+  assert.match(collaborate, /Technology Partnerships/);
+  assert.match(collaborate, /Commissioned Research/);
+  assert.match(collaborate, /Hands-on Contributions/);
+  assert.match(collaborate, /Financial Support/);
+  assert.match(collaborate, /does not offer formal employment, residency programmes, internships/);
+  assert.doesNotMatch(collaborate, /TWINT|Stripe|payment link|IBAN/i);
+  assert.match(support, /wishlist/);
+  assert.match(support, /contributors/);
+  assert.match(support, /twintPersonalContactQrUrl/);
+  assert.match(support, /stripePaymentLinks/);
+  assert.deepEqual(
+    readdirSync(join(root, 'src/content/wishlist')).filter((name) => name.endsWith('.md')),
+    [],
+  );
 });
 
 test('eight-workstation nomenclature is confirmed and seven-station copy is gone from public pages', () => {

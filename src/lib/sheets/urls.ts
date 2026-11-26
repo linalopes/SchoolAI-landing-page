@@ -49,3 +49,27 @@ export function parseEditorialLink(value: string, field: string): string | null 
   if (/^https?:\/\//i.test(normalized)) return parseHttpUrl(normalized, field);
   throw new FeedValidationError(`Unsupported URL for ${field}`, [normalized]);
 }
+
+/**
+ * Public-facing event links only. Bare in-page fragments are omitted so
+ * cancelled or missing workshop anchors are never presented as destinations.
+ * Relative `.html` paths become site-rooted.
+ */
+export function resolvePublicEventUrl(value: string | null | undefined): string | null {
+  const normalized = normalizeText(value ?? '');
+  if (!normalized) return null;
+  if (isUnsafeUrlScheme(normalized)) return null;
+  if (normalized.startsWith('#')) return null;
+  if (/^https?:\/\//i.test(normalized)) {
+    try {
+      return parseHttpUrl(normalized, 'url');
+    } catch {
+      return null;
+    }
+  }
+  if (normalized.startsWith('/')) return normalized;
+  if (/^[a-z0-9._~/-]+\.html(?:#.*)?$/i.test(normalized)) {
+    return `/${normalized.replace(/^\//, '')}`;
+  }
+  return null;
+}

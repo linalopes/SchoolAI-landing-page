@@ -1311,6 +1311,110 @@
     margin: var(--space-5) 0 var(--space-6);
   }
 
+  .gallery-figure {
+    margin: 0 0 var(--space-6);
+  }
+
+  .gallery-figure-media {
+    width: 100%;
+    min-height: clamp(220px, 40vw, 420px);
+    background-size: cover;
+    background-position: center;
+    background-color: var(--gray-green);
+    border: var(--border-width) solid rgba(34, 17, 62, 0.14);
+  }
+
+  .rental-grid,
+  .pathway-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5);
+    margin: var(--space-4) 0;
+  }
+
+  .pathway-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .rental-card,
+  .pathway-card {
+    padding: var(--space-4);
+    border-top: 2px solid var(--pink);
+    background: rgba(202, 216, 216, 0.18);
+  }
+
+  .rental-card-label,
+  .pathway-index {
+    color: var(--pink);
+    margin-bottom: var(--space-2);
+  }
+
+  .rental-card-title,
+  .pathway-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: clamp(22px, 2.4vw, 28px);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin-bottom: var(--space-3);
+  }
+
+  .rental-card-desc,
+  .pathway-desc {
+    font-size: 16px;
+    line-height: 1.7;
+    opacity: 0.78;
+    margin-bottom: var(--space-4);
+  }
+
+  .pathway-link {
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    color: var(--color-link);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-link-underline);
+  }
+
+  .pathway-link:hover {
+    color: var(--color-link-hover);
+  }
+
+  .pathway-link:focus-visible {
+    outline: 2px solid var(--pink);
+    outline-offset: 4px;
+  }
+
+  .gallery-note {
+    margin-top: var(--space-4);
+  }
+
+  .programme-page-grid {
+    margin-bottom: var(--space-5);
+  }
+
+  .past-events-more {
+    margin-top: var(--space-4);
+  }
+
+  .past-events-more-summary {
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    color: var(--color-link);
+    margin-bottom: var(--space-3);
+  }
+
+  .past-events-more-summary:focus-visible {
+    outline: 2px solid var(--pink);
+    outline-offset: 4px;
+  }
+
+  .events-item--past .button {
+    margin-top: var(--space-3);
+  }
+
   /* ── EDITORIAL PAGES ── */
   .editorial-main {
     padding-top: 120px;
@@ -1801,4 +1905,6 @@
     .workstations-grid { grid-template-columns: 1fr; }
     .workstation-card { grid-template-columns: 1fr; }
     .workstation-card-media { min-height: 180px; }
+    .rental-grid,
+    .pathway-grid { grid-template-columns: 1fr; }
   }

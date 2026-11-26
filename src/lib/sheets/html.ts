@@ -1,5 +1,6 @@
 import { archiveCta } from './contract.ts';
 import type { ArchiveEntry, EventItem, HeroSlide, WorkstationEntry } from './types.ts';
+import { resolvePublicEventUrl } from './urls.ts';
 
 export function escapeHTML(value: string): string {
   return String(value || '')
@@ -102,11 +103,11 @@ export function renderEventsMarkup(events: EventItem[]): string {
     const status = statusLabel.toLowerCase();
     const typeLabel = event.type.trim();
     const badgeClass = getStatusClass(statusLabel);
-    const safeUrl = (event.url || '').trim();
-    const hasUrl = safeUrl.length > 0;
+    const safeUrl = resolvePublicEventUrl(event.url);
+    const hasUrl = Boolean(safeUrl);
     const badgeTag = (hasUrl && (status === 'open' || status === 'upcoming')) ? 'a' : 'div';
     const badgeHref = (badgeTag === 'a')
-      ? `href="${escapeHTML(safeUrl)}" target="_blank" rel="noopener noreferrer"`
+      ? `href="${escapeHTML(safeUrl ?? '')}" target="_blank" rel="noopener noreferrer"`
       : '';
     const formatted = formatEventDate(event.date);
     const [month = '', dayRaw = '', year = ''] = formatted.split(' ');
@@ -126,6 +127,42 @@ export function renderEventsMarkup(events: EventItem[]): string {
           ${event.location ? `<div class="events-where">${escapeHTML(event.location)}</div>` : ''}
         </div>
         <${badgeTag} class="badge events-badge ${badgeClass}" ${badgeHref}>${escapeHTML(statusLabel)}</${badgeTag}>
+      </div>
+    `;
+  }).join('');
+}
+
+export function renderPastEventsEmptyMarkup(): string {
+  return '<p class="events-empty">Past public encounters will appear here as the archive grows.</p>';
+}
+
+export function renderPastEventsMarkup(events: EventItem[]): string {
+  if (!events.length) return renderPastEventsEmptyMarkup();
+
+  return events.map((event) => {
+    const typeLabel = event.type.trim();
+    const safeUrl = resolvePublicEventUrl(event.url);
+    const link = safeUrl
+      ? `<a class="button button--accent button--sm" href="${escapeHTML(safeUrl)}"${safeUrl.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>View details</a>`
+      : '';
+    const formatted = formatEventDate(event.date);
+    const [month = '', dayRaw = '', year = ''] = formatted.split(' ');
+    const day = dayRaw.replace(',', '');
+
+    return `
+      <div class="events-item events-item--past">
+        <div class="events-date-block">
+          <div class="events-date-day">${escapeHTML(day)}</div>
+          <div class="events-date-month">${escapeHTML(month)} ${escapeHTML(year)}</div>
+          <div class="events-time">${escapeHTML(event.time)}</div>
+        </div>
+        <div class="events-info">
+          ${typeLabel ? `<span class="tag tag--accent events-type">${escapeHTML(typeLabel)}</span>` : ''}
+          <div class="events-name">${escapeHTML(event.title)}</div>
+          ${event.tagline ? `<div class="events-tagline">${escapeHTML(event.tagline)}</div>` : ''}
+          ${event.location ? `<div class="events-where">${escapeHTML(event.location)}</div>` : ''}
+          ${link}
+        </div>
       </div>
     `;
   }).join('');

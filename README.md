@@ -20,7 +20,7 @@ Institutional website for [schoolai.linalopes.info](https://schoolai.linalopes.i
 
 ## Current branch
 
-Astro 7 static output, TypeScript, and the SchoolAI brand CSS. Live pages include `/`, `/about/`, `/research/` and `/atelier/`. The homepage keeps the split hero and spreadsheet carousel, then School, Artificial Emotion, Selected Research (up to six archive cards), Atelier, Programme, Inverted Gallery, Collaborate, newsletter and footer. Editorial feeds use last-known-good snapshots in `src/data/feeds/` for hero, events, archive and workstations. Builds do not call Google Sheets.
+Astro 7 static output, TypeScript, and the SchoolAI brand CSS. Live pages include `/`, `/about/`, `/research/`, `/atelier/`, `/programme/`, `/inverted-gallery/` and `/collaborate/`. The homepage keeps the split hero and spreadsheet carousel, then School, Artificial Emotion, Selected Research (up to six archive cards), Atelier, Programme, Inverted Gallery, Collaborate, newsletter and footer. Editorial feeds use last-known-good snapshots in `src/data/feeds/` for hero, events, archive and workstations. Builds do not call Google Sheets. Wishlist, contributors and payments are prepared as extension points only.
 
 ```sh
 npm ci

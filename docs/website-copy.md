@@ -109,7 +109,9 @@ Research grows through exchange. We welcome artists, researchers, students, labo
 
 **Financial support:** contribute to ongoing research, atelier maintenance or specific campaigns. Confirm payment options before publication.
 
-[Research Wishlist] · [Arrange a visit] · [Contact the School]
+[Arrange a visit] · [Contact the School]
+
+Research Wishlist and Made possible by remain unpublished until approved content exists.
 
 ## Research Wishlist
 Help make research possible. Contributions can take the form of materials, equipment, access, expertise, time or financial support. Each published need describes what is needed, why it matters and how to contribute.

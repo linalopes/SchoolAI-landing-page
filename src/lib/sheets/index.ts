@@ -6,6 +6,7 @@ export {
   canonicalSpreadsheetUrl,
   eventColumns,
   eventsCsvUrl,
+  eventsPastPreviewCount,
   eventsVisibleCount,
   feedClientTimeoutMs,
   formspreeAction,
@@ -20,8 +21,12 @@ export { parseAndSelectArchive, parseArchiveCsv, selectArchiveEntries } from './
 export { parseCsvObjects, parseCsvRecords } from './csv.ts';
 export {
   adaptEventRows,
+  isCancelledEventStatus,
+  isPastEventStatus,
   isVisibleEventStatus,
   parseEventsCsv,
+  selectPastEvents,
+  selectPastEventsPreview,
   selectUpcomingEvents,
   sortEventItems,
 } from './events.ts';
@@ -36,8 +41,11 @@ export {
   renderEventsEmptyMarkup,
   renderEventsMarkup,
   renderHeroCarouselMarkup,
+  renderPastEventsEmptyMarkup,
+  renderPastEventsMarkup,
   renderWorkstationsMarkup,
 } from './html.ts';
+export { resolvePublicEventUrl } from './urls.ts';
 export {
   createSnapshot,
   feedsDirectory,

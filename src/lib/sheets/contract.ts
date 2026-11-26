@@ -61,6 +61,7 @@ export const workstationColumns = [
 ] as const;
 
 export const eventsVisibleCount = 4;
+export const eventsPastPreviewCount = 6;
 export const archiveVisibleCount = 6;
 
 export const archiveCta = {
