@@ -2,7 +2,7 @@
 
 Institutional website for [schoolai.linalopes.info](https://schoolai.linalopes.info/).
 
-**Phase 4B production release** is authorised from `website-2027` at the reviewed Astro tip. Legacy HTML remains on `main` until Pages is switched to GitHub Actions and Astro is merged.
+**Production** is the Astro static site on `main`, deployed to [schoolai.linalopes.info](https://schoolai.linalopes.info/) via GitHub Actions. Release tag: `v2.0.0`. Legacy HTML is preserved as `legacy-html-2026` / `v1.0.0-legacy` (`0a84b8c`). Migration branch `website-2027` is retained until the owner confirms.
 
 ## Read first
 
@@ -57,13 +57,13 @@ Node **22.23.4** or newer. The lockfile is the dependency source.
 
 `refresh-snapshots.yml` commits with `GITHUB_TOKEN` (push events do not chain Deploy) and **explicitly dispatches** `deploy.yml` when public editorial payload changes. Timestamp-only `fetchedAt` updates do not create commits.
 
-### Owner GitHub Pages settings (required before Astro lands on `main`)
+### GitHub Pages (active)
 
-1. Settings → Pages → Source → **GitHub Actions**
-2. Custom domain: **schoolai.linalopes.info**
-3. **Enforce HTTPS** when available
+- Source: **GitHub Actions** (`.github/workflows/deploy.yml`)
+- Custom domain: **schoolai.linalopes.info**
+- HTTPS enforced
 
-Exact release and rollback steps: [docs/production-release.md](docs/production-release.md).
+Release and rollback: [docs/production-release.md](docs/production-release.md).
 
 ## How to update website content
 
