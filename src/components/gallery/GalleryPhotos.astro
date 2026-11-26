@@ -20,12 +20,15 @@ const photos = sortPhotos(Astro.props.photos ?? []).filter((photo) => Boolean(ph
     <div class="gallery-photos-grid">
       {photos.map((photo) => (
         <figure class="gallery-figure">
-          <div
-            class="gallery-figure-media"
-            style={`background-image:url('${photo.url}');`}
-            role="img"
-            aria-label={photo.alt}
-          ></div>
+          <div class="gallery-figure-frame">
+            <img
+              class="gallery-figure-image"
+              src={photo.url}
+              alt={photo.alt}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
           {(photo.caption || photo.credit) && (
             <figcaption class="gallery-figure-caption">
               {photo.caption}

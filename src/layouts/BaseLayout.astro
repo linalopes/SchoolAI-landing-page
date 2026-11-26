@@ -8,11 +8,19 @@ import { site } from '../data/site';
 interface Props {
   title?: string;
   description?: string;
+  image?: string | null;
 }
 
 const home = await requirePage('home');
 const defaultDescription = home.data.description ?? home.data.hero?.tagline ?? '';
-const { title = site.title, description = defaultDescription } = Astro.props;
+const {
+  title = site.title,
+  description = defaultDescription,
+  image = null,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImage = image;
 ---
 <!DOCTYPE html>
 <html lang={site.lang}>
@@ -21,7 +29,18 @@ const { title = site.title, description = defaultDescription } = Astro.props;
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{title}</title>
   <meta name="description" content={description}>
-  <link rel="canonical" href={new URL(Astro.url.pathname, site.url).href}>
+  <link rel="canonical" href={canonical}>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content={site.title}>
+  <meta property="og:locale" content="en">
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:url" content={canonical}>
+  {ogImage && <meta property="og:image" content={ogImage}>}
+  <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'}>
+  <meta name="twitter:title" content={title}>
+  <meta name="twitter:description" content={description}>
+  {ogImage && <meta name="twitter:image" content={ogImage}>}
   <link rel="icon" type="image/svg+xml" href="/imgs/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

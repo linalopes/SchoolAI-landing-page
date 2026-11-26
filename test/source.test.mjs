@@ -168,7 +168,9 @@ test('institutional editorial content is sourced from Markdown', () => {
 
   const galleryMd = read('src/content/pages/inverted-gallery.md');
   assert.match(galleryMd, /Only Inverted Gallery is available for rental/);
-  assert.match(galleryMd, /photos: \[\]/);
+  assert.match(galleryMd, /inverted-gallery-1\.jpg/);
+  assert.match(galleryMd, /inverted-gallery-2\.jpg/);
+  assert.match(galleryMd, /before its planned transformation/);
 
   const collaborateMd = read('src/content/pages/collaborate.md');
   assert.match(collaborateMd, /Research Collaboration/);
@@ -368,4 +370,41 @@ test('README includes the editorial administration guide', () => {
   assert.match(readme, /gid=20271126/);
   assert.match(readme, /gid=20271127/);
   assert.match(readme, /refresh once in the browser|Requires a new \*\*build and deployment\*\*/i);
+  assert.match(readme, /Deploy production site|deploy\.yml/);
+  assert.match(readme, /legacy-html-2026/);
+  assert.match(readme, /v1\.0\.0-legacy/);
+  assert.match(readme, /GitHub Actions/);
+});
+
+test('production workflows deploy only from main and keep validation separate', () => {
+  const deploy = read('.github/workflows/deploy.yml');
+  const validate = read('.github/workflows/validate.yml');
+  const refresh = read('.github/workflows/refresh-snapshots.yml');
+  assert.match(deploy, /branches:\s*\n\s*-\s*main/);
+  assert.match(deploy, /workflow_dispatch/);
+  assert.match(deploy, /actions\/upload-pages-artifact@v3/);
+  assert.match(deploy, /actions\/deploy-pages@v4/);
+  assert.match(deploy, /github-pages/);
+  assert.match(deploy, /npm run build/);
+  assert.match(deploy, /npm run test:dist/);
+  assert.doesNotMatch(deploy, /website-2027/);
+  assert.match(validate, /website-2027/);
+  assert.match(validate, /main/);
+  assert.doesNotMatch(validate, /deploy-pages|upload-pages-artifact/);
+  assert.match(refresh, /workflow_dispatch/);
+  assert.match(refresh, /# schedule:/);
+  assert.match(refresh, /npm run refresh-feeds/);
+  assert.match(refresh, /GITHUB_TOKEN|github-actions\[bot\]/);
+  assert.match(read('docs/production-release.md'), /legacy-html-2026/);
+  assert.match(read('docs/production-release.md'), /Do \*\*not\*\* execute this procedure until Phase 4B/);
+});
+
+test('archive snapshot includes Drawing Machines and Maze Circuit image URLs', () => {
+  const archive = JSON.parse(read('src/data/feeds/archive.json'));
+  const drawing = archive.items.find((item) => item.id === 'drawing-machines');
+  const maze = archive.items.find((item) => item.id === 'maze-circuit');
+  assert.equal(Boolean(drawing?.imageUrl), true);
+  assert.equal(Boolean(maze?.imageUrl), true);
+  assert.match(drawing.imageUrl, /^https:\/\//);
+  assert.match(maze.imageUrl, /^https:\/\//);
 });

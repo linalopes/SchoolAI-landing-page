@@ -266,8 +266,8 @@ test('committed snapshots contain only public feed material', () => {
     assert.equal(item.published, true);
     assert.equal(item.featured, true);
   }
-  assert.equal(archive.items.find((item) => item.id === 'drawing-machines').imageUrl, null);
-  assert.equal(archive.items.find((item) => item.id === 'maze-circuit').imageUrl, null);
+  assert.match(archive.items.find((item) => item.id === 'drawing-machines').imageUrl, /^https:\/\//);
+  assert.match(archive.items.find((item) => item.id === 'maze-circuit').imageUrl, /^https:\/\//);
 
   const workstations = JSON.parse(readFileSync(new URL('../src/data/feeds/workstations.json', import.meta.url), 'utf8'));
   assert.equal(workstations.feed, 'workstations');

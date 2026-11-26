@@ -34,7 +34,8 @@ test('client refresh failure keeps previously rendered snapshot markup', () => {
   assert.match(heroHtml, /Your Hand Is the Prompt|hero-carousel-pause/);
   assert.match(eventsHtml, /No public events are scheduled right now/);
   assert.match(archiveHtml, /archive-grid|Affective Atmosphere 2046/);
-  assert.match(archiveHtml, /archive-card-media--fallback/);
+  assert.match(archiveHtml, /Drawing Machines|Maze Circuit/);
+  assert.match(archiveHtml, /archive-card-media/);
   assert.match(workstationsHtml, /BioLab|Craft Office|Wearables Lab/);
   assert.match(workstationsHtml, /workstation-card-media--fallback/);
 

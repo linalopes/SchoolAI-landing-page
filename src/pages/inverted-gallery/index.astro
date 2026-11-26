@@ -19,8 +19,9 @@ if (!concept || !rental_categories || !inquire_cta || !curatorial) {
   throw new Error('inverted-gallery.md is missing required frontmatter sections.');
 }
 const pageTitle = `${entry.data.title} · ${site.title}`;
+const ogImage = photos?.find((photo) => photo.url)?.url ?? null;
 ---
-<EditorialLayout title={pageTitle} description={entry.data.description}>
+<EditorialLayout title={pageTitle} description={entry.data.description} image={ogImage}>
   <article class="editorial editorial--wide">
     <header class="editorial-header fade-up">
       {entry.data.eyebrow && <p class="t-label editorial-eyebrow">{entry.data.eyebrow}</p>}

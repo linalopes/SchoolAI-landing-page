@@ -1,6 +1,6 @@
 # Implementation plan and acceptance
 
-Phases 0–3F are approved. Phase 3G (editorial Markdown refactor, gallery rates, financial support) is implemented on `website-2027`. Do not start Phase 4 until review. Production is still `main`.
+Phases 0–3G are approved. Phase 4A (production readiness: deploy workflow, SEO assets, gallery photos, feed refresh, release docs) is on `website-2027`. Do not execute Phase 4B production cutover until review. Production is still legacy `main`.
 
 ## Phase 0 — Audit and freeze
 Create branch `website-2027` from current default branch. Capture current desktop/mobile screenshots, route inventory, current brand tokens, exact hero/event headers and behavior, Formspree workflow, 3D assets/dependencies and live hosting settings. Record source and findings; no destructive change. Confirm media hosting and gallery name before public release.
@@ -23,8 +23,11 @@ Navigation architecture, `/about/` Markdown introduction, homepage editorial res
 ## Phase 3G — Editorial refactoring and final integrations
 Institutional and homepage copy moved to Markdown. Gallery rental rates and financial support (TWINT + Stripe Payment Link) are Markdown-configured. Optional gallery photos via frontmatter. README editorial administration guide published. Wishlist and contributors remain unpublished.
 
-## Phase 4 — QA and release
-Run `npm ci`, type checks, tests and production build; test mobile/desktop, accessibility, no-JS, link validity, legacy routes, external media, feed outage, event date handling, newsletter, 3D and search metadata. Review public credits for permission. Check that no new binary media exists in Git. Obtain owner approval before merging/deploying. Record rollback instructions (redeploy previous approved commit) and README for editors.
+## Phase 4A — Production readiness
+Deploy and optional snapshot workflows prepared; robots/sitemap/404/OG metadata; gallery photographs configured; feeds refreshed; release/rollback documented. No merge to `main`, no Pages switch, no live deploy.
+
+## Phase 4B — Production release (owner approval required)
+Execute [production-release.md](production-release.md): preserve `legacy-html-2026` / `v1.0.0-legacy`, merge Astro to `main`, switch Pages to Actions, verify domain, tag `v2.0.0`.
 
 ## Acceptance checklist
 - [x] Existing brand and split hero retained; visual parity reviewed (Phase 3A screenshots outside Git).

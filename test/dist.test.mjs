@@ -84,7 +84,11 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   assert.match(gallery, /1(?:'|’|&#39;)400/);
   assert.match(gallery, /Only Inverted Gallery is available for rental/);
   assert.match(gallery, /mailto:lilothink\.science@gmail\.com/);
-  assert.doesNotMatch(gallery, /class="gallery-figure"|booking calendar/i);
+  assert.match(gallery, /class="gallery-figure"/);
+  assert.match(gallery, /inverted-gallery-1\.jpg/);
+  assert.match(gallery, /inverted-gallery-2\.jpg/);
+  assert.match(gallery, /og:image/);
+  assert.doesNotMatch(gallery, /booking calendar/i);
 
   const collaborate = readFileSync(dist('collaborate/index.html'), 'utf8');
   assert.match(collaborate, /Research grows through exchange/);
@@ -102,6 +106,13 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
 
   assert.equal(statSync(dist('imgs/contact-twint.png')).isFile(), true);
   assert.equal(statSync(dist('imgs/stripe.png')).isFile(), true);
+  assert.equal(statSync(dist('robots.txt')).isFile(), true);
+  assert.equal(statSync(dist('sitemap.xml')).isFile(), true);
+  assert.match(readFileSync(dist('robots.txt'), 'utf8'), /Sitemap: https:\/\/schoolai\.linalopes\.info\/sitemap\.xml/);
+  assert.match(readFileSync(dist('sitemap.xml'), 'utf8'), /https:\/\/schoolai\.linalopes\.info\/inverted-gallery\//);
+  assert.match(readFileSync(dist('404.html'), 'utf8'), /Page not found/);
+  assert.match(html, /og:title/);
+  assert.match(html, /canonical/);
 
   for (const path of [
     'space3d.html',

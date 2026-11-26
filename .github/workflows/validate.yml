@@ -1,12 +1,12 @@
 name: Validate static site
 
-# Builds the migration branch. It does not deploy.
-# GitHub Pages production remains the main branch root until a later approval.
+# Validation only. Does not deploy. Covers the migration branch, main, and pull requests.
 
 on:
   push:
     branches:
       - website-2027
+      - main
   pull_request:
 
 permissions:

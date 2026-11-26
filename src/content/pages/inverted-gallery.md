@@ -4,7 +4,16 @@ description: Inverted Gallery — a gallery inside a working atelier at School o
 eyebrow: Cultural space
 lede: A gallery inside a working atelier.
 
-photos: []
+photos:
+  - url: "https://cloud.linalopes.info/index.php/apps/files_sharing/publicpreview/jiAJgYacM6rGq3Q?file=inverted-gallery-1.jpg&x=2400&y=2400&a=true"
+    alt: "Inverted Gallery before its planned transformation, view 1."
+    caption: "The space in its current configuration."
+    order: 1
+
+  - url: "https://cloud.linalopes.info/index.php/apps/files_sharing/publicpreview/jiAJgYacM6rGq3Q?file=inverted-gallery-2.jpg&x=2400&y=2400&a=true"
+    alt: "Inverted Gallery before its planned transformation, view 2."
+    caption: "The space in its current configuration."
+    order: 2
 
 concept:
   title: Production and exhibition, reversed

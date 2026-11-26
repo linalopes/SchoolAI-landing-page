@@ -1,7 +1,7 @@
 # Technical architecture
 
-## Phase 3G status, 26 November 2026
-`website-2027` is an Astro static project with Markdown as the editorial source of truth for institutional pages, homepage copy, gallery rental rates and financial support; typed Google Sheets adapters for hero, events, archive and workstations; committed feed snapshots; offline builds; and seven live institutional routes. Wishlist and contributors remain unpublished. Production GitHub Pages still serves `main` at the repository root. Legacy pages and media remain in `public/`, plus authorised TWINT/Stripe QR assets. `.github/workflows/validate.yml` typechecks, tests, and builds. It does not deploy. Feed behaviour is [feed resilience](feed-resilience.md). Confirmed names and boundaries are in [decisions](decisions-2026-11-26.md).
+## Phase 4A status, 26 November 2026
+`website-2027` is the Astro release candidate: Markdown editorial sources; Sheets adapters and snapshots for four feeds; seven institutional routes; gallery photographs via Markdown; financial support; robots/sitemap/404/OG metadata; `.github/workflows/deploy.yml` (main only); optional `refresh-snapshots.yml` (manual); validation on `website-2027` and `main`. Production Pages still serves legacy `main` until Phase 4B. Release procedure: [production-release.md](production-release.md). Feed behaviour: [feed resilience](feed-resilience.md).
 
 **Permanent rule:** do not hardcode editable editorial content in `.astro` or `.ts`. See README “How to update website content”.
 

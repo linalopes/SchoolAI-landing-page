@@ -1,6 +1,8 @@
 # School of Tomorrow’s AI
 
-Institutional website for [schoolai.linalopes.info](https://schoolai.linalopes.info/). Development lives on `website-2027`. Production GitHub Pages still publishes `main` from the repository root. This branch does not change that.
+Institutional website for [schoolai.linalopes.info](https://schoolai.linalopes.info/).
+
+**Phase 4A release candidate** lives on `website-2027`. Production `main` still serves the legacy HTML site until Phase 4B. Do not merge, change Pages settings, or deploy without explicit approval.
 
 ## Read first
 
@@ -15,14 +17,21 @@ Institutional website for [schoolai.linalopes.info](https://schoolai.linalopes.i
 9. [Decisions confirmed on 26 November 2026](docs/decisions-2026-11-26.md)
 10. [Feed resilience](docs/feed-resilience.md)
 11. [Legacy media, and how it moves later](docs/legacy-media.md)
+12. [Production release and rollback](docs/production-release.md)
 
 [AGENTS.md](AGENTS.md) is mandatory.
 
-## Current branch
+## Production architecture
 
-Astro 7 static output, TypeScript, and the SchoolAI brand CSS. Live pages include `/`, `/about/`, `/research/`, `/atelier/`, `/programme/`, `/inverted-gallery/` and `/collaborate/`.
+- **Stack:** Astro 7 static output, TypeScript, native CSS (SchoolAI Brand Kit).
+- **Editorial Markdown:** `src/content/` for institutional pages, homepage copy, gallery rates/photos, financial support.
+- **Google Sheets feeds:** hero, events, research archive, workstations — validated snapshots in `src/data/feeds/`.
+- **Builds:** offline against committed snapshots. Production deploy never calls Google Sheets.
+- **Hosting (after Phase 4B):** GitHub Pages via `.github/workflows/deploy.yml` on pushes to `main`.
+- **Domain:** `schoolai.linalopes.info` (no repository-name base path).
+- **Routes:** `/`, `/about/`, `/research/`, `/atelier/`, `/programme/`, `/inverted-gallery/`, `/collaborate/`, plus legacy HTML under `public/`.
 
-**Editorial content lives in Markdown.** Astro components present it; TypeScript validates feeds and application logic. Google Sheets powers the hero carousel, events, research archive and workstations. Builds read committed snapshots in `src/data/feeds/` and do not call Google Sheets.
+### Local development
 
 ```sh
 npm ci
@@ -35,7 +44,25 @@ npm run preview
 npm run test:dist
 ```
 
-Node 22.23.4 or newer. Astro 7 refuses older Node 22 releases. The lockfile is the dependency source. `.github/workflows/validate.yml` runs check, test, and build. It does not deploy.
+Node **22.23.4** or newer. The lockfile is the dependency source.
+
+### GitHub Actions
+
+| Workflow | Purpose | Triggers |
+|---|---|---|
+| `validate.yml` | Check, test, offline build | Push to `website-2027` / `main`, pull requests |
+| `deploy.yml` | Validate, build, deploy `dist/` to Pages | Push to `main`, manual `workflow_dispatch` |
+| `refresh-snapshots.yml` | Refresh feed snapshots and commit if changed | Manual `workflow_dispatch` only (daily schedule commented out) |
+
+Bot commits from `refresh-snapshots.yml` use `GITHUB_TOKEN` and **do not** re-trigger Deploy. After a bot snapshot update on `main`, run **Deploy production site** manually if the live site must rebuild.
+
+### Owner GitHub Pages settings (Phase 4B)
+
+1. Settings → Pages → Source → **GitHub Actions**
+2. Custom domain: **schoolai.linalopes.info**
+3. **Enforce HTTPS**
+
+Exact release and rollback steps: [docs/production-release.md](docs/production-release.md) (`legacy-html-2026`, `v1.0.0-legacy`, promote Astro, `v2.0.0`).
 
 ## How to update website content
 
@@ -139,6 +166,6 @@ Add Markdown files under `src/content/wishlist/` with the required frontmatter (
 - Authorised functional exceptions in Git: `public/imgs/contact-twint.png`, `public/imgs/stripe.png`.
 - Legacy media already under `public/imgs/` and `public/history/` remains for compatibility.
 
-## Still open before Phase 4
+## Still open before Phase 4B
 
-Gallery photographs (URLs pending), Wishlist publication, contributor credits with permission, and production merge/deploy after owner approval.
+Wishlist publication, contributor credits with permission, workstation photographs, Nextcloud preview availability from some networks, and owner-approved merge/deploy.

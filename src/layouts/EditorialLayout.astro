@@ -6,11 +6,12 @@ import SiteFooter from '../components/navigation/SiteFooter.astro';
 interface Props {
   title: string;
   description?: string;
+  image?: string | null;
 }
 
-const { title, description } = Astro.props;
+const { title, description, image = null } = Astro.props;
 ---
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} image={image}>
   <SiteNav />
   <main class="editorial-main">
     <slot />
