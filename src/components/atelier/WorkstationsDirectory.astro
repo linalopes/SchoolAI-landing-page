@@ -1,0 +1,41 @@
+---
+import {
+  loadWorkstationsSnapshot,
+  renderWorkstationsMarkup,
+} from '../../lib/sheets/index.ts';
+import { requirePage } from '../../lib/content';
+
+interface Props {
+  showHeading?: boolean;
+  number?: string;
+  titleLines?: string[];
+  intro?: string;
+}
+
+const { showHeading = true, number, titleLines, intro } = Astro.props;
+const atelierPage = await requirePage('atelier');
+const atelier = atelierPage.data.atelier;
+const resolvedNumber = number ?? atelier?.workstations_number ?? '02';
+const resolvedTitle = titleLines ?? atelier?.workstations_title_lines ?? ['Research', 'workstations'];
+const resolvedIntro = intro ?? atelier?.workstations_intro ?? '';
+
+const snapshot = loadWorkstationsSnapshot();
+const markup = renderWorkstationsMarkup(snapshot.items);
+---
+<section id="workstations" class="workstations-section">
+  {showHeading && (
+    <div class="section-header fade-up">
+      <span class="section-number t-label">{resolvedNumber}</span>
+      <div>
+        <h2 class="section-title" set:html={resolvedTitle.join('<br>')} />
+        {resolvedIntro && <p class="section-intro">{resolvedIntro}</p>}
+      </div>
+    </div>
+  )}
+  <div
+    class="workstations-feed fade-up"
+    data-feed="workstations"
+    data-snapshot-at={snapshot.fetchedAt}
+    set:html={markup}
+  />
+</section>

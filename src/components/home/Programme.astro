@@ -1,0 +1,59 @@
+---
+import {
+  loadEventsSnapshot,
+  renderEventsMarkup,
+  selectUpcomingEvents,
+} from '../../lib/sheets/index.ts';
+import { requirePage } from '../../lib/content';
+
+const home = await requirePage('home');
+const programme = home.data.programme;
+if (!programme) {
+  throw new Error('home.md is missing the programme frontmatter section.');
+}
+
+const snapshot = loadEventsSnapshot();
+const upcoming = selectUpcomingEvents(snapshot.items);
+const eventsHtml = renderEventsMarkup(upcoming);
+---
+<section id="programme">
+  <div class="workshops-pattern" aria-hidden="true"></div>
+  <div class="section-header fade-up">
+    <span class="section-number t-label">{programme.number}</span>
+    <div>
+      <h2 class="section-title" set:html={programme.title_lines.join('<br>')} />
+      <p class="section-intro">{programme.intro}</p>
+      {programme.cta && (
+        <div class="section-actions">
+          <a href={programme.cta.href} class="button button--primary">{programme.cta.label}</a>
+        </div>
+      )}
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <div class="workshops-grid">
+    {programme.offerings.map((item) => (
+      <article id={item.id} class="workshop-card program-card fade-up">
+        <div class="workshop-tag">{item.tag}</div>
+        <h3 class="workshop-name">{item.title}</h3>
+        <p class="workshop-desc">{item.description}</p>
+        {item.href && item.cta_label && (
+          <a href={item.href} class="button button--accent button--sm">{item.cta_label}</a>
+        )}
+      </article>
+    ))}
+  </div>
+
+  <div class="programme-events fade-up">
+    <h3 class="programme-events-title t-label">{programme.upcoming_title}</h3>
+    <p class="section-intro programme-events-intro">{programme.upcoming_intro}</p>
+    <div
+      class="events-list"
+      id="events-list"
+      data-feed="events"
+      data-snapshot-at={snapshot.fetchedAt}
+      set:html={eventsHtml}
+    />
+  </div>
+</section>

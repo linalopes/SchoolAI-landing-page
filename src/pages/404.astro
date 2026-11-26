@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteNav from '../components/navigation/SiteNav.astro';
+import SiteFooter from '../components/navigation/SiteFooter.astro';
+import { site } from '../data/site';
+
+const pageTitle = `Page not found · ${site.title}`;
+const description = 'The requested page could not be found on School of Tomorrow’s AI.';
+---
+<BaseLayout title={pageTitle} description={description}>
+  <SiteNav />
+  <main class="editorial-main">
+    <article class="editorial editorial--wide">
+      <header class="editorial-header fade-up visible">
+        <p class="t-label editorial-eyebrow">404</p>
+        <h1 class="editorial-title">Page not found</h1>
+        <p class="editorial-lede">
+          This address is not part of the School website. Return home or explore the institutional pages.
+        </p>
+        <div class="section-actions">
+          <a href="/" class="button button--primary">Return home</a>
+          <a href="/about/" class="button button--primary">The School</a>
+          <a href="/research/" class="button button--primary">Research</a>
+        </div>
+      </header>
+    </article>
+  </main>
+  <SiteFooter />
+</BaseLayout>

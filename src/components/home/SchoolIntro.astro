@@ -1,0 +1,32 @@
+---
+import { requirePage } from '../../lib/content';
+
+const home = await requirePage('home');
+const school = home.data.school;
+if (!school) {
+  throw new Error('home.md is missing the school frontmatter section.');
+}
+---
+<section id="school">
+  <div class="investigate-pattern" aria-hidden="true"></div>
+  <div class="section-header fade-up">
+    <span class="section-number t-label">{school.number}</span>
+    <div>
+      <h2 class="section-title" set:html={school.title_lines.join('<br>')} />
+      <p class="section-intro">{school.intro}</p>
+      <p class="callout">{school.callout}</p>
+      <div class="section-actions">
+        {school.ctas.map((cta) => (
+          <a
+            href={cta.href}
+            target={cta.external ? '_blank' : undefined}
+            rel={cta.external ? 'noopener' : undefined}
+            class="button button--primary"
+          >
+            {cta.label}{cta.external ? ' \u2197\uFE0E' : ''}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

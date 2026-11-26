@@ -1,0 +1,42 @@
+---
+import { loadHeroSnapshot, renderHeroCarouselMarkup } from '../../lib/sheets/index.ts';
+import { requirePage } from '../../lib/content';
+import { site } from '../../data/site';
+
+const home = await requirePage('home');
+const heroCopy = home.data.hero;
+if (!heroCopy) {
+  throw new Error('home.md is missing the hero frontmatter section.');
+}
+const hero = loadHeroSnapshot();
+const carouselHtml = renderHeroCarouselMarkup(hero.items);
+---
+<section id="hero">
+  <div class="hero-pattern"></div>
+  <div class="hero-left">
+    <div class="hero-content">
+      <p class="t-label hero-eyebrow">{site.title} · {site.locationLine}</p>
+      <h1 class="hero-title">
+        {heroCopy.title_line}<br><em>{heroCopy.title_emphasis}</em>
+      </h1>
+      <p class="hero-tagline">{heroCopy.tagline}</p>
+      <div class="hero-actions">
+        <a href={heroCopy.primary_cta.href} class="button button--accent">{heroCopy.primary_cta.label}</a>
+        <a href={heroCopy.secondary_cta.href} class="button button--on-dark">{heroCopy.secondary_cta.label}</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </div>
+  <div
+    class="hero-right"
+    id="hero-carousel"
+    data-feed="hero"
+    data-snapshot-at={hero.fetchedAt}
+    aria-roledescription="carousel"
+    aria-label="Featured updates"
+    set:html={carouselHtml}
+  />
+</section>

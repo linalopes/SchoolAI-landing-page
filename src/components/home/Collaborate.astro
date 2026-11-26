@@ -1,0 +1,39 @@
+---
+import { requirePage } from '../../lib/content';
+import { site } from '../../data/site';
+
+const home = await requirePage('home');
+const collaborate = home.data.collaborate;
+if (!collaborate) {
+  throw new Error('home.md is missing the collaborate frontmatter section.');
+}
+---
+<section id="collaborate">
+  <div class="collaborate-pattern" aria-hidden="true"></div>
+  <div class="section-header fade-up">
+    <span class="section-number t-label">{collaborate.number}</span>
+    <div>
+      <h2 class="section-title" set:html={collaborate.title_lines.join('<br>')} />
+      <p class="section-intro">{collaborate.intro}</p>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="invite-grid fade-up">
+    {collaborate.teasers.map((teaser, index) => (
+      <div class="invite">
+        <span class="t-label invite-index">{String(index + 1).padStart(2, '0')}</span>
+        <h3 class="invite-title">{teaser.title}</h3>
+        <p class="invite-desc">{teaser.description}</p>
+      </div>
+    ))}
+  </div>
+  <div class="collaborate-actions fade-up">
+    {collaborate.note && <p class="collaborate-cta-note">{collaborate.note}</p>}
+    <a href={collaborate.cta.href} class="collaborate-cta-link">
+      {collaborate.cta.label} &#x2192;&#xFE0E;
+    </a>
+    <a href={`mailto:${site.contactEmail}`} class="contact-email collaborate-cta-email">
+      {site.contactEmail}
+    </a>
+  </div>
+</section>

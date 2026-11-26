@@ -1,0 +1,5 @@
+---
+description: SchoolAI institutional website rules
+alwaysApply: true
+---
+Read AGENTS.md, README.md and docs before implementation. Follow their constraints: preserve brand and split hero; English only; Markdown for institutional/editorial copy and Google Sheets for feeds; Astro for presentation only; no hardcoded editorial content in `.astro`/`.ts`; external editorial media URLs only (except authorised TWINT/Stripe QR assets); independent repositories and hyperlinks; no invented content, private data or unauthorized publication. Work incrementally on the approved migration branch. Report discrepancies before making architectural decisions.

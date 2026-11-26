@@ -1,0 +1,96 @@
+---
+import EditorialLayout from '../../layouts/EditorialLayout.astro';
+import GalleryPhotos from '../../components/gallery/GalleryPhotos.astro';
+import GalleryRentalRates from '../../components/gallery/GalleryRentalRates.astro';
+import { resolveCtaHref, requirePage } from '../../lib/content';
+import { site } from '../../data/site';
+
+const entry = await requirePage('inverted-gallery');
+const {
+  concept,
+  rental_intro,
+  rental_note,
+  rental_categories,
+  inquire_cta,
+  curatorial,
+  photos,
+} = entry.data;
+if (!concept || !rental_categories || !inquire_cta || !curatorial) {
+  throw new Error('inverted-gallery.md is missing required frontmatter sections.');
+}
+const pageTitle = `${entry.data.title} · ${site.title}`;
+const ogImage = photos?.find((photo) => photo.url)?.url ?? null;
+---
+<EditorialLayout title={pageTitle} description={entry.data.description} image={ogImage}>
+  <article class="editorial editorial--wide">
+    <header class="editorial-header fade-up">
+      {entry.data.eyebrow && <p class="t-label editorial-eyebrow">{entry.data.eyebrow}</p>}
+      <h1 class="editorial-title">{entry.data.title}</h1>
+      {entry.data.lede && <p class="editorial-lede">{entry.data.lede}</p>}
+    </header>
+
+    <GalleryPhotos photos={photos} />
+
+    <section class="editorial-panel fade-up">
+      <h2 class="editorial-subtitle">{concept.title}</h2>
+      {concept.paragraphs.map((paragraph) => (
+        <p class="prose-p">{paragraph}</p>
+      ))}
+    </section>
+
+    <section class="editorial-panel fade-up">
+      <h2 class="editorial-subtitle">Space rental</h2>
+      {rental_intro && <p class="prose-p">{rental_intro}</p>}
+      <div class="rental-grid">
+        {rental_categories.map((category) => {
+          const href = resolveCtaHref('mailto', {
+            email: site.contactEmail,
+            subject: category.subject,
+          });
+          return (
+            <article class="rental-card">
+              <p class="t-label rental-card-label">{category.label}</p>
+              <h3 class="rental-card-title">{category.title}</h3>
+              <p class="rental-card-desc">{category.description}</p>
+              <a href={href} class="button button--primary button--sm">{category.cta_label}</a>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+
+    <GalleryRentalRates />
+
+    <section class="editorial-panel fade-up">
+      {rental_note && <p class="prose-p gallery-note">{rental_note}</p>}
+      <div class="section-actions">
+        <a
+          href={resolveCtaHref(inquire_cta.href, {
+            email: site.contactEmail,
+            subject: inquire_cta.subject,
+          })}
+          class="button button--primary"
+        >
+          {inquire_cta.label}
+        </a>
+      </div>
+    </section>
+
+    <section class="editorial-panel fade-up">
+      <h2 class="editorial-subtitle">{curatorial.title}</h2>
+      <p class="prose-p">{curatorial.body}</p>
+      <div class="section-actions">
+        <a
+          href={resolveCtaHref(curatorial.cta.href, {
+            email: site.contactEmail,
+            subject: curatorial.cta.subject,
+          })}
+          class="button button--primary"
+        >
+          {curatorial.cta.label}
+        </a>
+        <a href={`mailto:${site.contactEmail}`} class="button button--primary">{site.contactEmail}</a>
+      </div>
+    </section>
+  </article>
+</EditorialLayout>

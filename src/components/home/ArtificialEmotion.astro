@@ -1,0 +1,32 @@
+---
+import { requirePage } from '../../lib/content';
+
+const home = await requirePage('home');
+const research = home.data.research;
+if (!research) {
+  throw new Error('home.md is missing the research frontmatter section.');
+}
+---
+<section id="research">
+  <div class="method-pattern" aria-hidden="true"></div>
+  <div class="section-header fade-up">
+    <span class="section-number t-label">{research.number}</span>
+    <div>
+      <h2 class="section-title" set:html={research.title_lines.join('<br>')} />
+      <p class="section-intro">{research.intro}</p>
+      <p class="callout">{research.callout}</p>
+      <div class="section-actions">
+        {research.ctas.map((cta) => (
+          <a
+            href={cta.href}
+            target={cta.external ? '_blank' : undefined}
+            rel={cta.external ? 'noopener' : undefined}
+            class="button button--primary"
+          >
+            {cta.label}{cta.external ? ' \u2197\uFE0E' : ''}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

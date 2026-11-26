@@ -1,0 +1,14 @@
+---
+import { requirePage } from '../../lib/content';
+
+const home = await requirePage('home');
+const items = home.data.marquee ?? [];
+const loop = [...items, ...items];
+---
+{items.length > 0 && (
+  <div class="marquee-strip" aria-hidden="true">
+    <div class="marquee-inner">
+      {loop.map((item) => <span>{item}</span>)}
+    </div>
+  </div>
+)}

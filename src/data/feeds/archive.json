@@ -1,0 +1,92 @@
+{
+  "feed": "archive",
+  "fetchedAt": "2026-11-26T13:10:18.619Z",
+  "sourceUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpM1GYZ-ohq9jHkppGkz4hCx_p3vuCDjekln1apcu1nV2KILUmDeoT3xeLTSprREAXWjiWY8AovP4y/pub?gid=20271126&single=true&output=csv",
+  "itemCount": 6,
+  "items": [
+    {
+      "id": "affective-atmosphere-2046",
+      "title": "Affective Atmosphere 2046",
+      "year": 2026,
+      "category": "AI, emotion & materiality",
+      "description": "An experiment translating emotional language into light through a physical LED cloud.",
+      "imageUrl": "https://cloud.linalopes.info/index.php/apps/files_sharing/publicpreview/cNAt2rRw66MJYcZ?file=cloud.webp&x=2400&y=2400&a=true",
+      "imageAlt": "LED cloud installation",
+      "url": "https://blog.linalopes.info/text-to-light-affective-atmosphere-2046/",
+      "githubUrl": null,
+      "featured": true,
+      "published": true,
+      "order": 1
+    },
+    {
+      "id": "mr-sonnet",
+      "title": "Mr. Sonnet",
+      "year": 2026,
+      "category": "Kinetic AI",
+      "description": "An experiment giving AI-generated language physical expression through a cardboard mouth.",
+      "imageUrl": "https://cloud.linalopes.info/index.php/apps/files_sharing/publicpreview/47Tiida3TbyaJkP?file=IMG_3825.webp&x=2400&y=2400&a=true",
+      "imageAlt": "Mr. Sonnet prototype",
+      "url": "https://blog.linalopes.info/mr-sonnet-cardboard-mouth/",
+      "githubUrl": "https://github.com/linalopes/SchoolAI-mr-sonnet",
+      "featured": true,
+      "published": true,
+      "order": 2
+    },
+    {
+      "id": "claw-pilot",
+      "title": "Claw-Pilot",
+      "year": 2026,
+      "category": "Robotics & computer vision",
+      "description": "Reverse-engineering a toy claw machine into a computer-controlled experimental robot.",
+      "imageUrl": "https://cloud.linalopes.info/index.php/apps/files_sharing/publicpreview/zoapifRrc9NDprz?file=IMG_5109.webp&x=2400&y=2400&a=true",
+      "imageAlt": "Claw-Pilot prototype",
+      "url": "https://blog.linalopes.info/claw-pilot-turning-a-cheap-arcade-toy-into-a-computer-vision-robot/",
+      "githubUrl": "https://github.com/linalopes/SchoolAI-ClawPilot",
+      "featured": true,
+      "published": true,
+      "order": 3
+    },
+    {
+      "id": "drawing-machines",
+      "title": "Drawing Machines",
+      "year": 2026,
+      "category": "Computational drawing & fabrication",
+      "description": "An ongoing exploration of drawing machines, mechanical systems and software tools for computational drawing.",
+      "imageUrl": "https://cloud.linalopes.info/index.php/apps/files_sharing/publicpreview/LjdxDZFKk8PCKKB?file=20260828-134535-3389.webp&x=2400&y=2400&a=true",
+      "imageAlt": "Polargraph",
+      "url": "https://github.com/linalopes/SchoolAI-plotter-workspace",
+      "githubUrl": "https://github.com/linalopes/SchoolAI-plotter-workspace",
+      "featured": true,
+      "published": true,
+      "order": 4
+    },
+    {
+      "id": "maze-circuit",
+      "title": "Maze Circuit",
+      "year": 2026,
+      "category": "Physical-digital interfaces",
+      "description": "Hands-on experimentation with electronics and playful physical-digital interfaces.",
+      "imageUrl": "https://cloud.linalopes.info/index.php/apps/files_sharing/publicpreview/EMJSd5yT3qdYWeL?file=maze-circuit-august-29.webp&x=2400&y=2400&a=true",
+      "imageAlt": "Call to the last workshop",
+      "url": "https://github.com/linalopes/SchoolAI-maze-circuit",
+      "githubUrl": "https://github.com/linalopes/SchoolAI-maze-circuit",
+      "featured": true,
+      "published": true,
+      "order": 5
+    },
+    {
+      "id": "paper-as-interface",
+      "title": "Paper as Interface",
+      "year": 2026,
+      "category": "Paper, electronics & material exploration",
+      "description": "Exploring paper as a material for electronics and interactive experiences through hands-on experimentation.",
+      "imageUrl": "https://cloud.linalopes.info/index.php/apps/files_sharing/publicpreview/WyRdrDos8kGXtPG?file=IMG_4170.webp&x=2400&y=2400&a=true",
+      "imageAlt": "Paper as Interface workshop documentation",
+      "url": "https://blog.linalopes.info/the-logistics-of-interests/",
+      "githubUrl": "https://github.com/linalopes/SchoolAI-paper-as-interface",
+      "featured": true,
+      "published": true,
+      "order": 6
+    }
+  ]
+}

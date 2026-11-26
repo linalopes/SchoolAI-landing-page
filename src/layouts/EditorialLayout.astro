@@ -1,0 +1,24 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import SiteNav from '../components/navigation/SiteNav.astro';
+import SiteFooter from '../components/navigation/SiteFooter.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string | null;
+}
+
+const { title, description, image = null } = Astro.props;
+---
+<BaseLayout title={title} description={description} image={image}>
+  <SiteNav />
+  <main class="editorial-main">
+    <slot />
+  </main>
+  <SiteFooter />
+  <script>
+    import { startHomepage } from '../scripts/homepage';
+    startHomepage();
+  </script>
+</BaseLayout>

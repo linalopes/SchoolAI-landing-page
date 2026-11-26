@@ -1,0 +1,33 @@
+---
+import { resolveCtaHref, requirePage } from '../../lib/content';
+import { site } from '../../data/site';
+
+const home = await requirePage('home');
+const gallery = home.data.gallery;
+if (!gallery) {
+  throw new Error('home.md is missing the gallery frontmatter section.');
+}
+---
+<section id="gallery">
+  <div class="section-header fade-up">
+    <span class="section-number t-label">{gallery.number}</span>
+    <div>
+      <h2 class="section-title" set:html={gallery.title_lines.join('<br>')} />
+      <p class="section-intro">{gallery.intro}</p>
+      <p class="callout">{gallery.callout}</p>
+      <div class="section-actions">
+        {gallery.ctas.map((cta) => (
+          <a
+            href={resolveCtaHref(cta.href, {
+              email: site.contactEmail,
+              subject: cta.subject,
+            })}
+            class="button button--primary"
+          >
+            {cta.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

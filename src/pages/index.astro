@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteNav from '../components/navigation/SiteNav.astro';
+import SiteFooter from '../components/navigation/SiteFooter.astro';
+import Hero from '../components/home/Hero.astro';
+import Marquee from '../components/home/Marquee.astro';
+import SchoolIntro from '../components/home/SchoolIntro.astro';
+import ArtificialEmotion from '../components/home/ArtificialEmotion.astro';
+import SelectedResearch from '../components/home/SelectedResearch.astro';
+import Atelier from '../components/home/Atelier.astro';
+import Programme from '../components/home/Programme.astro';
+import Gallery from '../components/home/Gallery.astro';
+import Collaborate from '../components/home/Collaborate.astro';
+import Newsletter from '../components/home/Newsletter.astro';
+---
+<BaseLayout>
+  <SiteNav />
+  <Hero />
+  <Marquee />
+  <SchoolIntro />
+  <ArtificialEmotion />
+  <SelectedResearch />
+  <Atelier />
+  <Programme />
+  <Gallery />
+  <Collaborate />
+  <Newsletter />
+  <SiteFooter />
+  <script>
+    import { startHomepage } from '../scripts/homepage';
+    startHomepage();
+  </script>
+</BaseLayout>

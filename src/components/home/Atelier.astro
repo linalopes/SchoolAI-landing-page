@@ -1,0 +1,48 @@
+---
+import { requirePage } from '../../lib/content';
+
+const home = await requirePage('home');
+const atelier = home.data.atelier;
+if (!atelier) {
+  throw new Error('home.md is missing the atelier frontmatter section.');
+}
+---
+<section id="atelier">
+  <div class="section-header fade-up">
+    <span class="section-number t-label">{atelier.number}</span>
+    <div>
+      <h2 class="section-title" set:html={atelier.title_lines.join('<br>')} />
+      <p class="section-intro">{atelier.intro}</p>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <div class="location-header fade-up">
+    <div class="location-header-left">
+      <div class="location-name">{atelier.location_name}</div>
+      <div class="location-address">
+        {atelier.address_lines.map((line) => <span>{line}</span>)}
+      </div>
+      <a href={atelier.maps_url} target="_blank" rel="noopener" class="location-map-link">
+        {atelier.maps_label} &#x2197;&#xFE0E;
+      </a>
+    </div>
+    <div>
+      {atelier.body.map((paragraph) => (
+        <p class="location-intro">{paragraph}</p>
+      ))}
+      <div class="section-actions">
+        <a href={atelier.cta.href} class="button button--primary">{atelier.cta.label}</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="location-3d fade-up">
+    <iframe
+      src="/space3d.html"
+      class="location-3d-frame"
+      title={atelier.tour_title ?? 'The Atelier in 3D'}
+      allowfullscreen
+    ></iframe>
+  </div>
+</section>

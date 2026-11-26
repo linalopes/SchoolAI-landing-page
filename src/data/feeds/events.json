@@ -1,0 +1,248 @@
+{
+  "feed": "events",
+  "fetchedAt": "2026-11-26T13:10:17.681Z",
+  "sourceUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpM1GYZ-ohq9jHkppGkz4hCx_p3vuCDjekln1apcu1nV2KILUmDeoT3xeLTSprREAXWjiWY8AovP4y/pub?gid=0&single=true&output=csv",
+  "itemCount": 24,
+  "items": [
+    {
+      "date": "2026-03-15",
+      "time": "13:30 - 16:30",
+      "title": "Women Making with AI",
+      "tagline": "A circle of artists sharing their AI practice",
+      "location": "Wetzikon",
+      "type": "gathering",
+      "status": "past",
+      "url": null
+    },
+    {
+      "date": "2026-03-28",
+      "time": "13:00 - 16:00",
+      "title": "Arduino Day - Paper as Interface",
+      "tagline": "Hands-on electronics for artists and makers",
+      "location": "Wetzikon | Twitch TV",
+      "type": "event",
+      "status": "past",
+      "url": "arduino-day-2026.html"
+    },
+    {
+      "date": "2026-04-07",
+      "time": "19:00 - 21:00",
+      "title": "Augmented Cinema — Online Session 1",
+      "tagline": "Turning the studio into an expanded cinema",
+      "location": "Zoom",
+      "type": "workshop",
+      "status": "past",
+      "url": "#workshop-augmented-cinema"
+    },
+    {
+      "date": "2026-04-14",
+      "time": "19:00 - 21:00",
+      "title": "Augmented Cinema — Online Session 2",
+      "tagline": "Turning the studio into an expanded cinema",
+      "location": "Zoom",
+      "type": "workshop",
+      "status": "past",
+      "url": "#workshop-augmented-cinema"
+    },
+    {
+      "date": "2026-04-25",
+      "time": "10:00 - 17:00",
+      "title": "Augmented Cinema — In Person",
+      "tagline": "Turning the studio into an expanded cinema",
+      "location": "Wetzikon",
+      "type": "workshop",
+      "status": "past",
+      "url": "#workshop-augmented-cinema"
+    },
+    {
+      "date": "2026-05-23",
+      "time": "13:00 - 18:00",
+      "title": "Maze Circuit — In Person",
+      "tagline": "A collaborative game where connection powers the play",
+      "location": "Wetzikon",
+      "type": "workshop",
+      "status": "past",
+      "url": "#workshop-maze-circuit"
+    },
+    {
+      "date": "2026-06-02",
+      "time": "19:00 - 21:00",
+      "title": "Singing to a Garden — Online Session 1",
+      "tagline": "Voices make flowers bloom silence makes them close",
+      "location": "Zoom",
+      "type": "workshop",
+      "status": "cancel",
+      "url": "#workshop-singing-to-a-garden"
+    },
+    {
+      "date": "2026-06-09",
+      "time": "19:00 - 21:00",
+      "title": "Singing to a Garden — Online Session 2",
+      "tagline": "Voices make flowers bloom silence makes them close",
+      "location": "Zoom",
+      "type": "workshop",
+      "status": "cancel",
+      "url": "#workshop-singing-to-a-garden"
+    },
+    {
+      "date": "2026-06-13",
+      "time": "10:00 - 17:00",
+      "title": "Singing to a Garden — In Person",
+      "tagline": "Voices make flowers bloom silence makes them close",
+      "location": "Wetzikon",
+      "type": "workshop",
+      "status": "cancel",
+      "url": "#workshop-singing-to-a-garden"
+    },
+    {
+      "date": "2026-08-25",
+      "time": "19:00 - 21:00",
+      "title": "Your Hand Is the Prompt - Online",
+      "tagline": "A 2h Embodied AI Prototyping Workshop",
+      "location": "Zoom",
+      "type": "workshop",
+      "status": "cancel",
+      "url": "https://luma.com/30jd9vq5"
+    },
+    {
+      "date": "2026-08-28",
+      "time": "13:00 - 18:00",
+      "title": "Maze Circuit — In Person",
+      "tagline": "A collaborative game where connection powers the play",
+      "location": "Wetzikon",
+      "type": "workshop",
+      "status": "past",
+      "url": "#workshop-maze-circuit"
+    },
+    {
+      "date": "2026-08-29",
+      "time": "13:00 - 18:00",
+      "title": "Maze Circuit — In Person",
+      "tagline": "A collaborative game where connection powers the play",
+      "location": "Wetzikon",
+      "type": "workshop",
+      "status": "past",
+      "url": "#workshop-maze-circuit"
+    },
+    {
+      "date": "2026-08-25",
+      "time": "19:00 - 21:00",
+      "title": "Marble Machine Orchestra — Online Session 2",
+      "tagline": "Build and play with rolling marbles and sound",
+      "location": "Zoom",
+      "type": "workshop",
+      "status": "cancel",
+      "url": "#workshop-marble-machine-orchestra"
+    },
+    {
+      "date": "2026-08-25",
+      "time": "19:00 - 21:00",
+      "title": "Marble Machine Orchestra — Online Session 2",
+      "tagline": "Build and play with rolling marbles and sound",
+      "location": "Zoom",
+      "type": "workshop",
+      "status": "cancel",
+      "url": "#workshop-marble-machine-orchestra"
+    },
+    {
+      "date": "2026-08-29",
+      "time": "10:00 - 17:00",
+      "title": "Marble Machine Orchestra — In Person",
+      "tagline": "Build and play with rolling marbles and sound",
+      "location": "Wetzikon",
+      "type": "workshop",
+      "status": "cancel",
+      "url": "#workshop-marble-machine-orchestra"
+    },
+    {
+      "date": "2026-09-08",
+      "time": "19:00 - 21:00",
+      "title": "From Gesture to Pen — Online Session 1",
+      "tagline": "Draw with your body print with a pen plotter",
+      "location": "Zoom",
+      "type": "workshop",
+      "status": "cancel",
+      "url": "#workshop-from-gesture-to-pen"
+    },
+    {
+      "date": "2026-09-15",
+      "time": "19:00 - 21:00",
+      "title": "From Gesture to Pen — Online Session 2",
+      "tagline": "Draw with your body print with a pen plotter",
+      "location": "Zoom",
+      "type": "workshop",
+      "status": "cancel",
+      "url": "#workshop-from-gesture-to-pen"
+    },
+    {
+      "date": "2026-09-19",
+      "time": "10:00 - 17:00",
+      "title": "From Gesture to Pen — In Person",
+      "tagline": "Draw with your body print with a pen plotter",
+      "location": "Wetzikon",
+      "type": "workshop",
+      "status": "cancel",
+      "url": "#workshop-from-gesture-to-pen"
+    },
+    {
+      "date": "2026-10-13",
+      "time": "19:00 - 21:00",
+      "title": "Room as Instrument — Online Session 1",
+      "tagline": "The studio becomes a giant musical instrument in AR",
+      "location": "Zoom",
+      "type": "workshop",
+      "status": "cancel",
+      "url": "#workshop-room-as-instrument"
+    },
+    {
+      "date": "2026-10-20",
+      "time": "19:00 - 21:00",
+      "title": "Room as Instrument — Online Session 2",
+      "tagline": "The studio becomes a giant musical instrument in AR",
+      "location": "Zoom",
+      "type": "workshop",
+      "status": "cancel",
+      "url": "#workshop-room-as-instrument"
+    },
+    {
+      "date": "2026-10-24",
+      "time": "10:00 - 17:00",
+      "title": "Room as Instrument — In Person",
+      "tagline": "The studio becomes a giant musical instrument in AR",
+      "location": "Wetzikon",
+      "type": "workshop",
+      "status": "cancel",
+      "url": "#workshop-room-as-instrument"
+    },
+    {
+      "date": "2026-11-10",
+      "time": "19:00 - 21:00",
+      "title": "Embroidering Light — Online Session 1",
+      "tagline": "Touch conductive embroidery to light up fabrics",
+      "location": "Zoom",
+      "type": "workshop",
+      "status": "cancel",
+      "url": "#workshop-embroidering-light"
+    },
+    {
+      "date": "2026-11-17",
+      "time": "19:00 - 21:00",
+      "title": "Embroidering Light — Online Session 2",
+      "tagline": "Touch conductive embroidery to light up fabrics",
+      "location": "Zoom",
+      "type": "workshop",
+      "status": "cancel",
+      "url": "#workshop-embroidering-light"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "10:00 - 17:00",
+      "title": "Embroidering Light — In Person",
+      "tagline": "Touch conductive embroidery to light up fabrics",
+      "location": "Wetzikon",
+      "type": "workshop",
+      "status": "cancel",
+      "url": "#workshop-embroidering-light"
+    }
+  ]
+}

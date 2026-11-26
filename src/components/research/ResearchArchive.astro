@@ -1,0 +1,64 @@
+---
+import {
+  loadArchiveSnapshot,
+  renderArchiveMarkup,
+} from '../../lib/sheets/index.ts';
+import { requirePage } from '../../lib/content';
+
+interface Props {
+  showHeading?: boolean;
+  sectionId?: string;
+  sectionNumber?: string;
+  titleLines?: string[];
+  intro?: string;
+  cta?: { label: string; href: string; external?: boolean };
+}
+
+const {
+  showHeading = true,
+  sectionId = 'selected-research',
+  sectionNumber,
+  titleLines: titleLinesProp,
+  intro: introProp,
+  cta: ctaProp,
+} = Astro.props;
+
+const home = await requirePage('home');
+const selected = home.data.selected_research;
+const titleLines = titleLinesProp ?? selected?.title_lines ?? ['Selected', 'research'];
+const intro = introProp ?? selected?.intro ?? '';
+const cta = ctaProp ?? selected?.cta;
+const number = sectionNumber === undefined ? (selected?.number ?? '03') : sectionNumber;
+
+const archive = loadArchiveSnapshot();
+const markup = renderArchiveMarkup(archive.items);
+---
+<section id={sectionId} class="research-archive-section">
+  {showHeading && (
+    <div class="section-header fade-up">
+      {number ? <span class="section-number t-label">{number}</span> : null}
+      <div>
+        <h2 class="section-title" set:html={titleLines.join('<br>')} />
+        {intro && <p class="section-intro">{intro}</p>}
+      </div>
+    </div>
+  )}
+  <div
+    class="archive-feed fade-up"
+    data-feed="archive"
+    data-snapshot-at={archive.fetchedAt}
+    set:html={markup}
+  />
+  {cta && (
+    <div class="section-actions fade-up">
+      <a
+        href={cta.href}
+        target={cta.external ? '_blank' : undefined}
+        rel={cta.external ? 'noopener' : undefined}
+        class="button button--primary"
+      >
+        {cta.label}{cta.external ? ' \u2197\uFE0E' : ''}
+      </a>
+    </div>
+  )}
+</section>

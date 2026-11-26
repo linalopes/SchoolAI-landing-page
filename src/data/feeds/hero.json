@@ -1,0 +1,35 @@
+{
+  "feed": "hero",
+  "fetchedAt": "2026-11-26T13:10:17.211Z",
+  "sourceUrl": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpM1GYZ-ohq9jHkppGkz4hCx_p3vuCDjekln1apcu1nV2KILUmDeoT3xeLTSprREAXWjiWY8AovP4y/pub?gid=1398027263&single=true&output=csv",
+  "itemCount": 3,
+  "items": [
+    {
+      "type": "event",
+      "title": "Your Hand Is the Prompt",
+      "tagline": "A 2h Embodied AI Prototyping Online Workshop",
+      "imageUrl": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=2,background=white,quality=75,width=400,height=400/gallery-images/i5/07dddbd8-1b4d-4a2e-98d2-e3bb0df54045.png",
+      "ctaLabel": "Register here →",
+      "ctaUrl": "https://luma.com/30jd9vq5",
+      "accent": "turquoise"
+    },
+    {
+      "type": "event",
+      "title": "Maze Circuit",
+      "tagline": "A hands-on workshop for playful physical-digital interfaces",
+      "imageUrl": "https://cloud.linalopes.info/index.php/apps/files_sharing/publicpreview/GECWaWytpyGt3Lw?file=maze-circuit-august-29.webp&x=2400&y=2400&a=true",
+      "ctaLabel": "Register here →",
+      "ctaUrl": "https://luma.com/54drihrv",
+      "accent": "turquoise"
+    },
+    {
+      "type": "reading",
+      "title": "Affective Atmosphere 2046",
+      "tagline": "From Emotional Text to Light",
+      "imageUrl": "https://cloud.linalopes.info/index.php/apps/files_sharing/publicpreview/cNAt2rRw66MJYcZ?file=cloud.webp&x=2400&y=2400&a=true",
+      "ctaLabel": "See blog entry  →",
+      "ctaUrl": "https://blog.linalopes.info/text-to-light-affective-atmosphere-2046/",
+      "accent": "pink"
+    }
+  ]
+}

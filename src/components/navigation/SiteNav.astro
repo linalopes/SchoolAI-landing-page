@@ -1,0 +1,31 @@
+---
+import { collaborateHref, homeHref, navItems } from '../../data/navigation';
+---
+<!-- External-link arrows: &#x2197; + &#xFE0E; (VS15) forces text style on iOS/Safari instead of emoji. -->
+<nav id="nav">
+  <a href={homeHref} class="nav-logo">
+    <img src="/imgs/sota-horizontal-bg-transparent-dark.svg" alt="School of Tomorrow's AI">
+  </a>
+  <ul class="nav-links">
+    {navItems.map((item) => (
+      <li>
+        <a href={item.href}>{item.label}</a>
+      </li>
+    ))}
+  </ul>
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-mobile-menu" id="nav-mobile-menu">
+    <button class="nav-mobile-close" id="nav-mobile-close" aria-label="Close menu">×</button>
+    <ul class="nav-mobile-links">
+      {navItems.map((item) => (
+        <li>
+          <a href={item.href} class="nav-mobile-link">{item.label}</a>
+        </li>
+      ))}
+    </ul>
+    <a href={collaborateHref} class="button button--on-dark nav-mobile-cta">Collaborate</a>
+  </div>
+  <a href={collaborateHref} class="button button--on-dark nav-cta">Collaborate</a>
+</nav>

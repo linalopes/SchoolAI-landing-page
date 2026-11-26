@@ -1,0 +1,44 @@
+---
+import { requireSupportDoc } from '../../lib/content';
+
+const entry = await requireSupportDoc('financial-support');
+const { title, intro, disclaimer, twint, stripe } = entry.data;
+const showTwint = twint.enabled;
+const showStripe = stripe.enabled;
+const showAny = showTwint || showStripe;
+---
+{showAny && (
+  <section id="financial-support" class="editorial-panel fade-up" aria-labelledby="financial-support-heading">
+    <h2 id="financial-support-heading" class="editorial-subtitle">{title}</h2>
+    <p class="prose-p">{intro}</p>
+    <div class="support-methods">
+      {showTwint && (
+        <article class="support-method">
+          <h3 class="support-method-title">{twint.title}</h3>
+          <p class="support-method-desc">{twint.description}</p>
+          <figure class="support-qr">
+            <img src={twint.image} alt={twint.image_alt} width="280" height="280" loading="lazy" decoding="async" />
+          </figure>
+        </article>
+      )}
+      {showStripe && (
+        <article class="support-method">
+          <h3 class="support-method-title">{stripe.title}</h3>
+          <p class="support-method-desc">{stripe.description}</p>
+          <figure class="support-qr">
+            <img src={stripe.image} alt={stripe.image_alt} width="280" height="280" loading="lazy" decoding="async" />
+          </figure>
+          <a
+            href={stripe.payment_url}
+            target="_blank"
+            rel="noopener"
+            class="button button--primary"
+          >
+            {stripe.cta_label} &#x2197;&#xFE0E;
+          </a>
+        </article>
+      )}
+    </div>
+    <p class="prose-p support-disclaimer">{disclaimer}</p>
+  </section>
+)}

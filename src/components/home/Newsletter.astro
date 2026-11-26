@@ -1,0 +1,38 @@
+---
+import { requirePage } from '../../lib/content';
+import { formspreeAction } from '../../lib/sheets/contract.ts';
+
+const home = await requirePage('home');
+const newsletter = home.data.newsletter;
+if (!newsletter) {
+  throw new Error('home.md is missing the newsletter frontmatter section.');
+}
+---
+<section id="contact" style="background: var(--deep-purple); position:relative; overflow:hidden;">
+  <div style="position:absolute;inset:0;background-image:url('https://raw.githubusercontent.com/linalopes/SchoolAI-brand-kit/main/patterns/pattern-6.png');background-size:cover;opacity:0.07;pointer-events:none;"></div>
+  <div class="contact-inner fade-up" style="position:relative;z-index:1;">
+    <p class="t-label" style="color:var(--turquoise); margin-bottom: var(--space-4);">{newsletter.eyebrow}</p>
+    <h2 class="contact-title" style="color:var(--white);">
+      {newsletter.title_line} <em>{newsletter.title_emphasis}</em>.
+    </h2>
+    <p class="contact-sub" style="color:var(--gray-green);">
+      {newsletter.intro}
+    </p>
+    <form id="newsletter-form" action={formspreeAction} method="POST">
+      <div class="newsletter-form">
+        <input
+          type="email"
+          name="email"
+          placeholder={newsletter.placeholder ?? 'your@email.com'}
+          required
+          style="border-color: rgba(202,216,216,0.3); color:var(--white);"
+        >
+        <button class="button button--accent" type="submit">{newsletter.button_label}</button>
+      </div>
+      <input type="hidden" name="_subject" value="School of Tomorrow's AI — new contact / updates">
+    </form>
+    <p id="newsletter-success" style="display:none; font-family:'Courier Prime',monospace; font-size: 15px; color:var(--turquoise); margin-top:12px;">
+      {newsletter.success}
+    </p>
+  </div>
+</section>

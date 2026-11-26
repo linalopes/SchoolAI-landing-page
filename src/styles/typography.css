@@ -1,0 +1,27 @@
+  /* ── TYPOGRAPHY ── */
+  .t-display {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .t-mono {
+    font-family: 'Courier Prime', monospace;
+    font-weight: 400;
+  }
+  .t-mono-bold {
+    font-family: 'Courier Prime', monospace;
+    font-weight: 700;
+  }
+  .t-label {
+    font-family: 'Courier Prime', monospace;
+    font-weight: 400;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .t-body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+  }
