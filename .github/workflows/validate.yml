@@ -1,11 +1,10 @@
 name: Validate static site
 
-# Validation only. Does not deploy. Covers the migration branch, main, and pull requests.
+# Validation only. Does not deploy. Covers main and pull requests.
 
 on:
   push:
     branches:
-      - website-2027
       - main
   pull_request:
 

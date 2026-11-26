@@ -10,7 +10,7 @@
 
 ## Production status
 
-The institutional Astro website is **live on `main`**. Do not restart completed migration phases or describe production as unfinished. Historical branch `website-2027` is not the active architecture.
+The institutional Astro website is **live on `main`** (release **`v2.1.0`** — Website 2027). The migration project is closed. Do not restart completed migration phases or describe production as unfinished. Temporary migration branch `website-2027` was retired after its history was confirmed fully contained in `main`; treat `docs/archive/` as historical context only.
 
 ## Hard constraints
 

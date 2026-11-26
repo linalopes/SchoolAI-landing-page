@@ -443,7 +443,7 @@ test('production workflows deploy only from main and keep validation separate', 
   assert.match(deploy, /npm run build/);
   assert.match(deploy, /npm run test:dist/);
   assert.doesNotMatch(deploy, /website-2027/);
-  assert.match(validate, /website-2027/);
+  assert.doesNotMatch(validate, /website-2027/);
   assert.match(validate, /main/);
   assert.doesNotMatch(validate, /deploy-pages|upload-pages-artifact/);
   assert.match(refresh, /workflow_dispatch/);

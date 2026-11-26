@@ -2,6 +2,8 @@
 
 > **Archival notice.** Documents in this folder record planning and decisions from the Website 2027 migration. They are preserved for historical context only.
 >
+> The migration project closed with release **`v2.1.0`** (26 November 2026). Temporary Git branch `website-2027` was retired after verification that it contained no commits missing from `main`. References to that branch inside archived documents remain as historical wording.
+>
 > They must **not** be treated as current implementation requirements.
 >
 > For active instructions see:
@@ -11,6 +13,7 @@
 > - [Technical architecture](../technical/architecture.md)
 > - [Deployment](../technical/deployment.md)
 > - [AGENTS.md](../../AGENTS.md)
+> - [CHANGELOG.md](../../CHANGELOG.md)
 
 | Document | Why archived |
 |---|---|

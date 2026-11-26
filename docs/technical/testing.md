@@ -49,4 +49,4 @@ Use after substantive UI or feed changes:
 
 ## Visual review
 
-The owner completed the final visual review of the institutional website (including footer, workstation photographs and Research Wishlist) on 26 November 2026. QA screenshots must not be committed to Git.
+The owner completed the final visual review of the institutional website (including footer, workstation photographs and Research Wishlist) on 26 November 2026. Project closure release: **`v2.1.0`**. QA screenshots must not be committed to Git (`tmp/` is gitignored). Automated tests do not certify full WCAG compliance.

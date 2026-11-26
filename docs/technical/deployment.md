@@ -9,9 +9,10 @@
 | Static output | `dist/` |
 | Hosting | GitHub Pages via GitHub Actions |
 | Domain / HTTPS | `schoolai.linalopes.info`, HTTPS enforced |
-| Astro release tag | `v2.0.0` → commit `035d60a` |
+| Current release | `v2.1.0` — School of Tomorrow’s AI — Website 2027 |
+| Original Astro cutover | `v2.0.0` → commit `035d60a` |
 | Legacy HTML | Branch `legacy-html-2026`, tag `v1.0.0-legacy`, commit `0a84b8c` |
-| Historical migration branch | `website-2027` (retained; not the production architecture) |
+| Migration branch | `website-2027` retired at `v2.1.0` (history preserved in `main`) |
 
 Builds are offline from committed snapshots in `src/data/feeds/`. Production deploy never calls Google Sheets. Do not introduce a repository-name base path.
 
@@ -19,7 +20,7 @@ Builds are offline from committed snapshots in `src/data/feeds/`. Production dep
 
 | Workflow | File | Triggers | Role |
 |---|---|---|---|
-| Validate static site | `validate.yml` | Push to `main` / `website-2027`, pull requests | `check`, `test`, offline `build` |
+| Validate static site | `validate.yml` | Push to `main`, pull requests | `check`, `test`, offline `build` |
 | Deploy production site | `deploy.yml` | Push to `main`, manual `workflow_dispatch` (gated to `main`) | Validate, build, upload Pages artifact, deploy |
 | Refresh editorial snapshots | `refresh-snapshots.yml` | Cron `0 6 * * *` (06:00 UTC), manual dispatch (gated to `main`) | `npm run refresh-feeds`; commit meaningful changes; dispatch Deploy |
 
@@ -72,6 +73,10 @@ Return to Astro: switch Pages Source back to **GitHub Actions** and re-run **Dep
 ## Non-goals
 
 - No force push to `main`.  
-- No deletion of `legacy-html-2026` or `v1.0.0-legacy`.  
-- No deletion of `website-2027` without explicit owner approval.  
-- No repository-name base path.  
+- No deletion of `legacy-html-2026`, `v1.0.0-legacy`, or `v2.0.0`.  
+- Do not recreate `website-2027`; it was retired after ancestry verification at `v2.1.0`.  
+- No repository-name base path.
+
+## Maintenance notes
+
+- GitHub Actions may warn that some actions still declare Node.js 20 while runners prefer Node 24. This does not block validation or deploy; track as routine workflow maintenance, not a release blocker.  

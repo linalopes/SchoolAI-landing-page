@@ -1,12 +1,60 @@
 # Changelog
 
-Verified against Git history and release tags. Intermediate commits that were never tagged are summarised without inventing version numbers. **`v2.0.0`** remains the original Astro production release tag.
+Verified against Git history and release tags. Intermediate commits that were never tagged are summarised without inventing version numbers.
 
-## Unreleased documentation
+Git release tags (`v2.0.0`, `v2.1.0`) are distinct from the npm package version (`2027.1.0`), which tracks the Website 2027 product line.
 
-- Documentation consolidation for Website 2027 handover: owner content guide, Sheets reference, reorganised `docs/`, archived migration material (`docs/archive/`), updated `AGENTS.md` and README.
+## [v2.1.0] — 2026-11-26 — School of Tomorrow’s AI — Website 2027
+
+Final institutional website release after the Astro production cutover. Closes the Website 2027 migration project. Production: https://schoolai.linalopes.info/
+
+### Institutional website
+
+- Complete institutional information architecture (eight routes including Research Wishlist).
+- Research and Research Archive (Artificial Emotion presentation; six published archive entries).
+- Atelier and eight editorial workstations with external photographs.
+- Programme.
+- Inverted Gallery with Markdown rental rates.
+- Collaboration pathways (visit, contribute, financial support, wishlist).
+
+### Editorial infrastructure
+
+- Six Google Sheets feeds (hero, events, archive, workstations, contributors, wishlist).
+- Validated CSV adapters and committed JSON snapshots.
+- Markdown institutional content under `src/content/`.
+- Automated daily snapshot refresh (06:00 UTC) with manual dispatch.
+- Browser-side refresh with last-known-good fallback.
+- Offline production builds that never call Google.
+
+### Community contributions
+
+- Financial Support (TWINT QR and Stripe Payment Link).
+- Contributor acknowledgements (Made possible by).
+- Research Wishlist with fulfilled-needs history.
+- Wishlist status badges and light-surface hierarchy refinement (`79b865e`).
+
+### Design and usability
+
+- Refined global navigation and Programme contrast.
+- Shared three-column footer with dynamic copyright.
+- Canonical physical address (`src/content/site/location.md`).
+- Responsive layouts across institutional pages.
+
+### Documentation and operations
+
+- Owner content management guide and Sheets contracts.
+- Technical architecture, feed resilience, deployment and testing docs.
+- Historical migration archive under `docs/archive/`.
+- Automated Validate and Deploy on `main`.
+- Migration branch `website-2027` retired after ancestry verification (fully contained in `main`).
+
+Owner entry point: [docs/editorial/content-management.md](docs/editorial/content-management.md).
 
 ## Production Astro site (`main`)
+
+### Documentation consolidation — `281608a`
+
+- Documentation consolidation for Website 2027 handover: owner content guide, Sheets reference, reorganised `docs/`, archived migration material (`docs/archive/`), updated `AGENTS.md` and README.
 
 ### Research Wishlist — `c523a15`
 
@@ -42,7 +90,7 @@ Verified against Git history and release tags. Intermediate commits that were ne
 
 - Resilient Sheets feeds and snapshots (`3f9bb44`).  
 - Institutional pages: About, Research, Atelier, Programme, Inverted Gallery, Collaborate.  
-- Homepage restructure; Phase 4A release candidate on `website-2027`.
+- Homepage restructure; Phase 4A release candidate historically developed on `website-2027` (branch retired at `v2.1.0`).
 
 ## Legacy HTML website
 

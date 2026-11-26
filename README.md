@@ -5,8 +5,11 @@ Independent research atelier website for **School of Tomorrow’s AI** (Wetzikon
 **Production:** [schoolai.linalopes.info](https://schoolai.linalopes.info/)  
 **Repository purpose:** Institutional static website — editorial content, programme feeds and collaboration pathways.  
 **Production branch:** `main`  
-**Astro release:** `v2.0.0`  
+**Current release:** [`v2.1.0`](https://github.com/linalopes/SchoolAI-landing-page/releases/tag/v2.1.0) — School of Tomorrow’s AI — Website 2027  
+**Original Astro cutover:** [`v2.0.0`](https://github.com/linalopes/SchoolAI-landing-page/releases/tag/v2.0.0) (`035d60a`)  
 **Legacy HTML:** branch `legacy-html-2026` / tag `v1.0.0-legacy` (`0a84b8c`)
+
+The Website 2027 migration is **complete**. Continuous maintenance continues on `main`; no further migration phase is required.
 
 ## Stack
 
