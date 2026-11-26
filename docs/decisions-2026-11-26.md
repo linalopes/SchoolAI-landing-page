@@ -23,4 +23,8 @@ These decisions amend the planning baseline. Phase 1 records them and does not t
 - There are eight editorial research workstations: BioLab, Makerspace, Dirty Workshop, Electronics Bench, Wearables Lab, Craft Office, Studio, Saloon. Electronics Bench and Wearables Lab are separate entries sharing a physical area. Craft Office replaces the former Office label. Inverted Gallery is not a workstation.
 - Workstations sheet GID `20271127` is active. Archive and workstations refresh once in the browser and keep snapshot markup on failure.
 - Programme past-event history shows status `past` only, excludes cancelled rows, sorts descending, and omits bare fragment URLs from public links.
-- Wishlist (`src/content/wishlist/`), contributors credits and payment extensions (`src/data/support.ts`) remain unpublished until approved content and payment details exist.
+- Wishlist (`src/content/wishlist/`) and contributors credits remain unpublished until approved content and permissions exist.
+- **Editorial separation (permanent):** institutional copy, homepage sections, gallery narrative, rental rates, financial support, CTAs, SEO text and editorial image URLs live in Markdown under `src/content/`. Astro presents; TypeScript validates feeds and logic. Do not hardcode editable editorial content in `.astro` or `.ts`.
+- Approved Inverted Gallery rental rates and dimensions are stored in `src/content/gallery/rental-rates.md` (63 m², 7 × 9 m; cultural and regular CHF tables).
+- Approved financial support: TWINT personal-contact QR at `/imgs/contact-twint.png` and Stripe Payment Link `https://buy.stripe.com/4gMfZg6gLchX71P2wRcwg01` with `/imgs/stripe.png`, configured in `src/content/support/financial-support.md`. Those two PNG files are authorised functional media exceptions.
+- Gallery photographs are optional external URLs in `src/content/pages/inverted-gallery.md` frontmatter; empty lists hide the photo section.

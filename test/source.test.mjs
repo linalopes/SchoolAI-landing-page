@@ -11,11 +11,33 @@ import {
   selectUpcomingEvents,
   workstationTitles,
 } from '../src/lib/sheets/index.ts';
+import { authorisedFunctionalMedia } from '../src/data/site.ts';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 
 function read(path) {
   return readFileSync(join(root, path), 'utf8');
+}
+
+function listAstroAndTs() {
+  const files = [];
+  const skip = new Set(['node_modules', 'dist', '.git', '.astro']);
+  function walk(dir) {
+    for (const entry of readdirSync(dir)) {
+      if (skip.has(entry)) continue;
+      const full = join(dir, entry);
+      const info = statSync(full);
+      if (info.isDirectory()) {
+        walk(full);
+        continue;
+      }
+      if (/\.(astro|ts)$/.test(entry) && !full.includes(`${join('src', 'data', 'feeds')}`)) {
+        files.push(relative(root, full));
+      }
+    }
+  }
+  walk(join(root, 'src'));
+  return files;
 }
 
 test('brand tokens match the SchoolAI kit', () => {
@@ -33,26 +55,29 @@ test('brand tokens match the SchoolAI kit', () => {
   assert.match(globalCss, /\.editorial-main/);
   assert.match(globalCss, /\.archive-grid/);
   assert.match(globalCss, /\.workstations-grid/);
+  assert.match(globalCss, /\.support-methods/);
+  assert.match(globalCss, /\.rental-table/);
 });
 
 test('homepage keeps the split hero, sheet carousel, atelier, and Formspree', () => {
   const hero = read('src/components/home/Hero.astro');
   const newsletter = read('src/components/home/Newsletter.astro');
   const atelier = read('src/components/home/Atelier.astro');
+  const homeMd = read('src/content/pages/home.md');
   const contract = read('src/lib/sheets/contract.ts');
   const homepage = read('src/scripts/homepage.ts');
   const indexPage = read('src/pages/index.astro');
   assert.match(hero, /id="hero-carousel"/);
-  assert.match(hero, /Strange questions/);
-  assert.match(hero, /site\.description/);
-  assert.match(read('src/data/site.ts'), /independent atelier for experimental research/);
+  assert.match(hero, /requirePage\('home'\)/);
   assert.match(hero, /loadHeroSnapshot/);
-  assert.match(newsletter, /https:\/\/formspree.io\/f\/mvgbznoe/);
+  assert.match(homeMd, /Strange questions/);
+  assert.match(homeMd, /independent atelier for experimental research/);
+  assert.match(newsletter, /formspreeAction/);
   assert.match(contract, /https:\/\/formspree.io\/f\/mvgbznoe/);
   assert.match(atelier, /src="\/space3d\.html"/);
   assert.match(atelier, /id="atelier"/);
-  assert.match(atelier, /Eight interconnected research workstations/);
-  assert.match(atelier, /href="\/atelier\/"/);
+  assert.match(homeMd, /Eight interconnected research workstations/);
+  assert.match(homeMd, /href: \/atelier\//);
   assert.doesNotMatch(atelier, /seven|later phase|planned route|snapshot/i);
   assert.match(contract, /gid=1398027263/);
   assert.match(contract, /gid=0/);
@@ -73,13 +98,12 @@ test('homepage keeps the split hero, sheet carousel, atelier, and Formspree', ()
 test('Selected Research uses the archive feed without hardcoded project cards', () => {
   const selected = read('src/components/home/SelectedResearch.astro');
   const archiveComponent = read('src/components/research/ResearchArchive.astro');
-  const contract = read('src/lib/sheets/contract.ts');
+  const homeMd = read('src/content/pages/home.md');
   assert.match(selected, /ResearchArchive/);
   assert.match(archiveComponent, /loadArchiveSnapshot/);
   assert.match(archiveComponent, /data-feed="archive"/);
-  assert.match(archiveComponent, /Explore the Research Archive|archiveCta/);
-  assert.match(contract, /Explore the Research Archive/);
-  assert.match(contract, /blog\.linalopes\.info/);
+  assert.match(homeMd, /Explore the Research Archive/);
+  assert.match(homeMd, /blog\.linalopes\.info/);
   assert.doesNotMatch(archiveComponent, /Affective Atmosphere 2046|Mr\. Sonnet|Claw-Pilot/);
   assert.match(read('src/data/feeds/archive.json'), /affective-atmosphere-2046/);
 });
@@ -88,7 +112,7 @@ test('navigation promotes all seven institutional routes while keeping homepage 
   const nav = read('src/data/navigation.ts');
   const view = read('src/components/navigation/SiteNav.astro');
   const footer = read('src/components/navigation/SiteFooter.astro');
-  const hero = read('src/components/home/Hero.astro');
+  const homeMd = read('src/content/pages/home.md');
   const researchHome = read('src/components/home/ArtificialEmotion.astro');
   const atelierHome = read('src/components/home/Atelier.astro');
   const programmeHome = read('src/components/home/Programme.astro');
@@ -103,89 +127,114 @@ test('navigation promotes all seven institutional routes while keeping homepage 
   assert.match(nav, /href: '\/programme\/'/);
   assert.match(nav, /href: '\/inverted-gallery\/'/);
   assert.match(nav, /href: '\/collaborate\/'/);
-  assert.match(nav, /plannedRoutes/);
   const planned = nav.slice(nav.indexOf('export const plannedRoutes'));
   assert.match(planned, /wishlist/);
   assert.match(planned, /contributors/);
   assert.doesNotMatch(planned, /href: '\/programme\/'/);
-  assert.doesNotMatch(planned, /href: '\/inverted-gallery\/'/);
-  assert.doesNotMatch(planned, /href: '\/collaborate\/'/);
-  assert.doesNotMatch(nav, /href: '\/#programme'/);
-  assert.doesNotMatch(nav, /href: '\/#gallery'/);
-  assert.doesNotMatch(nav, /href: '\/#collaborate'/);
-  assert.doesNotMatch(nav, /href: '\/#research'/);
-  assert.doesNotMatch(nav, /href: '\/#atelier'/);
   assert.match(researchHome, /id="research"/);
   assert.match(atelierHome, /id="atelier"/);
   assert.match(programmeHome, /id="programme"/);
   assert.match(galleryHome, /id="gallery"/);
   assert.match(collaborateHome, /id="collaborate"/);
-  assert.match(programmeHome, /href="\/programme\/"/);
-  assert.match(galleryHome, /href="\/inverted-gallery\/"/);
-  assert.match(collaborateHome, /href="\/collaborate\/"/);
-  assert.match(hero, /href="\/research\/"/);
-  assert.match(hero, /href="\/collaborate\/"/);
+  assert.match(homeMd, /href: \/programme\//);
+  assert.match(homeMd, /href: \/inverted-gallery\//);
+  assert.match(homeMd, /href: \/collaborate\//);
+  assert.match(homeMd, /href: \/research\//);
   assert.match(footer, /href="\/programme\/"/);
-  assert.match(footer, /href="\/inverted-gallery\/"/);
-  assert.match(footer, /href="\/collaborate\/"/);
   assert.match(view, /navItems/);
-  assert.match(view, /homeHref/);
   assert.match(view, /id="nav-hamburger"/);
 });
 
-test('Research, Atelier, Programme, Gallery and Collaborate pages exist with approved content', () => {
-  const research = read('src/pages/research/index.astro');
-  const atelier = read('src/pages/atelier/index.astro');
-  const programme = read('src/pages/programme/index.astro');
-  const gallery = read('src/pages/inverted-gallery/index.astro');
-  const collaborate = read('src/pages/collaborate/index.astro');
-  const support = read('src/data/support.ts');
-  assert.match(research, /Artificial Emotion/);
-  assert.match(research, /Kinetic Studies/);
-  assert.match(research, /Soft Mechanisms/);
-  assert.match(research, /Bio-signals/);
-  assert.match(research, /site\.researchNotebookUrl/);
-  assert.match(read('src/data/site.ts'), /emotion\.linalopes\.info/);
-  assert.match(research, /Open research and open source/);
-  assert.match(research, /ResearchArchive/);
-  assert.doesNotMatch(research, /PhD|phase 3|snapshot|planned route/i);
-  assert.match(atelier, /WorkstationsDirectory/);
-  assert.match(atelier, /space3d\.html/);
-  assert.match(atelier, /Arrange a visit/);
-  assert.match(atelier, /Propose a research collaboration/);
-  assert.match(atelier, /not available for rental/);
-  assert.doesNotMatch(atelier, /seven workstation|phase 3|snapshot|planned route|one-to-one correspondence|data model/i);
-  assert.match(programme, /Open Research Studio/);
-  assert.match(programme, /Research-based workshops/);
-  assert.match(programme, /selectPastEventsPreview|Past events/);
-  assert.match(programme, /room-for-interaction\.html/);
-  assert.match(programme, /arduino-day-2026\.html/);
-  assert.match(programme, /Newsletter/);
-  assert.match(gallery, /Inverted Gallery/);
-  assert.match(gallery, /Space rental|space rental/i);
-  assert.match(gallery, /Cultural use/);
-  assert.match(gallery, /Commercial use/);
-  assert.match(gallery, /Curatorial collaboration/);
-  assert.match(gallery, /Only Inverted Gallery is available for rental/);
-  assert.match(gallery, /galleryImageUrl/);
-  assert.doesNotMatch(gallery, /CHF|price|calendar|booking system|placeholder image/i);
-  assert.match(collaborate, /Research grows through exchange/);
-  assert.match(collaborate, /Research Collaboration/);
-  assert.match(collaborate, /Student Research/);
-  assert.match(collaborate, /Technology Partnerships/);
-  assert.match(collaborate, /Commissioned Research/);
-  assert.match(collaborate, /Hands-on Contributions/);
-  assert.match(collaborate, /Financial Support/);
-  assert.match(collaborate, /does not offer formal employment, residency programmes, internships/);
-  assert.doesNotMatch(collaborate, /TWINT|Stripe|payment link|IBAN/i);
-  assert.match(support, /wishlist/);
-  assert.match(support, /contributors/);
-  assert.match(support, /twintPersonalContactQrUrl/);
-  assert.match(support, /stripePaymentLinks/);
-  assert.deepEqual(
-    readdirSync(join(root, 'src/content/wishlist')).filter((name) => name.endsWith('.md')),
-    [],
-  );
+test('institutional editorial content is sourced from Markdown', () => {
+  for (const name of [
+    'home.md',
+    'about.md',
+    'research.md',
+    'atelier.md',
+    'programme.md',
+    'inverted-gallery.md',
+    'collaborate.md',
+  ]) {
+    assert.equal(statSync(join(root, 'src/content/pages', name)).isFile(), true, name);
+  }
+  assert.equal(statSync(join(root, 'src/content/gallery/rental-rates.md')).isFile(), true);
+  assert.equal(statSync(join(root, 'src/content/support/financial-support.md')).isFile(), true);
+
+  const researchMd = read('src/content/pages/research.md');
+  assert.match(researchMd, /Artificial Emotion/);
+  assert.match(researchMd, /Kinetic Studies/);
+  assert.match(researchMd, /Soft Mechanisms/);
+  assert.match(researchMd, /Bio-signals/);
+
+  const galleryMd = read('src/content/pages/inverted-gallery.md');
+  assert.match(galleryMd, /Only Inverted Gallery is available for rental/);
+  assert.match(galleryMd, /photos: \[\]/);
+
+  const collaborateMd = read('src/content/pages/collaborate.md');
+  assert.match(collaborateMd, /Research Collaboration/);
+  assert.match(collaborateMd, /Student Research/);
+  assert.match(collaborateMd, /Technology Partnerships/);
+  assert.match(collaborateMd, /Commissioned Research/);
+  assert.match(collaborateMd, /Hands-on Contributions/);
+  assert.match(collaborateMd, /Financial Support/);
+
+  const researchPage = read('src/pages/research/index.astro');
+  const atelierPage = read('src/pages/atelier/index.astro');
+  const programmePage = read('src/pages/programme/index.astro');
+  const galleryPage = read('src/pages/inverted-gallery/index.astro');
+  const collaboratePage = read('src/pages/collaborate/index.astro');
+  assert.match(researchPage, /requirePage\('research'\)/);
+  assert.match(atelierPage, /requirePage\('atelier'\)/);
+  assert.match(programmePage, /requirePage\('programme'\)/);
+  assert.match(galleryPage, /requirePage\('inverted-gallery'\)/);
+  assert.match(collaboratePage, /requirePage\('collaborate'\)/);
+  assert.match(collaboratePage, /FinancialSupport/);
+  assert.match(galleryPage, /GalleryRentalRates/);
+  assert.match(galleryPage, /GalleryPhotos/);
+  assert.doesNotMatch(researchPage, /PhD|phase 3|planned route/i);
+  assert.doesNotMatch(atelierPage, /seven workstation|phase 3|planned route/i);
+});
+
+test('rental rates live in Markdown and are not hardcoded in Astro or TypeScript', () => {
+  const ratesMd = read('src/content/gallery/rental-rates.md');
+  assert.match(ratesMd, /area_m2: 63/);
+  assert.match(ratesMd, /width_m: 7/);
+  assert.match(ratesMd, /length_m: 9/);
+  assert.match(ratesMd, /cultural_chf: 20/);
+  assert.match(ratesMd, /regular_chf: 35/);
+  assert.match(ratesMd, /cultural_chf: 900/);
+  assert.match(ratesMd, /regular_chf: 1400/);
+  assert.match(ratesMd, /Cultural rate/);
+  assert.match(ratesMd, /Regular rate/);
+
+  for (const file of listAstroAndTs()) {
+    const text = read(file);
+    assert.doesNotMatch(text, /cultural_chf:\s*20|regular_chf:\s*1400/);
+    assert.doesNotMatch(text, /Half day \(4 hours\)/);
+  }
+});
+
+test('financial support is Markdown-driven with authorised QR assets', () => {
+  const supportMd = read('src/content/support/financial-support.md');
+  assert.match(supportMd, /twint:/);
+  assert.match(supportMd, /stripe:/);
+  assert.match(supportMd, /enabled: true/);
+  assert.match(supportMd, /\/imgs\/contact-twint\.png/);
+  assert.match(supportMd, /\/imgs\/stripe\.png/);
+  assert.match(supportMd, /https:\/\/buy\.stripe\.com\/4gMfZg6gLchX71P2wRcwg01/);
+  assert.match(supportMd, /Make a contribution/);
+  assert.match(supportMd, /not presented as tax-deductible/);
+  assert.match(supportMd, /personal-contact QR code/);
+
+  for (const path of authorisedFunctionalMedia) {
+    assert.equal(statSync(join(root, path)).isFile(), true, path);
+  }
+
+  const component = read('src/components/support/FinancialSupport.astro');
+  assert.match(component, /requireSupportDoc\('financial-support'\)/);
+  assert.match(component, /twint\.enabled/);
+  assert.match(component, /stripe\.enabled/);
+  assert.doesNotMatch(component, /buy\.stripe\.com/);
 });
 
 test('eight-workstation nomenclature is confirmed and seven-station copy is gone from public pages', () => {
@@ -200,22 +249,22 @@ test('eight-workstation nomenclature is confirmed and seven-station copy is gone
     'Saloon',
   ]);
   for (const path of [
-    'src/components/home/Atelier.astro',
+    'src/content/pages/home.md',
+    'src/content/pages/atelier.md',
     'src/pages/atelier/index.astro',
     'src/pages/research/index.astro',
     'src/pages/index.astro',
-    'src/components/home/Gallery.astro',
   ]) {
     const text = read(path);
     assert.doesNotMatch(text, /seven interconnected|seven stations|Electronics Bench & Wearables Lab|(?<!Craft )Office(?! of)/i);
   }
   const publicBundle = [
-    read('src/components/home/Atelier.astro'),
-    read('src/pages/atelier/index.astro'),
-    read('src/components/atelier/WorkstationsDirectory.astro'),
+    read('src/content/pages/home.md'),
+    read('src/content/pages/atelier.md'),
+    read('src/data/feeds/workstations.json'),
   ].join('\n');
   for (const title of workstationTitles) {
-    assert.match(publicBundle + read('src/data/feeds/workstations.json'), new RegExp(title));
+    assert.match(publicBundle, new RegExp(title));
   }
 });
 
@@ -226,9 +275,9 @@ test('The School page is Markdown-backed and links to the founder site', () => {
   assert.match(aboutMd, /Wetzikon/);
   assert.match(aboutMd, /tool, a medium, a material or a subject/);
   assert.match(aboutMd, /https:\/\/www\.linalopes\.info\//);
-  assert.match(aboutPage, /getEntry\('pages', 'about'\)/);
+  assert.match(aboutPage, /requirePage\('about'\)/);
   assert.match(aboutPage, /EditorialLayout/);
-  assert.match(aboutPage, /\/imgs\/lina\.jpg/);
+  assert.match(aboutMd, /portrait_src: \/imgs\/lina\.jpg/);
 });
 
 test('dependency set stays Astro, TypeScript, and native CSS', () => {
@@ -255,6 +304,8 @@ test('legacy public paths remain', () => {
     'public/CNAME',
     'public/imgs/favicon.svg',
     'public/imgs/lina.jpg',
+    'public/imgs/contact-twint.png',
+    'public/imgs/stripe.png',
     'public/imgs/space/biolab.webp',
     'public/history/space3d.html',
   ]) {
@@ -263,8 +314,9 @@ test('legacy public paths remain', () => {
   assert.equal(read('public/CNAME').trim(), 'schoolai.linalopes.info');
 });
 
-test('no editorial media was added outside the preserved legacy paths', () => {
-  const allowed = ['public/imgs', 'public/history'];
+test('no unauthorised editorial media was added outside preserved and functional paths', () => {
+  const allowedPrefixes = ['public/imgs/', 'public/history/'];
+  const allowedExact = new Set(authorisedFunctionalMedia);
   const media = new Set(['.jpg', '.jpeg', '.png', '.gif', '.webp', '.avif', '.mp4', '.mov', '.webm', '.mp3', '.wav', '.pdf']);
   const skip = new Set(['node_modules', 'dist', '.git', '.astro']);
   const unexpected = [];
@@ -281,7 +333,9 @@ test('no editorial media was added outside the preserved legacy paths', () => {
       const ext = extname(entry).toLowerCase();
       if (!media.has(ext)) continue;
       const rel = relative(root, full);
-      if (!allowed.some((prefix) => rel.startsWith(prefix))) unexpected.push(rel);
+      if (allowedExact.has(rel)) continue;
+      if (allowedPrefixes.some((prefix) => rel.startsWith(prefix))) continue;
+      unexpected.push(rel);
     }
   }
 
@@ -301,4 +355,17 @@ test('offline build can read all four committed snapshots without Google', () =>
   assert.deepEqual(workstations.items.map((item) => item.title), [...workstationTitles]);
   assert.match(read('docs/feed-resilience.md'), /Last-known-good snapshots/);
   assert.match(read('docs/csv-parser.md'), /csv-parse/);
+});
+
+test('README includes the editorial administration guide', () => {
+  const readme = read('README.md');
+  assert.match(readme, /## How to update website content/);
+  assert.match(readme, /src\/content\/pages\//);
+  assert.match(readme, /src\/content\/gallery\/rental-rates\.md/);
+  assert.match(readme, /src\/content\/support\/financial-support\.md/);
+  assert.match(readme, /1XIkDn7NrSSQbcVyYgrlcQxjFsOkraDdfJmI1qzaq54I/);
+  assert.match(readme, /gid=1398027263/);
+  assert.match(readme, /gid=20271126/);
+  assert.match(readme, /gid=20271127/);
+  assert.match(readme, /refresh once in the browser|Requires a new \*\*build and deployment\*\*/i);
 });

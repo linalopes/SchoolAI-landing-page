@@ -1,34 +1,48 @@
+---
+import { requirePage } from '../../lib/content';
+
+const home = await requirePage('home');
+const atelier = home.data.atelier;
+if (!atelier) {
+  throw new Error('home.md is missing the atelier frontmatter section.');
+}
+---
 <section id="atelier">
   <div class="section-header fade-up">
-    <span class="section-number t-label">04</span>
+    <span class="section-number t-label">{atelier.number}</span>
     <div>
-      <h2 class="section-title">The<br>Atelier</h2>
-      <p class="section-intro">
-        A place to make questions physical. Eight interconnected research workstations bring together different ways of making, testing and documenting ideas. The atelier is both a physical space and a way of working.
-      </p>
+      <h2 class="section-title" set:html={atelier.title_lines.join('<br>')} />
+      <p class="section-intro">{atelier.intro}</p>
     </div>
   </div>
   <div class="divider"></div>
 
   <div class="location-header fade-up">
     <div class="location-header-left">
-      <div class="location-name">Research atelier</div>
+      <div class="location-name">{atelier.location_name}</div>
       <div class="location-address">
-        <span>Schönaustrasse 13</span>
-        <span>8620 Wetzikon, Zürich</span>
+        {atelier.address_lines.map((line) => <span>{line}</span>)}
       </div>
-      <a href="https://maps.google.com/?q=Schönaustrasse+13+8620+Wetzikon" target="_blank" rel="noopener" class="location-map-link">Open in Google Maps &#x2197;&#xFE0E;</a>
+      <a href={atelier.maps_url} target="_blank" rel="noopener" class="location-map-link">
+        {atelier.maps_label} &#x2197;&#xFE0E;
+      </a>
     </div>
     <div>
-      <p class="location-intro">The School is based in an atelier at Schönau Areal in Wetzikon-Zürich. Visits can be arranged individually. Access is arranged through conversation, not unrestricted public entry.</p>
-      <p class="location-intro">BioLab, Makerspace, Dirty Workshop, Electronics Bench, Wearables Lab, Craft Office, Studio and Saloon support interconnected investigations rather than isolated departments. Only the Inverted Gallery is available for rental.</p>
+      {atelier.body.map((paragraph) => (
+        <p class="location-intro">{paragraph}</p>
+      ))}
       <div class="section-actions">
-        <a href="/atelier/" class="button button--primary">Visit the Atelier page</a>
+        <a href={atelier.cta.href} class="button button--primary">{atelier.cta.label}</a>
       </div>
     </div>
   </div>
 
   <div class="location-3d fade-up">
-    <iframe src="/space3d.html" class="location-3d-frame" title="The Atelier — School of Tomorrow's AI in 3D" allowfullscreen></iframe>
+    <iframe
+      src="/space3d.html"
+      class="location-3d-frame"
+      title={atelier.tour_title ?? 'The Atelier in 3D'}
+      allowfullscreen
+    ></iframe>
   </div>
 </section>

@@ -2,6 +2,7 @@
 import '../styles/tokens.css';
 import '../styles/typography.css';
 import '../styles/global.css';
+import { requirePage } from '../lib/content';
 import { site } from '../data/site';
 
 interface Props {
@@ -9,7 +10,9 @@ interface Props {
   description?: string;
 }
 
-const { title = site.title, description = site.description } = Astro.props;
+const home = await requirePage('home');
+const defaultDescription = home.data.description ?? home.data.hero?.tagline ?? '';
+const { title = site.title, description = defaultDescription } = Astro.props;
 ---
 <!DOCTYPE html>
 <html lang={site.lang}>

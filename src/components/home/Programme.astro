@@ -4,6 +4,13 @@ import {
   renderEventsMarkup,
   selectUpcomingEvents,
 } from '../../lib/sheets/index.ts';
+import { requirePage } from '../../lib/content';
+
+const home = await requirePage('home');
+const programme = home.data.programme;
+if (!programme) {
+  throw new Error('home.md is missing the programme frontmatter section.');
+}
 
 const snapshot = loadEventsSnapshot();
 const upcoming = selectUpcomingEvents(snapshot.items);
@@ -12,41 +19,35 @@ const eventsHtml = renderEventsMarkup(upcoming);
 <section id="programme">
   <div class="workshops-pattern" aria-hidden="true"></div>
   <div class="section-header fade-up">
-    <span class="section-number t-label">05</span>
+    <span class="section-number t-label">{programme.number}</span>
     <div>
-      <h2 class="section-title">Programme</h2>
-      <p class="section-intro">
-        Research meets people. Open Research Studio, visits and research-based workshops create opportunities to encounter ongoing experiments and exchange knowledge.
-      </p>
-      <div class="section-actions">
-        <a href="/programme/" class="button button--primary">View the Programme</a>
-      </div>
+      <h2 class="section-title" set:html={programme.title_lines.join('<br>')} />
+      <p class="section-intro">{programme.intro}</p>
+      {programme.cta && (
+        <div class="section-actions">
+          <a href={programme.cta.href} class="button button--primary">{programme.cta.label}</a>
+        </div>
+      )}
     </div>
   </div>
   <div class="divider"></div>
 
   <div class="workshops-grid">
-    <article class="workshop-card program-card fade-up">
-      <div class="workshop-tag">Open Research Studio</div>
-      <h3 class="workshop-name">Encounter ongoing research</h3>
-      <p class="workshop-desc">An opportunity to see prototypes and talk about experiments in progress.</p>
-    </article>
-    <article class="workshop-card program-card fade-up">
-      <div class="workshop-tag">Research-based workshops</div>
-      <h3 class="workshop-name">Learn through practice</h3>
-      <p class="workshop-desc">Hands-on activities emerging from current investigations, sharing methods, tools and discoveries.</p>
-    </article>
-    <article id="room-for-interaction" class="workshop-card program-card fade-up">
-      <div class="workshop-tag">2026 · Workshop series</div>
-      <h3 class="workshop-name">Room for Interaction</h3>
-      <p class="workshop-desc">A program exploring body, space and interaction through seven independent sessions, presented with Glitch Lab.</p>
-      <a href="/room-for-interaction.html" class="button button--accent button--sm">View the program</a>
-    </article>
+    {programme.offerings.map((item) => (
+      <article id={item.id} class="workshop-card program-card fade-up">
+        <div class="workshop-tag">{item.tag}</div>
+        <h3 class="workshop-name">{item.title}</h3>
+        <p class="workshop-desc">{item.description}</p>
+        {item.href && item.cta_label && (
+          <a href={item.href} class="button button--accent button--sm">{item.cta_label}</a>
+        )}
+      </article>
+    ))}
   </div>
 
   <div class="programme-events fade-up">
-    <h3 class="programme-events-title t-label">Upcoming dates</h3>
-    <p class="section-intro programme-events-intro">Public dates appear here when there is something to attend. The research continues between them.</p>
+    <h3 class="programme-events-title t-label">{programme.upcoming_title}</h3>
+    <p class="section-intro programme-events-intro">{programme.upcoming_intro}</p>
     <div
       class="events-list"
       id="events-list"

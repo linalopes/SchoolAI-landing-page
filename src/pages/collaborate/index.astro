@@ -1,88 +1,64 @@
 ---
 import EditorialLayout from '../../layouts/EditorialLayout.astro';
+import FinancialSupport from '../../components/support/FinancialSupport.astro';
+import { resolveCtaHref, requirePage } from '../../lib/content';
 import { site } from '../../data/site';
 
-const pageTitle = `Collaborate · ${site.title}`;
-const description =
-  'Research grows through exchange — collaboration pathways at School of Tomorrow’s AI.';
-const contactHref = `mailto:${site.contactEmail}`;
-const visitHref = `mailto:${site.contactEmail}?subject=${encodeURIComponent('Atelier visit')}`;
-
-const pathways = [
-  {
-    title: 'Research Collaboration',
-    description:
-      'Propose a joint or independent investigation, including projects outside Artificial Emotion.',
-    subject: 'Research collaboration',
-  },
-  {
-    title: 'Student Research',
-    description:
-      'Get in touch about a master’s project, thesis or final project. Arrangements depend on the proposal and available capacity.',
-    subject: 'Student research inquiry',
-  },
-  {
-    title: 'Technology Partnerships',
-    description:
-      'Offer access to equipment, laboratories, technologies, scientific facilities or expertise.',
-    subject: 'Technology partnership',
-  },
-  {
-    title: 'Commissioned Research',
-    description:
-      'Discuss experimental projects, prototypes and research collaborations with companies or institutions.',
-    subject: 'Commissioned research',
-  },
-  {
-    title: 'Hands-on Contributions',
-    description:
-      'Share skills, time, materials, equipment, knowledge or practical assistance.',
-    subject: 'Hands-on contribution',
-  },
-  {
-    title: 'Financial Support',
-    description:
-      'Contribute to ongoing research, specific projects or atelier maintenance. Payment options will be confirmed before publication.',
-    subject: 'Financial support inquiry',
-  },
-] as const;
+const entry = await requirePage('collaborate');
+const { pathways, contact_section, collaborate } = entry.data;
+if (!pathways || !contact_section || !collaborate) {
+  throw new Error('collaborate.md is missing required frontmatter sections.');
+}
+const pageTitle = `${entry.data.title} · ${site.title}`;
 ---
-<EditorialLayout title={pageTitle} description={description}>
+<EditorialLayout title={pageTitle} description={entry.data.description}>
   <article class="editorial editorial--wide">
     <header class="editorial-header fade-up">
-      <p class="t-label editorial-eyebrow">Collaborate</p>
-      <h1 class="editorial-title">Collaborate</h1>
-      <p class="editorial-lede">Research grows through exchange.</p>
-      <p class="prose-p">
-        We welcome artists, researchers, students, laboratories, cultural institutions, companies and individuals interested in expanding what can be investigated, made and learned together.
-      </p>
+      {entry.data.eyebrow && <p class="t-label editorial-eyebrow">{entry.data.eyebrow}</p>}
+      <h1 class="editorial-title">{entry.data.title}</h1>
+      {entry.data.lede && <p class="editorial-lede">{entry.data.lede}</p>}
+      <p class="prose-p">{collaborate.intro}</p>
     </header>
 
     <section class="editorial-panel fade-up" aria-label="Collaboration pathways">
       <div class="pathway-grid">
         {pathways.map((pathway, index) => {
-          const href = `mailto:${site.contactEmail}?subject=${encodeURIComponent(pathway.subject)}`;
+          const href = resolveCtaHref('mailto', {
+            email: site.contactEmail,
+            subject: pathway.subject,
+          });
           return (
             <article class="pathway-card">
               <span class="t-label pathway-index">{String(index + 1).padStart(2, '0')}</span>
               <h2 class="pathway-title">{pathway.title}</h2>
               <p class="pathway-desc">{pathway.description}</p>
-              <a href={href} class="pathway-link">Get in touch &#x2192;&#xFE0E;</a>
+              <a href={href} class="pathway-link">
+                {pathway.cta_label ?? 'Get in touch'} &#x2192;&#xFE0E;
+              </a>
             </article>
           );
         })}
       </div>
     </section>
 
+    <FinancialSupport />
+
     <section class="editorial-panel fade-up">
-      <h2 class="editorial-subtitle">Contact the School</h2>
-      <p class="prose-p">
-        Access is arranged through conversation. The School does not offer formal employment, residency programmes, internships or unrestricted public entry.
-      </p>
+      <h2 class="editorial-subtitle">{contact_section.title}</h2>
+      <p class="prose-p">{contact_section.note}</p>
       <div class="section-actions">
-        <a href={contactHref} class="button button--primary">Contact the School</a>
-        <a href={visitHref} class="button button--primary">Arrange a visit</a>
-        <a href={contactHref} class="contact-email">{site.contactEmail}</a>
+        {contact_section.ctas.map((cta) => (
+          <a
+            href={resolveCtaHref(cta.href, {
+              email: site.contactEmail,
+              subject: cta.subject,
+            })}
+            class="button button--primary"
+          >
+            {cta.label}
+          </a>
+        ))}
+        <a href={`mailto:${site.contactEmail}`} class="contact-email">{site.contactEmail}</a>
       </div>
     </section>
   </article>

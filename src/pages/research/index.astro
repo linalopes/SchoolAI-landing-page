@@ -1,54 +1,66 @@
 ---
 import EditorialLayout from '../../layouts/EditorialLayout.astro';
 import ResearchArchive from '../../components/research/ResearchArchive.astro';
+import { mailtoHref, requirePage } from '../../lib/content';
 import { site } from '../../data/site';
 
-const pageTitle = `Research · ${site.title}`;
-const description =
-  'Artificial Emotion and selected research from School of Tomorrow’s AI in Wetzikon-Zürich.';
+const entry = await requirePage('research');
+const { flagship, open_research, archive } = entry.data;
+if (!flagship || !open_research || !archive) {
+  throw new Error('research.md is missing required frontmatter sections.');
+}
+const pageTitle = `${entry.data.title} · ${site.title}`;
+const contactHref = mailtoHref(site.contactEmail);
 ---
-<EditorialLayout title={pageTitle} description={description}>
+<EditorialLayout title={pageTitle} description={entry.data.description}>
   <article class="editorial editorial--wide">
     <header class="editorial-header fade-up">
-      <p class="t-label editorial-eyebrow">Research</p>
-      <h1 class="editorial-title">Research</h1>
-      <p class="editorial-lede">
-        The School investigates questions that become experiments, mechanisms, objects and installations. Open research and open source keep those processes available to others.
-      </p>
+      {entry.data.eyebrow && <p class="t-label editorial-eyebrow">{entry.data.eyebrow}</p>}
+      <h1 class="editorial-title">{entry.data.title}</h1>
+      {entry.data.lede && <p class="editorial-lede">{entry.data.lede}</p>}
     </header>
 
     <section id="artificial-emotion" class="editorial-panel fade-up">
-      <p class="t-label editorial-eyebrow">Principal research · 2027</p>
-      <h2 class="editorial-subtitle">Artificial Emotion</h2>
-      <p class="prose-p">
-        Artificial Emotion is the School’s principal research project for 2027. It explores emotion through physical and technological experimentation across three research threads:
-      </p>
+      <p class="t-label editorial-eyebrow">{flagship.eyebrow}</p>
+      <h2 class="editorial-subtitle">{flagship.title}</h2>
+      <p class="prose-p">{flagship.intro}</p>
       <ul class="research-threads">
-        <li><strong>Kinetic Studies</strong> — motion, mechanisms and embodied expression.</li>
-        <li><strong>Soft Mechanisms</strong> — soft materials, actuators and material behaviour.</li>
-        <li><strong>Bio-signals</strong> — bodily signals as material for artistic research.</li>
+        {flagship.threads.map((thread) => (
+          <li><strong>{thread.title}</strong> — {thread.description}</li>
+        ))}
       </ul>
-      <p class="prose-p">
-        The work aims to generate installations, prototypes, exhibitions, publications and openly documented experiments. The live notebook remains independent of this website.
-      </p>
+      <p class="prose-p">{flagship.closing}</p>
       <div class="section-actions">
-        <a href={site.researchNotebookUrl} target="_blank" rel="noopener" class="button button--primary">
-          Explore the research notebook &#x2197;&#xFE0E;
+        <a
+          href={flagship.notebook_cta.href}
+          target={flagship.notebook_cta.external ? '_blank' : undefined}
+          rel={flagship.notebook_cta.external ? 'noopener' : undefined}
+          class="button button--primary"
+        >
+          {flagship.notebook_cta.label}{flagship.notebook_cta.external ? ' \u2197\uFE0E' : ''}
         </a>
       </div>
     </section>
 
     <section class="editorial-panel fade-up">
-      <h2 class="editorial-subtitle">Open research and open source</h2>
-      <p class="prose-p">
-        Open research, open-source practices and documentation create opportunities for others to learn from and contribute to these processes. Independent notebooks, repositories and publications remain independent; this site links to them rather than replacing them.
-      </p>
-      <p class="prose-p">
-        Propose a research collaboration — including projects outside Artificial Emotion — through
-        <a href={`mailto:${site.contactEmail}`}>Contact the School</a>.
-      </p>
+      <h2 class="editorial-subtitle">{open_research.title}</h2>
+      {open_research.paragraphs.map((paragraph) => (
+        <p class="prose-p">{paragraph}</p>
+      ))}
+      {open_research.contact_label && (
+        <p class="prose-p">
+          <a href={contactHref}>{open_research.contact_label}</a>
+        </p>
+      )}
     </section>
 
-    <ResearchArchive showHeading={true} sectionId="selected-research" sectionNumber="" />
+    <ResearchArchive
+      showHeading={true}
+      sectionId="selected-research"
+      sectionNumber=""
+      titleLines={archive.title_lines}
+      intro={archive.intro}
+      cta={archive.cta}
+    />
   </article>
 </EditorialLayout>

@@ -1,0 +1,39 @@
+---
+import { sortPhotos } from '../../lib/content';
+
+interface Photo {
+  url: string;
+  alt: string;
+  caption?: string;
+  credit?: string;
+  order?: number;
+}
+
+interface Props {
+  photos?: Photo[];
+}
+
+const photos = sortPhotos(Astro.props.photos ?? []).filter((photo) => Boolean(photo.url));
+---
+{photos.length > 0 && (
+  <section class="gallery-photos fade-up" aria-label="Gallery photographs">
+    <div class="gallery-photos-grid">
+      {photos.map((photo) => (
+        <figure class="gallery-figure">
+          <div
+            class="gallery-figure-media"
+            style={`background-image:url('${photo.url}');`}
+            role="img"
+            aria-label={photo.alt}
+          ></div>
+          {(photo.caption || photo.credit) && (
+            <figcaption class="gallery-figure-caption">
+              {photo.caption}
+              {photo.credit && <span class="gallery-figure-credit">{photo.credit}</span>}
+            </figcaption>
+          )}
+        </figure>
+      ))}
+    </div>
+  </section>
+)}

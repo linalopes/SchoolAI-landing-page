@@ -1,6 +1,12 @@
 ---
 title: The School
 description: An independent atelier for experimental research in art, science and creative technology, founded by Lina Lopes in Wetzikon-Zürich.
+eyebrow: Institutional introduction
+lede: An independent atelier for experimental research in art, science and creative technology.
+meta: Wetzikon-Zürich, Switzerland · Founded September 2025
+aside_note: Lina Lopes, founder and research lead.
+portrait_src: /imgs/lina.jpg
+portrait_alt: Portrait of Lina Lopes
 ---
 
 Founded by Lina Lopes in September 2025 in Wetzikon, Switzerland, School of Tomorrow’s AI brings together artistic research, science and creative technology in a physical environment for experimentation. It builds on her earlier atelier practices in Brazil and emerged in a new technological context shaped by the expansion of artificial intelligence.

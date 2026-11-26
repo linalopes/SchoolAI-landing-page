@@ -1,6 +1,6 @@
 # Implementation plan and acceptance
 
-Phases 0–3C are approved. Phase 3D–3F (Programme, Inverted Gallery, Collaborate) is implemented on `website-2027`. Do not start Phase 4 until review. Production is still `main`.
+Phases 0–3F are approved. Phase 3G (editorial Markdown refactor, gallery rates, financial support) is implemented on `website-2027`. Do not start Phase 4 until review. Production is still `main`.
 
 ## Phase 0 — Audit and freeze
 Create branch `website-2027` from current default branch. Capture current desktop/mobile screenshots, route inventory, current brand tokens, exact hero/event headers and behavior, Formspree workflow, 3D assets/dependencies and live hosting settings. Record source and findings; no destructive change. Confirm media hosting and gallery name before public release.
@@ -18,7 +18,10 @@ Navigation architecture, `/about/` Markdown introduction, homepage editorial res
 `/research/` and `/atelier/` are live. Selected Research renders up to six archive entries from snapshots with client refresh. Workstations feed GID `20271127` powers eight editorial stations. Programme, Inverted Gallery and Collaborate dedicated routes remain later.
 
 ## Phase 3D–3F — Institutional pages completion
-`/programme/`, `/inverted-gallery/` and `/collaborate/` are live. Primary navigation points to all seven institutional routes. Wishlist, contributors and payments remain architectural extension points only. Confirm gallery availability details and payment links before publishing them. Keep research notebooks and repositories external.
+`/programme/`, `/inverted-gallery/` and `/collaborate/` are live. Primary navigation points to all seven institutional routes.
+
+## Phase 3G — Editorial refactoring and final integrations
+Institutional and homepage copy moved to Markdown. Gallery rental rates and financial support (TWINT + Stripe Payment Link) are Markdown-configured. Optional gallery photos via frontmatter. README editorial administration guide published. Wishlist and contributors remain unpublished.
 
 ## Phase 4 — QA and release
 Run `npm ci`, type checks, tests and production build; test mobile/desktop, accessibility, no-JS, link validity, legacy routes, external media, feed outage, event date handling, newsletter, 3D and search metadata. Review public credits for permission. Check that no new binary media exists in Git. Obtain owner approval before merging/deploying. Record rollback instructions (redeploy previous approved commit) and README for editors.
@@ -32,7 +35,9 @@ Run `npm ci`, type checks, tests and production build; test mobile/desktop, acce
 - [x] Research Archive adapter and snapshot prepared (not published); rebuild via `npm run refresh-feeds`. Credits/stations remain later.
 - [x] Markdown institutional copy for The School (`/about/`); wishlist still empty until a later phase.
 - [x] Programme, Inverted Gallery and Collaborate dedicated pages published; inquiry CTAs live.
-- [ ] Media externally hosted; no new binary media in repo.
+- [x] Editorial content sourced from Markdown; rental rates and financial support editable without code changes.
+- [x] Authorised TWINT/Stripe QR assets only; no unauthorised editorial media committed.
+- [ ] Media externally hosted for gallery photography once URLs are supplied.
 - [ ] Existing links, events, newsletter, 3D and domain preserved or tested replacements approved.
 - [ ] No invented project descriptions, supporter names, grant claims or formal programs.
 - [x] Gallery inquiry and curator invitation usable; no unapproved prices or promises.

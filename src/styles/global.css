@@ -1415,6 +1415,132 @@
     margin-top: var(--space-3);
   }
 
+  .support-methods {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5);
+    margin: var(--space-4) 0;
+  }
+
+  .support-method {
+    padding: var(--space-4);
+    border-top: 2px solid var(--pink);
+    background: rgba(202, 216, 216, 0.18);
+  }
+
+  .support-method-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: clamp(22px, 2.4vw, 28px);
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-3);
+  }
+
+  .support-method-desc {
+    font-size: 16px;
+    line-height: 1.7;
+    opacity: 0.78;
+    margin-bottom: var(--space-4);
+  }
+
+  .support-qr {
+    margin: 0 0 var(--space-4);
+    max-width: 280px;
+  }
+
+  .support-qr img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    background: var(--white);
+    padding: 12px;
+    border: var(--border-width) solid rgba(34, 17, 62, 0.14);
+  }
+
+  .support-disclaimer {
+    opacity: 0.6;
+    font-size: 15px;
+  }
+
+  .rental-category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5);
+    margin: var(--space-4) 0;
+  }
+
+  .rental-dimensions {
+    margin-bottom: var(--space-4);
+  }
+
+  .rental-table-wrap {
+    overflow-x: auto;
+    margin: var(--space-4) 0;
+  }
+
+  .rental-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 480px;
+  }
+
+  .rental-table-caption {
+    caption-side: top;
+    text-align: left;
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    opacity: 0.55;
+    margin-bottom: var(--space-3);
+  }
+
+  .rental-table th,
+  .rental-table td {
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(34, 17, 62, 0.14);
+    font-size: 16px;
+  }
+
+  .rental-table thead th {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    opacity: 0.7;
+  }
+
+  .rental-table tbody th {
+    font-weight: 500;
+  }
+
+  .rental-table td {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .gallery-photos {
+    margin-bottom: var(--space-6);
+  }
+
+  .gallery-photos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+
+  .gallery-figure-caption {
+    margin-top: var(--space-2);
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    opacity: 0.55;
+  }
+
+  .gallery-figure-credit {
+    display: block;
+    margin-top: 4px;
+  }
+
   /* ── EDITORIAL PAGES ── */
   .editorial-main {
     padding-top: 120px;
@@ -1906,5 +2032,8 @@
     .workstation-card { grid-template-columns: 1fr; }
     .workstation-card-media { min-height: 180px; }
     .rental-grid,
-    .pathway-grid { grid-template-columns: 1fr; }
+    .pathway-grid,
+    .support-methods,
+    .rental-category-grid,
+    .gallery-photos-grid { grid-template-columns: 1fr; }
   }

@@ -1,17 +1,14 @@
-<!-- ── MARQUEE ── -->
-<div class="marquee-strip" aria-hidden="true">
-  <div class="marquee-inner">
-    <span>AI as material</span>
-    <span>Artistic Research</span>
-    <span>Embodied Systems</span>
-    <span>Speculative Prototyping</span>
-    <span>Possible Futures</span>
-    <span>Science as material</span>
-    <span>AI as material</span>
-    <span>Artistic Research</span>
-    <span>Embodied Systems</span>
-    <span>Speculative Prototyping</span>
-    <span>Possible Futures</span>
-    <span>Science as material</span>
+---
+import { requirePage } from '../../lib/content';
+
+const home = await requirePage('home');
+const items = home.data.marquee ?? [];
+const loop = [...items, ...items];
+---
+{items.length > 0 && (
+  <div class="marquee-strip" aria-hidden="true">
+    <div class="marquee-inner">
+      {loop.map((item) => <span>{item}</span>)}
+    </div>
   </div>
-</div>
+)}

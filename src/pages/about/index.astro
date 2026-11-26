@@ -1,35 +1,36 @@
 ---
-import { getEntry, render } from 'astro:content';
+import { render } from 'astro:content';
 import EditorialLayout from '../../layouts/EditorialLayout.astro';
+import { requirePage } from '../../lib/content';
 import { site } from '../../data/site';
 
-const entry = await getEntry('pages', 'about');
-if (!entry) {
-  throw new Error('Missing Markdown source for The School (src/content/pages/about.md).');
-}
-
+const entry = await requirePage('about');
 const { Content } = await render(entry);
 const pageTitle = `${entry.data.title} · ${site.title}`;
 ---
 <EditorialLayout title={pageTitle} description={entry.data.description}>
   <article class="editorial">
     <header class="editorial-header fade-up">
-      <p class="t-label editorial-eyebrow">Institutional introduction</p>
+      {entry.data.eyebrow && <p class="t-label editorial-eyebrow">{entry.data.eyebrow}</p>}
       <h1 class="editorial-title">{entry.data.title}</h1>
-      <p class="editorial-lede">{site.description}</p>
-      <p class="editorial-meta t-mono">{site.locationLine} · Founded {site.founded}</p>
+      {entry.data.lede && <p class="editorial-lede">{entry.data.lede}</p>}
+      {entry.data.meta && <p class="editorial-meta t-mono">{entry.data.meta}</p>}
     </header>
     <div class="editorial-body prose fade-up">
       <Content />
     </div>
     <aside class="editorial-aside fade-up">
-      <div class="host-photo-frame editorial-portrait">
-        <img src="/imgs/lina.jpg" alt="Portrait of Lina Lopes">
-      </div>
-      <p class="editorial-aside-note">
-        Lina Lopes, founder and research lead.
-        <a href={site.founderUrl} target="_blank" rel="noopener">www.linalopes.info &#x2197;&#xFE0E;</a>
-      </p>
+      {entry.data.portrait_src && (
+        <div class="host-photo-frame editorial-portrait">
+          <img src={entry.data.portrait_src} alt={entry.data.portrait_alt ?? ''} />
+        </div>
+      )}
+      {entry.data.aside_note && (
+        <p class="editorial-aside-note">
+          {entry.data.aside_note}
+          <a href={site.founderUrl} target="_blank" rel="noopener">www.linalopes.info &#x2197;&#xFE0E;</a>
+        </p>
+      )}
     </aside>
   </article>
 </EditorialLayout>

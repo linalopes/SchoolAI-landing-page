@@ -1,46 +1,64 @@
 ---
 import EditorialLayout from '../../layouts/EditorialLayout.astro';
 import WorkstationsDirectory from '../../components/atelier/WorkstationsDirectory.astro';
+import { resolveCtaHref, requirePage } from '../../lib/content';
 import { site } from '../../data/site';
 
-const pageTitle = `The Atelier · ${site.title}`;
-const description =
-  'The research atelier of School of Tomorrow’s AI in Wetzikon-Zürich — eight workstations, visits and collaboration.';
-const visitHref = `mailto:${site.contactEmail}?subject=${encodeURIComponent('Atelier visit')}`;
-const collabHref = `mailto:${site.contactEmail}?subject=${encodeURIComponent('Research collaboration')}`;
+const entry = await requirePage('atelier');
+const atelier = entry.data.atelier;
+if (!atelier) {
+  throw new Error('atelier.md is missing the atelier frontmatter section.');
+}
+const pageTitle = `${entry.data.title} · ${site.title}`;
+const ctas = entry.data.ctas ?? [];
 ---
-<EditorialLayout title={pageTitle} description={description}>
+<EditorialLayout title={pageTitle} description={entry.data.description}>
   <article class="editorial editorial--wide">
     <header class="editorial-header fade-up">
-      <p class="t-label editorial-eyebrow">The Atelier</p>
-      <h1 class="editorial-title">The Atelier</h1>
-      <p class="editorial-lede">
-        The atelier is a physical research environment and a way of working. Questions become material through speculative prototyping, making and public testing.
-      </p>
-      <p class="editorial-meta t-mono">Schönaustrasse 13 · 8620 Wetzikon, Zürich</p>
+      {entry.data.eyebrow && <p class="t-label editorial-eyebrow">{entry.data.eyebrow}</p>}
+      <h1 class="editorial-title">{entry.data.title}</h1>
+      {entry.data.lede && <p class="editorial-lede">{entry.data.lede}</p>}
+      {entry.data.meta && <p class="editorial-meta t-mono">{entry.data.meta}</p>}
     </header>
 
     <section class="editorial-panel fade-up">
-      <p class="prose-p">
-        Based at Schönau Areal in Wetzikon-Zürich, the atelier supports fabrication, electronics, documentation and hands-on assembly. Eight research workstations bring together different ways of making, testing and documenting ideas. Visits can be arranged individually. Access is arranged through conversation, not unrestricted public entry.
-      </p>
-      <p class="prose-p">
-        The atelier and its research workstations are not available for rental — only the Inverted Gallery is.
-      </p>
+      {atelier.body.map((paragraph) => (
+        <p class="prose-p">{paragraph}</p>
+      ))}
       <div class="section-actions">
-        <a href={visitHref} class="button button--primary">Arrange a visit</a>
-        <a href={collabHref} class="button button--primary">Propose a research collaboration</a>
-        <a href="https://maps.google.com/?q=Schönaustrasse+13+8620+Wetzikon" target="_blank" rel="noopener" class="button button--primary">
-          Open in Google Maps &#x2197;&#xFE0E;
-        </a>
+        {ctas.map((cta) => {
+          const href = resolveCtaHref(cta.href, {
+            email: site.contactEmail,
+            subject: cta.subject,
+          });
+          return (
+            <a
+              href={href}
+              target={cta.external ? '_blank' : undefined}
+              rel={cta.external ? 'noopener' : undefined}
+              class="button button--primary"
+            >
+              {cta.label}{cta.external ? ' \u2197\uFE0E' : ''}
+            </a>
+          );
+        })}
       </div>
     </section>
 
     <div class="location-3d fade-up atelier-tour">
-      <iframe src="/space3d.html" class="location-3d-frame" title="The Atelier — School of Tomorrow's AI in 3D" allowfullscreen></iframe>
-      <p class="location-3d-hint">Interactive 3D tour of the atelier</p>
+      <iframe
+        src="/space3d.html"
+        class="location-3d-frame"
+        title={atelier.tour_title ?? 'The Atelier in 3D'}
+        allowfullscreen
+      ></iframe>
+      {atelier.tour_hint && <p class="location-3d-hint">{atelier.tour_hint}</p>}
     </div>
 
-    <WorkstationsDirectory />
+    <WorkstationsDirectory
+      number={atelier.workstations_number}
+      titleLines={atelier.workstations_title_lines}
+      intro={atelier.workstations_intro}
+    />
   </article>
 </EditorialLayout>

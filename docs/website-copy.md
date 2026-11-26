@@ -89,6 +89,9 @@ Inverted Gallery reverses the usual relationship between studio and exhibition s
 
 Managed by School of Tomorrow’s AI, the gallery welcomes inquiries for exhibitions, rehearsals, events and other cultural activities.
 
+### Space rental rates (approved)
+Gallery: 63 m² (7 × 9 m). Cultural and regular CHF rates are maintained in `src/content/gallery/rental-rates.md`.
+
 ### Curatorial collaboration
 The School is interested in working with an associated curator whose interests connect with art, science and technology. Get in touch to discuss possible curatorial collaborations and the development of a cultural programme.
 
@@ -107,7 +110,7 @@ Research grows through exchange. We welcome artists, researchers, students, labo
 
 **Hands-on contributions:** share skills, time, materials or practical assistance.
 
-**Financial support:** contribute to ongoing research, atelier maintenance or specific campaigns. Confirm payment options before publication.
+**Financial support:** contribute via TWINT personal-contact QR or Stripe Payment Link (copy in `src/content/support/financial-support.md`). Do not claim tax deductibility.
 
 [Arrange a visit] · [Contact the School]
 

@@ -1,3 +1,7 @@
+/**
+ * Site configuration and public integration endpoints.
+ * Institutional narrative, rental rates, payment copy and page CTAs live in Markdown.
+ */
 export const site = {
   title: "School of Tomorrow's AI",
   lang: 'en',
@@ -9,13 +13,10 @@ export const site = {
   founderUrl: 'https://www.linalopes.info/',
   researchNotebookUrl: 'https://emotion.linalopes.info/',
   researchArchiveUrl: 'https://blog.linalopes.info/',
-  description:
-    'An independent atelier for experimental research in art, science and creative technology.',
-  /**
-   * Optional external photograph for Inverted Gallery.
-   * When set to a public HTTPS URL, gallery pages can render it without component changes.
-   * Leave null to omit media — no development placeholder is shown.
-   */
-  galleryImageUrl: null as string | null,
-  galleryImageAlt: 'Inverted Gallery at School of Tomorrow’s AI',
 } as const;
+
+/** Authorised functional media exceptions (not editorial photography). */
+export const authorisedFunctionalMedia = [
+  'public/imgs/contact-twint.png',
+  'public/imgs/stripe.png',
+] as const;

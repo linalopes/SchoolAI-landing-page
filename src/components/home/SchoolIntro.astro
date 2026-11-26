@@ -1,21 +1,31 @@
 ---
-import { site } from '../../data/site';
+import { requirePage } from '../../lib/content';
+
+const home = await requirePage('home');
+const school = home.data.school;
+if (!school) {
+  throw new Error('home.md is missing the school frontmatter section.');
+}
 ---
 <section id="school">
   <div class="investigate-pattern" aria-hidden="true"></div>
   <div class="section-header fade-up">
-    <span class="section-number t-label">01</span>
+    <span class="section-number t-label">{school.number}</span>
     <div>
-      <h2 class="section-title">The<br>School</h2>
-      <p class="section-intro">
-        If machines are learning, what are we teaching them? School of Tomorrow’s AI explores the questions emerging from the technologies we create: what is intelligence, what is human, what is alive, and what might become possible when these questions take material form?
-      </p>
-      <p class="callout">
-        An independent atelier for experimental research — founded in {site.founded} by Lina Lopes in {site.locationLine}.
-      </p>
+      <h2 class="section-title" set:html={school.title_lines.join('<br>')} />
+      <p class="section-intro">{school.intro}</p>
+      <p class="callout">{school.callout}</p>
       <div class="section-actions">
-        <a href="/about/" class="button button--primary">Read about the School</a>
-        <a href={site.founderUrl} target="_blank" rel="noopener" class="button button--primary">Lina Lopes &#x2197;&#xFE0E;</a>
+        {school.ctas.map((cta) => (
+          <a
+            href={cta.href}
+            target={cta.external ? '_blank' : undefined}
+            rel={cta.external ? 'noopener' : undefined}
+            class="button button--primary"
+          >
+            {cta.label}{cta.external ? ' \u2197\uFE0E' : ''}
+          </a>
+        ))}
       </div>
     </div>
   </div>

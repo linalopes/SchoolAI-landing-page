@@ -17,4 +17,4 @@ School of Tomorrow’s AI; Wetzikon-Zürich; Artificial Emotion (singular); Embo
 - Contributors: text names only, optional organization links with permission. No portraits, personal contact details, private permissions records or individual donation amounts in public data.
 
 ## Editorial maintenance
-Markdown for stable narrative and wishlist; Google Sheets for frequently edited short texts, image URLs, updates, events, curated archive metadata and public credits. Each fact has one canonical source. Use draft/published status and review before publishing. Newsletter occasional, not scheduled by default.
+Markdown for institutional pages, homepage copy, gallery rates, financial support and wishlist; Google Sheets for hero, events, archive, workstations and (later) public credits. Each fact has one canonical source — never duplicate the same sentence in Markdown and Astro. Use draft/published status and review before publishing. Newsletter occasional, not scheduled by default. Owners edit Markdown or Sheets; they should not need to open component source for copy changes.

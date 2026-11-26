@@ -1,0 +1,54 @@
+---
+import { formatChf, requireGalleryDoc } from '../../lib/content';
+
+const entry = await requireGalleryDoc('rental-rates');
+const {
+  title,
+  dimensions,
+  categories,
+  rates,
+  period_column,
+  cultural_column,
+  regular_column,
+  table_caption,
+  currency_note,
+} = entry.data;
+---
+<section class="editorial-panel fade-up" aria-labelledby="rental-rates-heading">
+  <h2 id="rental-rates-heading" class="editorial-subtitle">{title}</h2>
+  <p class="prose-p rental-dimensions">
+    <span class="t-label">{dimensions.label ?? 'Gallery dimensions'}</span>
+    <br />
+    {dimensions.area_m2}&nbsp;m² · {dimensions.width_m}&nbsp;m × {dimensions.length_m}&nbsp;m
+  </p>
+  <div class="rental-category-grid">
+    {categories.map((category) => (
+      <article class="rental-card">
+        <p class="t-label rental-card-label">{category.title}</p>
+        <p class="rental-card-desc">{category.description}</p>
+      </article>
+    ))}
+  </div>
+  <div class="rental-table-wrap">
+    <table class="rental-table">
+      <caption class="rental-table-caption">{table_caption ?? title}</caption>
+      <thead>
+        <tr>
+          <th scope="col">{period_column}</th>
+          <th scope="col">{cultural_column}</th>
+          <th scope="col">{regular_column}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rates.map((row) => (
+          <tr>
+            <th scope="row">{row.period}</th>
+            <td>{formatChf(row.cultural_chf)}</td>
+            <td>{formatChf(row.regular_chf)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  {currency_note && <p class="prose-p gallery-note">{currency_note}</p>}
+</section>

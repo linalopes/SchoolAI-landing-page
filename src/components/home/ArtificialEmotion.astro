@@ -1,23 +1,31 @@
 ---
-import { site } from '../../data/site';
+import { requirePage } from '../../lib/content';
+
+const home = await requirePage('home');
+const research = home.data.research;
+if (!research) {
+  throw new Error('home.md is missing the research frontmatter section.');
+}
 ---
 <section id="research">
   <div class="method-pattern" aria-hidden="true"></div>
   <div class="section-header fade-up">
-    <span class="section-number t-label">02</span>
+    <span class="section-number t-label">{research.number}</span>
     <div>
-      <h2 class="section-title">Artificial<br>Emotion</h2>
-      <p class="section-intro">
-        Artificial Emotion is the School’s principal research project for 2027, exploring emotion through Kinetic Studies, Soft Mechanisms and Bio-signals.
-      </p>
-      <p class="callout">
-        Follow the ongoing investigation through its open research notebook.
-      </p>
+      <h2 class="section-title" set:html={research.title_lines.join('<br>')} />
+      <p class="section-intro">{research.intro}</p>
+      <p class="callout">{research.callout}</p>
       <div class="section-actions">
-        <a href="/research/" class="button button--primary">Explore the research</a>
-        <a href={site.researchNotebookUrl} target="_blank" rel="noopener" class="button button--primary">
-          Research notebook &#x2197;&#xFE0E;
-        </a>
+        {research.ctas.map((cta) => (
+          <a
+            href={cta.href}
+            target={cta.external ? '_blank' : undefined}
+            rel={cta.external ? 'noopener' : undefined}
+            class="button button--primary"
+          >
+            {cta.label}{cta.external ? ' \u2197\uFE0E' : ''}
+          </a>
+        ))}
       </div>
     </div>
   </div>
