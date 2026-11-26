@@ -1,0 +1,51 @@
+
+  /* ── TOKENS (SchoolAI brand kit) ── */
+  :root {
+    /* Brand primitives */
+    --brand-deep-purple: #22113E;
+    --brand-gray-green: #CAD8D8;
+    --brand-pink: #EA7DFF;
+    --brand-turquoise: #08F2DB;
+    --brand-white: #FFFFFF;
+    --brand-magenta: #A21CAF;
+
+    /* Semantic tokens */
+    --color-bg: var(--brand-white);
+    --color-text: var(--brand-deep-purple);
+    --color-text-muted: #888888;
+    --color-surface: var(--brand-gray-green);
+    --color-primary: var(--brand-pink);
+    --color-on-primary: var(--brand-deep-purple);
+    --color-on-primary-contrast: var(--brand-white);
+    --color-accent: var(--brand-turquoise);
+    --color-on-accent: var(--brand-deep-purple);
+    --color-link: var(--brand-magenta);
+    --color-link-underline: rgba(162, 28, 175, 0.4);
+    --color-link-hover: var(--brand-pink);
+    --color-link-on-dark: var(--brand-turquoise);
+    --color-link-on-dark-hover: var(--brand-pink);
+    --color-border: rgba(34, 17, 62, 0.14);
+    --color-border-subtle: rgba(34, 17, 62, 0.08);
+    --color-border-strong: rgba(34, 17, 62, 0.18);
+    --color-border-on-dark: rgba(255, 255, 255, 0.14);
+
+    --font-title: 'Space Grotesk', sans-serif;
+    --font-text: 'Inter', sans-serif;
+    --font-mono: 'Courier Prime', monospace;
+
+    --radius: 4px;
+    --border-width: 1px;
+    --space-1: 6px;
+    --space-2: 10px;
+    --space-3: 16px;
+    --space-4: 24px;
+    --space-5: 36px;
+    --space-6: 52px;
+
+    /* Compatibility aliases (existing page styles) */
+    --deep-purple: var(--brand-deep-purple);
+    --gray-green: var(--brand-gray-green);
+    --pink: var(--brand-pink);
+    --turquoise: var(--brand-turquoise);
+    --white: var(--brand-white);
+  }

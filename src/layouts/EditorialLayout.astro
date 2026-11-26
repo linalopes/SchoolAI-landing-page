@@ -1,0 +1,16 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+<!--
+  Shared shell for later Markdown pages. Phase 1 does not publish one.
+  It uses the same document, type, and tokens as the homepage.
+-->
+<BaseLayout title={title}>
+  <slot />
+</BaseLayout>

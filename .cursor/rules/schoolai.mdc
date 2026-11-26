@@ -1,0 +1,5 @@
+---
+description: SchoolAI institutional website rules
+alwaysApply: true
+---
+Read AGENTS.md, README.md and docs before implementation. Follow their constraints: preserve brand and split hero; English only; external media URLs only; Markdown plus Google Sheets; independent repositories and hyperlinks; no invented content, private data or unauthorized publication. Work incrementally on the approved migration branch. Report discrepancies before making architectural decisions.
