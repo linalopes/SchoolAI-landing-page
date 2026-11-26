@@ -28,7 +28,7 @@ Research often begins in conversations, encounters and lived experiences, then d
 | Curators | Discuss associated curatorial collaboration |
 
 ## Governance and boundaries
-Lina is founder and research lead; link to her independent website for credentials and portfolio. A possible association and prospective PhD research on hugs and humanoid training data remain private planning matters until confirmed. Do not announce them. No promise of unrestricted access, formal supervision, residencies or regular classes. Credit contributors with explicit permission; anonymous contributions welcome. Publish campaign targets transparently when confirmed, without disclosing personal donor details. Preserve independent repositories and use hyperlinks rather than content replication.
+Lina is founder and research lead; link to her independent website for credentials and portfolio. Do not announce unconfirmed organisational or academic plans. No promise of unrestricted access, formal supervision, residencies or regular classes. Credit contributors with explicit permission; anonymous contributions welcome. Publish campaign targets transparently when confirmed, without disclosing personal donor details. Preserve independent repositories and use hyperlinks rather than content replication.
 
 ## Success measures (proposed, no numerical targets yet)
 Relevant collaboration inquiries, research funding conversations, useful in-kind contributions, student proposals, gallery inquiries, visits, and a manageable editorial workflow. Review qualitative outcomes rather than optimizing solely for traffic.

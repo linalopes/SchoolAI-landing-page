@@ -396,34 +396,38 @@ test('offline build can read all six committed snapshots without Google', () => 
   assert.equal(contributors.items.every((item) => item.published), true);
   assert.equal(wishlist.items.length, 11);
   assert.equal(wishlist.items.every((item) => item.published), true);
-  assert.match(read('docs/feed-resilience.md'), /Last-known-good snapshots/);
-  assert.match(read('docs/csv-parser.md'), /csv-parse/);
+  assert.match(read('docs/technical/feed-resilience.md'), /last-known-good/i);
+  assert.match(read('docs/technical/feed-resilience.md'), /csv\.ts/);
 });
 
 test('README includes the editorial administration guide', () => {
   const readme = read('README.md');
-  assert.match(readme, /## How to update website content/);
-  assert.match(readme, /src\/content\/pages\//);
-  assert.match(readme, /src\/content\/gallery\/rental-rates\.md/);
-  assert.match(readme, /src\/content\/support\/financial-support\.md/);
-  assert.match(readme, /1XIkDn7NrSSQbcVyYgrlcQxjFsOkraDdfJmI1qzaq54I/);
-  assert.match(readme, /gid=1398027263/);
-  assert.match(readme, /gid=20271126/);
-  assert.match(readme, /gid=20271127/);
-  assert.match(readme, /gid=20271128/);
-  assert.match(readme, /gid=20271129/);
-  assert.match(readme, /Contributors|Made possible by/);
-  assert.match(readme, /Research Wishlist/);
-  assert.match(readme, /src\/content\/pages\/wishlist\.md/);
-  assert.match(readme, /target_amount_chf/);
-  assert.match(readme, /src\/content\/site\/footer\.md/);
-  assert.match(readme, /src\/content\/site\/location\.md/);
-  assert.match(readme, /not a privacy mechanism|authorised for public disclosure/i);
-  assert.match(readme, /refresh once in the browser|Requires a new \*\*build and deployment\*\*/i);
-  assert.match(readme, /Deploy production site|deploy\.yml/);
+  assert.match(readme, /docs\/editorial\/content-management\.md/);
+  assert.match(readme, /docs\/editorial\/google-sheets\.md/);
+  assert.match(readme, /schoolai\.linalopes\.info/);
+  assert.match(readme, /six Google Sheets|Google Sheets/);
   assert.match(readme, /legacy-html-2026/);
   assert.match(readme, /v1\.0\.0-legacy/);
+  assert.match(readme, /v2\.0\.0/);
   assert.match(readme, /GitHub Actions/);
+  assert.match(readme, /do \*\*not\*\* require a local `npm run refresh-feeds`/i);
+
+  const guide = read('docs/editorial/content-management.md');
+  assert.match(guide, /1XIkDn7NrSSQbcVyYgrlcQxjFsOkraDdfJmI1qzaq54I/);
+  assert.match(guide, /gid=1398027263|Hero tab/);
+  assert.match(guide, /gid=20271129|Wishlist tab/);
+  assert.match(guide, /src\/content\/pages\/wishlist\.md/);
+  assert.match(guide, /src\/content\/site\/footer\.md/);
+  assert.match(guide, /src\/content\/site\/location\.md/);
+  assert.match(guide, /06:00 UTC/);
+
+  const sheets = read('docs/editorial/google-sheets.md');
+  assert.match(sheets, /gid=20271126/);
+  assert.match(sheets, /gid=20271127/);
+  assert.match(sheets, /gid=20271128/);
+  assert.match(sheets, /gid=20271129/);
+  assert.match(sheets, /target_amount_chf/);
+  assert.match(sheets, /not a confidentiality mechanism/i);
 });
 
 test('production workflows deploy only from main and keep validation separate', () => {
@@ -450,9 +454,12 @@ test('production workflows deploy only from main and keep validation separate', 
   assert.match(refresh, /createWorkflowDispatch/);
   assert.match(refresh, /deploy\.yml/);
   assert.match(refresh, /github-actions\[bot\]/);
-  assert.match(read('docs/production-release.md'), /legacy-html-2026/);
-  assert.match(read('docs/production-release.md'), /Deploy from a branch/);
-  assert.match(read('docs/production-release.md'), /does \*\*not\*\* restore/);
+  assert.match(read('docs/technical/deployment.md'), /legacy-html-2026/);
+  assert.match(read('docs/technical/deployment.md'), /Deploy from a branch/);
+  assert.match(read('docs/technical/deployment.md'), /does \*\*not\*\* restore/);
+  assert.match(read('docs/technical/architecture.md'), /Astro/);
+  assert.match(read('docs/technical/testing.md'), /npm test/);
+  assert.match(read('docs/archive/README.md'), /Archival notice|historical/i);
 });
 
 test('archive snapshot includes Drawing Machines and Maze Circuit image URLs', () => {

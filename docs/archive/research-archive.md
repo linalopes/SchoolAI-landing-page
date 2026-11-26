@@ -1,3 +1,5 @@
+> **Archival notice.** Historical Website 2027 migration material. Not current implementation guidance. See [archive README](README.md) and active docs under `docs/editorial/` and `docs/technical/`.
+
 # Research archive — curation brief
 
 The archive is a curated hyperlinked record of at most six projects, not an automatic GitHub index or a duplicate of Lina's blog. It is not published in Phase 1. Select entries for their contribution to understanding the School's practice, capabilities or research development. Each entry needs a real external photo URL, verified title/year/category, short English description, original documentation URL and optional code link. Confirm attribution and permissions. Prioritize quality over volume; avoid inventing descriptions from repo names.

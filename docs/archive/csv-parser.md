@@ -1,3 +1,5 @@
+> **Archival notice.** Historical Website 2027 migration material. Not current implementation guidance. See [archive README](README.md) and active docs under `docs/editorial/` and `docs/technical/`.
+
 # CSV parser decision
 
 Phase 2 uses a small shared parser in `src/lib/sheets/csv.ts` instead of adding `csv-parse`.

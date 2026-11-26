@@ -1,7 +1,9 @@
+> **Archival notice.** Historical Website 2027 migration material. Not current implementation guidance. See [archive README](README.md) and active docs under `docs/editorial/` and `docs/technical/`.
+
 # Technical architecture
 
 ## Phase 4A status, 26 November 2026
-`website-2027` is the Astro release candidate: Markdown editorial sources; Sheets adapters and snapshots for four feeds; seven institutional routes; gallery photographs via Markdown; financial support; robots/sitemap/404/OG metadata; `.github/workflows/deploy.yml` (main only); optional `refresh-snapshots.yml` (manual); validation on `website-2027` and `main`. Production Pages still serves legacy `main` until Phase 4B. Release procedure: [production-release.md](production-release.md). Feed behaviour: [feed resilience](feed-resilience.md).
+`website-2027` is the Astro release candidate: Markdown editorial sources; Sheets adapters and snapshots for four feeds; seven institutional routes; gallery photographs via Markdown; financial support; robots/sitemap/404/OG metadata; `.github/workflows/deploy.yml` (main only); optional `refresh-snapshots.yml` (manual); validation on `website-2027` and `main`. Production Pages still serves legacy `main` until Phase 4B. Release procedure: [production-release.md](../technical/deployment.md). Feed behaviour: [feed resilience](../technical/feed-resilience.md).
 
 **Permanent rule:** do not hardcode editable editorial content in `.astro` or `.ts`. See README “How to update website content”.
 

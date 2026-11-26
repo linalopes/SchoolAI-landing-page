@@ -1,3 +1,5 @@
+> **Archival notice.** Historical Website 2027 migration material. Not current implementation guidance. See [archive README](README.md) and active docs under `docs/editorial/` and `docs/technical/`.
+
 # Implementation plan and acceptance
 
 Phases 0–3G are approved. Phase 4A (production readiness: deploy workflow, SEO assets, gallery photos, feed refresh, release docs) is on `website-2027`. Do not execute Phase 4B production cutover until review. Production is still legacy `main`.
@@ -27,7 +29,7 @@ Institutional and homepage copy moved to Markdown. Gallery rental rates and fina
 Deploy and optional snapshot workflows prepared; robots/sitemap/404/OG metadata; gallery photographs configured; feeds refreshed; release/rollback documented. No merge to `main`, no Pages switch, no live deploy.
 
 ## Phase 4B — Production release (owner approval required)
-Execute [production-release.md](production-release.md): preserve `legacy-html-2026` / `v1.0.0-legacy`, merge Astro to `main`, switch Pages to Actions, verify domain, tag `v2.0.0`.
+Execute [production-release.md](../technical/deployment.md): preserve `legacy-html-2026` / `v1.0.0-legacy`, merge Astro to `main`, switch Pages to Actions, verify domain, tag `v2.0.0`.
 
 ## Acceptance checklist
 - [x] Existing brand and split hero retained; visual parity reviewed (Phase 3A screenshots outside Git).

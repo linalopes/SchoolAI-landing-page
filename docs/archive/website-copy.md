@@ -1,3 +1,5 @@
+> **Archival notice.** Historical Website 2027 migration material. Not current implementation guidance. See [archive README](README.md) and active docs under `docs/editorial/` and `docs/technical/`.
+
 # Website copy — English working draft
 
 Editorial draft for owner review. Section headings and CTA labels are proposed; unconfirmed names and links must be checked. No invented photography or partner names.
