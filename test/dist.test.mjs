@@ -66,11 +66,15 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
 
   const programme = readFileSync(dist('programme/index.html'), 'utf8');
   assert.match(programme, /Open Research Studio/);
-  assert.match(programme, /Upcoming events/);
-  assert.match(programme, /Past events/);
+  assert.match(programme, /Research-based Workshops/);
+  assert.match(programme, /Upcoming Events/);
+  assert.match(programme, /Activity Formats/);
+  assert.match(programme, /Past Events/);
   assert.match(programme, /Arduino Day|Paper as Interface/);
+  assert.doesNotMatch(programme, /Room for Interaction/);
   assert.doesNotMatch(programme, /#workshop-augmented-cinema/);
   assert.doesNotMatch(programme, /Singing to a Garden/);
+  assert.match(programme, /aria-current="page"/);
   assert.match(programme, /formspree\.io\/f\/mvgbznoe/);
 
   const gallery = readFileSync(dist('inverted-gallery/index.html'), 'utf8');

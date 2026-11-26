@@ -33,21 +33,6 @@ const earlierHtml = earlier.length ? renderPastEventsMarkup(earlier) : '';
       {entry.data.lede && <p class="editorial-lede">{entry.data.lede}</p>}
     </header>
 
-    <section class="editorial-panel fade-up">
-      <div class="workshops-grid programme-page-grid">
-        {programme.offerings.map((item) => (
-          <article id={item.id} class="workshop-card program-card">
-            <div class="workshop-tag">{item.tag}</div>
-            <h2 class="workshop-name">{item.title}</h2>
-            <p class="workshop-desc">{item.description}</p>
-            {item.href && item.cta_label && (
-              <a href={item.href} class="button button--accent button--sm">{item.cta_label}</a>
-            )}
-          </article>
-        ))}
-      </div>
-    </section>
-
     <section class="editorial-panel fade-up" aria-labelledby="upcoming-events-heading">
       <h2 id="upcoming-events-heading" class="editorial-subtitle">{programme.upcoming_title}</h2>
       <p class="prose-p">{programme.upcoming_intro}</p>
@@ -58,6 +43,23 @@ const earlierHtml = earlier.length ? renderPastEventsMarkup(earlier) : '';
         data-snapshot-at={snapshot.fetchedAt}
         set:html={upcomingHtml}
       />
+    </section>
+
+    <section class="editorial-panel fade-up" aria-labelledby="activity-formats-heading">
+      <h2 id="activity-formats-heading" class="editorial-subtitle">{programme.formats_title}</h2>
+      {programme.formats_intro && <p class="prose-p">{programme.formats_intro}</p>}
+      <div class="workshops-grid programme-page-grid">
+        {programme.offerings.map((item) => (
+          <article id={item.id} class="workshop-card program-card">
+            <div class="workshop-tag">{item.tag}</div>
+            <h3 class="workshop-name">{item.title}</h3>
+            <p class="workshop-desc">{item.description}</p>
+            {item.href && item.cta_label && (
+              <a href={item.href} class="button button--accent button--sm">{item.cta_label}</a>
+            )}
+          </article>
+        ))}
+      </div>
     </section>
 
     <section class="editorial-panel fade-up" aria-labelledby="past-events-heading">

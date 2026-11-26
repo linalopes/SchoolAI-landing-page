@@ -109,6 +109,8 @@ const pages = defineCollection({
         ),
         upcoming_title: z.string().optional(),
         upcoming_intro: z.string().optional(),
+        formats_title: z.string().optional(),
+        formats_intro: z.string().optional(),
         past_title: z.string().optional(),
         past_intro: z.string().optional(),
         past_more_label: z.string().optional(),

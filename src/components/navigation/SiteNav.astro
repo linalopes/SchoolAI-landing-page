@@ -1,5 +1,13 @@
 ---
 import { collaborateHref, collaborateLabel, homeHref, navItems } from '../../data/navigation';
+
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+function isCurrentPage(href: string): boolean {
+  const normalized = href.replace(/\/$/, '') || '/';
+  if (normalized === '/') return pathname === '/';
+  return pathname === normalized || pathname.startsWith(`${normalized}/`);
+}
 ---
 <!-- External-link arrows: &#x2197; + &#xFE0E; (VS15) forces text style on iOS/Safari instead of emoji. -->
 <nav id="nav">
@@ -9,7 +17,12 @@ import { collaborateHref, collaborateLabel, homeHref, navItems } from '../../dat
   <ul class="nav-links">
     {navItems.map((item) => (
       <li>
-        <a href={item.href}>{item.label}</a>
+        <a
+          href={item.href}
+          aria-current={isCurrentPage(item.href) ? 'page' : undefined}
+        >
+          {item.label}
+        </a>
       </li>
     ))}
   </ul>
@@ -21,7 +34,13 @@ import { collaborateHref, collaborateLabel, homeHref, navItems } from '../../dat
     <ul class="nav-mobile-links">
       {navItems.map((item) => (
         <li>
-          <a href={item.href} class="nav-mobile-link">{item.label}</a>
+          <a
+            href={item.href}
+            class="nav-mobile-link"
+            aria-current={isCurrentPage(item.href) ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
         </li>
       ))}
     </ul>
