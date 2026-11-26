@@ -1,0 +1,33 @@
+---
+import {
+  loadWorkstationsSnapshot,
+  renderWorkstationsMarkup,
+} from '../../lib/sheets/index.ts';
+
+interface Props {
+  showHeading?: boolean;
+}
+
+const { showHeading = true } = Astro.props;
+const snapshot = loadWorkstationsSnapshot();
+const markup = renderWorkstationsMarkup(snapshot.items);
+---
+<section id="workstations" class="workstations-section">
+  {showHeading && (
+    <div class="section-header fade-up">
+      <span class="section-number t-label">02</span>
+      <div>
+        <h2 class="section-title">Research<br>workstations</h2>
+        <p class="section-intro">
+          Eight editorial workstations support interconnected investigations. Electronics Bench and Wearables Lab are listed separately even though they share a physical area. Inverted Gallery is a cultural space, not a research workstation.
+        </p>
+      </div>
+    </div>
+  )}
+  <div
+    class="workstations-feed fade-up"
+    data-feed="workstations"
+    data-snapshot-at={snapshot.fetchedAt}
+    set:html={markup}
+  />
+</section>

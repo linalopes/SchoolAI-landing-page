@@ -1,0 +1,46 @@
+---
+import {
+  archiveCta,
+  loadArchiveSnapshot,
+  renderArchiveMarkup,
+} from '../../lib/sheets/index.ts';
+
+interface Props {
+  showHeading?: boolean;
+  sectionId?: string;
+  sectionNumber?: string;
+}
+
+const {
+  showHeading = true,
+  sectionId = 'selected-research',
+  sectionNumber = '03',
+} = Astro.props;
+
+const archive = loadArchiveSnapshot();
+const markup = renderArchiveMarkup(archive.items);
+---
+<section id={sectionId} class="research-archive-section">
+  {showHeading && (
+    <div class="section-header fade-up">
+      {sectionNumber ? <span class="section-number t-label">{sectionNumber}</span> : null}
+      <div>
+        <h2 class="section-title">Selected<br>research</h2>
+        <p class="section-intro">
+          A selection of previous investigations, tools and experiments developed in and around the atelier. Each entry links to its original documentation, where available. This is a curated archive rather than a comprehensive portfolio.
+        </p>
+      </div>
+    </div>
+  )}
+  <div
+    class="archive-feed fade-up"
+    data-feed="archive"
+    data-snapshot-at={archive.fetchedAt}
+    set:html={markup}
+  />
+  <div class="section-actions fade-up">
+    <a href={archiveCta.url} target="_blank" rel="noopener" class="button button--primary">
+      {archiveCta.label} &#x2197;&#xFE0E;
+    </a>
+  </div>
+</section>

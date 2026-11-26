@@ -13,10 +13,12 @@ import {
   eventsCsvUrl,
   heroCsvUrl,
   parseAndSelectArchive,
+  parseAndSelectWorkstations,
   parseEventsCsv,
   parseHeroCsv,
   snapshotAgeMs,
   snapshotExists,
+  workstationsCsvUrl,
   writeSnapshotAtomic,
   type FeedId,
 } from '../src/lib/sheets/index.ts';
@@ -109,6 +111,7 @@ async function main(): Promise<void> {
     await refreshOne('hero', heroCsvUrl, (csv) => parseHeroCsv(csv)),
     await refreshOne('events', eventsCsvUrl, (csv) => parseEventsCsv(csv)),
     await refreshOne('archive', archiveCsvUrl, (csv) => parseAndSelectArchive(csv)),
+    await refreshOne('workstations', workstationsCsvUrl, (csv) => parseAndSelectWorkstations(csv)),
   ];
 
   for (const outcome of outcomes) {

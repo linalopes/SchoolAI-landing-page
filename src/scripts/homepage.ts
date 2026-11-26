@@ -1,7 +1,20 @@
-import { eventsCsvUrl, feedClientTimeoutMs, heroCsvUrl } from '../lib/sheets/contract.ts';
+import {
+  archiveCsvUrl,
+  eventsCsvUrl,
+  feedClientTimeoutMs,
+  heroCsvUrl,
+  workstationsCsvUrl,
+} from '../lib/sheets/contract.ts';
+import { parseAndSelectArchive } from '../lib/sheets/archive.ts';
 import { parseEventsCsv, selectUpcomingEvents } from '../lib/sheets/events.ts';
 import { parseHeroCsv } from '../lib/sheets/hero.ts';
-import { renderEventsMarkup, renderHeroCarouselMarkup } from '../lib/sheets/html.ts';
+import {
+  renderArchiveMarkup,
+  renderEventsMarkup,
+  renderHeroCarouselMarkup,
+  renderWorkstationsMarkup,
+} from '../lib/sheets/html.ts';
+import { parseAndSelectWorkstations } from '../lib/sheets/workstations.ts';
 
 function prefersReducedMotion(): boolean {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -153,6 +166,26 @@ async function refreshEvents(listEl: HTMLElement): Promise<void> {
   }
 }
 
+async function refreshArchive(hostEl: HTMLElement): Promise<void> {
+  try {
+    const csv = await fetchCsv(archiveCsvUrl);
+    const { items } = parseAndSelectArchive(csv);
+    hostEl.innerHTML = renderArchiveMarkup(items);
+  } catch {
+    // Keep the last rendered snapshot.
+  }
+}
+
+async function refreshWorkstations(hostEl: HTMLElement): Promise<void> {
+  try {
+    const csv = await fetchCsv(workstationsCsvUrl);
+    const { items } = parseAndSelectWorkstations(csv);
+    hostEl.innerHTML = renderWorkstationsMarkup(items);
+  } catch {
+    // Keep the last rendered snapshot.
+  }
+}
+
 export function startHomepage(): void {
   const nav = document.getElementById('nav');
   if (!nav) return;
@@ -181,6 +214,14 @@ export function startHomepage(): void {
   if (listEl instanceof HTMLElement) {
     void refreshEvents(listEl);
   }
+
+  document.querySelectorAll<HTMLElement>('[data-feed="archive"]').forEach((el) => {
+    void refreshArchive(el);
+  });
+
+  document.querySelectorAll<HTMLElement>('[data-feed="workstations"]').forEach((el) => {
+    void refreshWorkstations(el);
+  });
 
   const hamburger = document.getElementById('nav-hamburger');
   const mobileMenu = document.getElementById('nav-mobile-menu');
@@ -224,11 +265,11 @@ export function startHomepage(): void {
         form.style.display = 'none';
         success.style.display = 'block';
       } else {
-        button.textContent = 'Keep me posted';
+        button.textContent = 'Subscribe';
         button.disabled = false;
       }
     } catch {
-      button.textContent = 'Keep me posted';
+      button.textContent = 'Subscribe';
       button.disabled = false;
     }
   });

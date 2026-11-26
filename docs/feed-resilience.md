@@ -1,6 +1,6 @@
 # Feed resilience
 
-Phase 2 implementation. Normal builds read committed snapshots and do not call Google Sheets.
+Normal builds read committed snapshots and do not call Google Sheets.
 
 ## Feeds
 
@@ -8,7 +8,8 @@ Phase 2 implementation. Normal builds read committed snapshots and do not call G
 |---|---|---|---|
 | Hero | `1398027263` | `src/data/feeds/hero.json` | Yes, once after load |
 | Events | `0` | `src/data/feeds/events.json` | Yes, once after load |
-| Research Archive | `20271126` | `src/data/feeds/archive.json` | No |
+| Research Archive | `20271126` | `src/data/feeds/archive.json` | Yes, once after load |
+| Workstations | `20271127` | `src/data/feeds/workstations.json` | Yes, once after load |
 
 Canonical spreadsheet: <https://docs.google.com/spreadsheets/d/1XIkDn7NrSSQbcVyYgrlcQxjFsOkraDdfJmI1qzaq54I/edit>
 
@@ -20,7 +21,7 @@ A content typo, dependency bump, or unrelated deploy must succeed while the publ
 
 ## Last-known-good snapshots
 
-Snapshots are public, validated JSON. They may be committed under `src/data/feeds/`. They must not contain private spreadsheet material or unpublished archive rows. The archive snapshot stores only published and featured entries, sorted by `order`, limited to six. Loaders resolve that directory from `process.cwd()` so offline builds and Astro prerender do not depend on Google or on `import.meta.url` after bundling.
+Snapshots are public, validated JSON under `src/data/feeds/`. They must not contain private spreadsheet material or unpublished rows. The archive snapshot stores only published and featured entries, sorted by `order`, limited to six. The workstations snapshot stores only published entries, sorted by `order`. Loaders resolve that directory from `process.cwd()` so offline builds and Astro prerender do not depend on Google or on `import.meta.url` after bundling.
 
 ## Refresh and build
 
@@ -41,7 +42,7 @@ npm run build
 
 Reads the committed snapshots only. It fails if a required snapshot is missing or no longer matches the contract. It does not fetch Google.
 
-Client-side hero and events refresh request the same CSV once after load, with a timeout. On timeout, invalid data, or an offline browser, the already rendered snapshot stays on screen. The archive feed is not refreshed in the browser and is not published on the homepage in Phase 2.
+Client-side hero, events, archive and workstations refresh request the same CSV once after load, with a timeout. On timeout, invalid data, or an offline browser, the already rendered snapshot stays on screen.
 
 ## Parser
 

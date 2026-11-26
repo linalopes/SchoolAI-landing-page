@@ -10,7 +10,7 @@ function dist(path) {
   return join(root, 'dist', path);
 }
 
-test('production build keeps the homepage and legacy URLs', () => {
+test('production build keeps homepage, research, atelier and legacy URLs', () => {
   const html = readFileSync(dist('index.html'), 'utf8');
   assert.match(html, /Strange questions/);
   assert.match(html, /independent atelier for experimental research/);
@@ -21,8 +21,11 @@ test('production build keeps the homepage and legacy URLs', () => {
   assert.match(html, /id="research"/);
   assert.match(html, /Artificial Emotion/);
   assert.match(html, /id="selected-research"/);
+  assert.match(html, /data-feed="archive"/);
   assert.match(html, /Explore the Research Archive/);
+  assert.match(html, /Affective Atmosphere 2046|Mr\. Sonnet|Claw-Pilot/);
   assert.match(html, /id="atelier"/);
+  assert.match(html, /href="\/atelier\/"/);
   assert.match(html, /id="programme"/);
   assert.match(html, /id="gallery"/);
   assert.match(html, /Inverted Gallery/);
@@ -32,16 +35,39 @@ test('production build keeps the homepage and legacy URLs', () => {
   assert.match(html, /\/space3d\.html/);
   assert.match(html, /#22113E/i);
   assert.match(html, /href="\/about\/"/);
+  assert.match(html, /href="\/research\/"/);
   assert.doesNotMatch(html, /stripe|twint/i);
-  assert.doesNotMatch(html, /data-feed="archive"/);
-  assert.doesNotMatch(html, /Mr\. Sonnet|Claw-Pilot|Drawing Machines/);
+  assert.doesNotMatch(html, /seven interconnected|later phase|planned route|Phase 3/i);
+  assert.doesNotMatch(html, /not available for rental[\s\S]*atelier[\s\S]*for rental/i);
 
   const about = readFileSync(dist('about/index.html'), 'utf8');
   assert.match(about, /The School/);
   assert.match(about, /September 2025/);
   assert.match(about, /https:\/\/www\.linalopes\.info\//);
-  assert.match(about, /\/imgs\/lina\.jpg/);
-  assert.match(about, /href="\/"/);
+
+  const research = readFileSync(dist('research/index.html'), 'utf8');
+  assert.match(research, /Artificial Emotion/);
+  assert.match(research, /Kinetic Studies/);
+  assert.match(research, /Soft Mechanisms/);
+  assert.match(research, /Bio-signals/);
+  assert.match(research, /emotion\.linalopes\.info/);
+  assert.match(research, /data-feed="archive"/);
+  assert.match(research, /Explore the Research Archive/);
+  assert.match(research, /Open research and open source/);
+  assert.doesNotMatch(research, /PhD|phase 3|planned route/i);
+
+  const atelier = readFileSync(dist('atelier/index.html'), 'utf8');
+  assert.match(atelier, /The Atelier/);
+  assert.match(atelier, /data-feed="workstations"/);
+  assert.match(atelier, /BioLab/);
+  assert.match(atelier, /Electronics Bench/);
+  assert.match(atelier, /Wearables Lab/);
+  assert.match(atelier, /Craft Office/);
+  assert.match(atelier, /Saloon/);
+  assert.match(atelier, /space3d\.html/);
+  assert.match(atelier, /Arrange a visit/);
+  assert.match(atelier, /not available for rental/);
+  assert.doesNotMatch(atelier, /seven workstation|phase 3|planned route/i);
 
   for (const path of [
     'space3d.html',

@@ -1,4 +1,5 @@
-import type { EventItem, HeroSlide } from './types.ts';
+import { archiveCta } from './contract.ts';
+import type { ArchiveEntry, EventItem, HeroSlide, WorkstationEntry } from './types.ts';
 
 export function escapeHTML(value: string): string {
   return String(value || '')
@@ -128,4 +129,70 @@ export function renderEventsMarkup(events: EventItem[]): string {
       </div>
     `;
   }).join('');
+}
+
+export function renderArchiveMarkup(entries: ArchiveEntry[]): string {
+  if (!entries.length) {
+    return '<p class="archive-empty">Selected research appears here when curated projects are published.</p>';
+  }
+
+  return `
+    <div class="archive-grid">
+      ${entries.map((entry) => {
+        const hasImage = Boolean(entry.imageUrl);
+        const image = hasImage
+          ? `<div class="archive-card-media" style="background-image:url('${escapeHTML(entry.imageUrl ?? '')}');" role="img" aria-label="${escapeHTML(entry.imageAlt || entry.title)}"></div>`
+          : `<div class="archive-card-media archive-card-media--fallback" aria-hidden="true"><span class="archive-card-fallback-label t-label">${escapeHTML(entry.category || 'Research')}</span></div>`;
+        const github = entry.githubUrl
+          ? `<a class="archive-card-secondary" href="${escapeHTML(entry.githubUrl)}" target="_blank" rel="noopener">GitHub &#x2197;&#xFE0E;</a>`
+          : '';
+        return `
+          <article class="archive-card">
+            ${image}
+            <div class="archive-card-body">
+              <p class="archive-card-meta t-label">${escapeHTML(entry.category)}${entry.year ? ` · ${entry.year}` : ''}</p>
+              <h3 class="archive-card-title">${escapeHTML(entry.title)}</h3>
+              <p class="archive-card-desc">${escapeHTML(entry.description)}</p>
+              <div class="archive-card-actions">
+                <a class="button button--primary button--sm" href="${escapeHTML(entry.url)}" target="_blank" rel="noopener">Documentation &#x2197;&#xFE0E;</a>
+                ${github}
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+export function renderArchiveSectionCta(): string {
+  return `<a href="${escapeHTML(archiveCta.url)}" target="_blank" rel="noopener" class="button button--primary">${escapeHTML(archiveCta.label)} &#x2197;&#xFE0E;</a>`;
+}
+
+export function renderWorkstationsMarkup(entries: WorkstationEntry[]): string {
+  if (!entries.length) {
+    return '<p class="workstations-empty">Workstation descriptions appear here when published.</p>';
+  }
+
+  return `
+    <div class="workstations-grid">
+      ${entries.map((entry, index) => {
+        const hasImage = Boolean(entry.imageUrl);
+        const image = hasImage
+          ? `<div class="workstation-card-media" style="background-image:url('${escapeHTML(entry.imageUrl ?? '')}');" role="img" aria-label="${escapeHTML(entry.imageAlt || entry.title)}"></div>`
+          : `<div class="workstation-card-media workstation-card-media--fallback" aria-hidden="true"><span class="t-label">${String(index + 1).padStart(2, '0')}</span></div>`;
+        return `
+          <article class="workstation-card" id="workstation-${escapeHTML(entry.id)}">
+            ${image}
+            <div class="workstation-card-body">
+              <p class="workstation-card-index t-label">${String(index + 1).padStart(2, '0')}</p>
+              <h3 class="workstation-card-title">${escapeHTML(entry.title)}</h3>
+              ${entry.tagline ? `<p class="workstation-card-tagline">${escapeHTML(entry.tagline)}</p>` : ''}
+              <p class="workstation-card-desc">${escapeHTML(entry.description)}</p>
+            </div>
+          </article>
+        `;
+      }).join('')}
+    </div>
+  `;
 }

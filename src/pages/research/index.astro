@@ -1,0 +1,54 @@
+---
+import EditorialLayout from '../../layouts/EditorialLayout.astro';
+import ResearchArchive from '../../components/research/ResearchArchive.astro';
+import { site } from '../../data/site';
+
+const pageTitle = `Research · ${site.title}`;
+const description =
+  'Artificial Emotion and selected research from School of Tomorrow’s AI in Wetzikon-Zürich.';
+---
+<EditorialLayout title={pageTitle} description={description}>
+  <article class="editorial editorial--wide">
+    <header class="editorial-header fade-up">
+      <p class="t-label editorial-eyebrow">Research</p>
+      <h1 class="editorial-title">Research</h1>
+      <p class="editorial-lede">
+        The School investigates questions that become experiments, mechanisms, objects and installations. Open research and open source keep those processes available to others.
+      </p>
+    </header>
+
+    <section id="artificial-emotion" class="editorial-panel fade-up">
+      <p class="t-label editorial-eyebrow">Principal research · 2027</p>
+      <h2 class="editorial-subtitle">Artificial Emotion</h2>
+      <p class="prose-p">
+        Artificial Emotion is the School’s principal research project for 2027. It explores emotion through physical and technological experimentation across three research threads:
+      </p>
+      <ul class="research-threads">
+        <li><strong>Kinetic Studies</strong> — motion, mechanisms and embodied expression.</li>
+        <li><strong>Soft Mechanisms</strong> — soft materials, actuators and material behaviour.</li>
+        <li><strong>Bio-signals</strong> — bodily signals as material for artistic research.</li>
+      </ul>
+      <p class="prose-p">
+        The work aims to generate installations, prototypes, exhibitions, publications and openly documented experiments. The live notebook remains independent of this website.
+      </p>
+      <div class="section-actions">
+        <a href={site.researchNotebookUrl} target="_blank" rel="noopener" class="button button--primary">
+          Explore the research notebook &#x2197;&#xFE0E;
+        </a>
+      </div>
+    </section>
+
+    <section class="editorial-panel fade-up">
+      <h2 class="editorial-subtitle">Open research and open source</h2>
+      <p class="prose-p">
+        Open research, open-source practices and documentation create opportunities for others to learn from and contribute to these processes. Independent notebooks, repositories and publications remain independent; this site links to them rather than replacing them.
+      </p>
+      <p class="prose-p">
+        Propose a research collaboration — including projects outside Artificial Emotion — through
+        <a href={`mailto:${site.contactEmail}`}>Contact the School</a>.
+      </p>
+    </section>
+
+    <ResearchArchive showHeading={true} sectionId="selected-research" sectionNumber="" />
+  </article>
+</EditorialLayout>

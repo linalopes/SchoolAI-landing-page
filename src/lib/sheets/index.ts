@@ -12,6 +12,9 @@ export {
   heroColumns,
   heroCsvUrl,
   requiredFeeds,
+  workstationColumns,
+  workstationTitles,
+  workstationsCsvUrl,
 } from './contract.ts';
 export { parseAndSelectArchive, parseArchiveCsv, selectArchiveEntries } from './archive.ts';
 export { parseCsvObjects, parseCsvRecords } from './csv.ts';
@@ -28,9 +31,12 @@ export {
   escapeHTML,
   formatEventDate,
   getCarouselAccentConfig,
+  renderArchiveMarkup,
+  renderArchiveSectionCta,
   renderEventsEmptyMarkup,
   renderEventsMarkup,
   renderHeroCarouselMarkup,
+  renderWorkstationsMarkup,
 } from './html.ts';
 export {
   createSnapshot,
@@ -38,15 +44,22 @@ export {
   loadArchiveSnapshot,
   loadEventsSnapshot,
   loadHeroSnapshot,
+  loadWorkstationsSnapshot,
   parseArchiveSnapshot,
   parseEventsSnapshot,
   parseHeroSnapshot,
+  parseWorkstationsSnapshot,
   readSnapshotFile,
   snapshotAgeMs,
   snapshotExists,
   snapshotPath,
   writeSnapshotAtomic,
 } from './snapshot.ts';
+export {
+  parseAndSelectWorkstations,
+  parseWorkstationsCsv,
+  selectWorkstations,
+} from './workstations.ts';
 export type {
   ArchiveEntry,
   EventItem,
@@ -54,5 +67,6 @@ export type {
   FeedResult,
   FeedSnapshot,
   HeroSlide,
+  WorkstationEntry,
 } from './types.ts';
 export { FeedValidationError } from './types.ts';

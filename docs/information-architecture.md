@@ -5,7 +5,7 @@
 | `/` | Positioning, live editorial hero, selected research, atelier, programme, gallery and collaboration | Explore research / Collaborate |
 | `/about/` | School, origin, philosophy, open research and founder | Learn about Lina / Contact |
 | `/research/` | Artificial Emotion, research threads and curated archive | Follow research notebook / Propose research |
-| `/atelier/` | Seven workstations, real photographs, existing 3D tour | Arrange a visit |
+| `/atelier/` | Eight research workstations, optional photographs, existing 3D tour | Arrange a visit |
 | `/programme/` | Open Research Studio, research-derived workshops, past/upcoming events | View event / Register externally |
 | `/inverted-gallery/` | Concept, cultural programme, space hire and curator inquiry | Inquire about space / Curatorial collaboration |
 | `/collaborate/` | Research, students, partners, commissions, financial support | Contact / Contribute |
@@ -14,7 +14,7 @@
 
 Space hire means the Inverted Gallery only. The research atelier and its workstations are not rental spaces.
 
-Phase 3A navigation (live destinations only): The School → `/about/`; Research → `/#research`; The Atelier → `/#atelier`; Programme → `/#programme`; Inverted Gallery → `/#gallery`; Collaborate → `/#collaborate`. Logo returns `/`. Future full routes are listed in `src/data/navigation.ts` as `plannedRoutes` and are not linked until they ship. Footer: location, contact, The School, Lina Lopes, blog. No standalone news blog; hero updates are short links to meaningful content. No automatic detail pages for archived projects; external links are preferred.
+Primary navigation (live destinations): The School → `/about/`; Research → `/research/`; The Atelier → `/atelier/`; Programme → `/#programme`; Inverted Gallery → `/#gallery`; Collaborate → `/#collaborate`. Homepage keeps `#research` and `#atelier` anchors for compatibility. Logo returns `/`. Remaining routes stay in `plannedRoutes` until they ship. Footer: location, contact, The School, Lina Lopes, blog. No standalone news blog; hero updates are short links to meaningful content. No automatic detail pages for archived projects; external links are preferred.
 
 ## Homepage composition
 Preserve current split hero and carousel, including responsive behavior and brand pattern. Left: tagline, Wetzikon-Zürich, short descriptor, CTAs. Right: spreadsheet-driven featured items (image, short text, link). Below: school intro, flagship research, atelier preview, programme, gallery introduction, collaboration and credits teaser, occasional newsletter. Reuse current visual components rather than creating a new design language.

@@ -7,14 +7,17 @@ import {
   FeedValidationError,
   createSnapshot,
   parseAndSelectArchive,
+  parseAndSelectWorkstations,
   parseArchiveCsv,
   parseCsvObjects,
   parseCsvRecords,
   parseEventsCsv,
   parseHeroCsv,
   parseHeroSnapshot,
+  parseWorkstationsCsv,
   selectArchiveEntries,
   selectUpcomingEvents,
+  selectWorkstations,
   snapshotExists,
   writeSnapshotAtomic,
 } from '../src/lib/sheets/index.ts';
@@ -176,12 +179,50 @@ test('snapshot write is atomic and previous file survives invalid replacement at
   rmSync(dir, { recursive: true, force: true });
 });
 
+test('workstations adapter filters published rows, sorts by order, and allows missing images', () => {
+  const csv = [
+    'id,title,tagline,description,image_url,image_alt,order,published',
+    'saloon,Saloon,Assembly,Desc,,,8,TRUE',
+    'biolab,BioLab,Living systems,Desc,https://example.com/bio.webp,Bio,1,TRUE',
+    'draft,Draft,Hidden,Desc,,,3,FALSE',
+    'makerspace,Makerspace,Fab,Desc,,,2,TRUE',
+    ',,,,,,,FALSE',
+  ].join('\n');
+  const parsed = parseWorkstationsCsv(csv);
+  assert.equal(parsed.items.length, 4);
+  const selected = selectWorkstations(parsed.items);
+  assert.deepEqual(selected.map((item) => item.id), ['biolab', 'makerspace', 'saloon']);
+  assert.equal(selected[0].imageUrl, 'https://example.com/bio.webp');
+  assert.equal(selected[1].imageUrl, null);
+  assert.equal(parseAndSelectWorkstations(csv).items.length, 3);
+});
+
+test('workstations adapter rejects duplicate ids and unsafe image URLs', () => {
+  assert.throws(
+    () => parseWorkstationsCsv([
+      'id,title,tagline,description,image_url,image_alt,order,published',
+      'same,One,Tag,Desc,,,1,TRUE',
+      'same,Two,Tag,Desc,,,2,TRUE',
+    ].join('\n')),
+    /duplicate id/i,
+  );
+  assert.throws(
+    () => parseWorkstationsCsv([
+      'id,title,tagline,description,image_url,image_alt,order,published',
+      'bad,Bad,Tag,Desc,javascript:alert(1),Alt,1,TRUE',
+    ].join('\n')),
+    /Unsafe URL scheme/i,
+  );
+});
+
 test('refresh script distinguishes network keep from invalid failure', async () => {
   const source = readFileSync(new URL('../scripts/refresh-feeds.ts', import.meta.url), 'utf8');
   assert.match(source, /kept-network/);
   assert.match(source, /status === 'invalid'/);
   assert.match(source, /writeSnapshotAtomic/);
   assert.match(source, /parseAndSelectArchive/);
+  assert.match(source, /parseAndSelectWorkstations/);
+  assert.match(source, /workstationsCsvUrl/);
 });
 
 test('committed snapshots contain only public feed material', () => {
@@ -202,6 +243,23 @@ test('committed snapshots contain only public feed material', () => {
   }
   assert.equal(archive.items.find((item) => item.id === 'drawing-machines').imageUrl, null);
   assert.equal(archive.items.find((item) => item.id === 'maze-circuit').imageUrl, null);
+
+  const workstations = JSON.parse(readFileSync(new URL('../src/data/feeds/workstations.json', import.meta.url), 'utf8'));
+  assert.equal(workstations.feed, 'workstations');
+  assert.equal(workstations.items.length, 8);
+  assert.deepEqual(workstations.items.map((item) => item.id), [
+    'biolab',
+    'makerspace',
+    'dirty-workshop',
+    'electronics-bench',
+    'wearables-lab',
+    'craft-office',
+    'studio',
+    'saloon',
+  ]);
+  for (const item of workstations.items) {
+    assert.equal(item.published, true);
+  }
 
   const hero = JSON.parse(readFileSync(new URL('../src/data/feeds/hero.json', import.meta.url), 'utf8'));
   assert.equal(hero.items.length, 3);

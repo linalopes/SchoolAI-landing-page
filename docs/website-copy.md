@@ -18,7 +18,7 @@ School of Tomorrow’s AI explores the questions emerging from the technologies 
 Artificial Emotion is the School’s principal research project for 2027, exploring emotion through kinetic studies, soft mechanisms and biosignals. Follow the ongoing investigation through its open research notebook.
 
 ### A place to make questions physical
-Seven interconnected workstations bring together different ways of making, testing and documenting ideas. The atelier is both a physical space and a way of working.
+Eight interconnected research workstations bring together different ways of making, testing and documenting ideas. The atelier is both a physical space and a way of working.
 
 ### Research meets people
 Open Research Studio, visits and research-based workshops create opportunities to encounter ongoing experiments and exchange knowledge.
@@ -62,10 +62,13 @@ The atelier is organised around different ways of making and thinking. Its works
 | BioLab | Bioart, living systems and biological experimentation. |
 | Makerspace | Digital fabrication, 3D printing, laser cutting and rapid prototyping. |
 | Dirty Workshop | Woodworking, cutting, drilling, construction and machine hacking. |
-| Electronics Bench & Wearables Lab | Electronics, PCBs, embedded systems and wearable technologies. |
-| Office | Paper, crafts, printing and material experimentation. |
+| Electronics Bench | Electronics, PCBs, circuit prototyping and embedded systems. |
+| Wearables Lab | Wearable electronics, e-textiles and body–technology interfaces. |
+| Craft Office | Paper, crafts, printing and material experimentation. |
 | Studio | Photography, lighting, process documentation and instructional media. |
 | Saloon | Hands-on experimentation, assembly, installations and prototypes in progress. |
+
+Electronics Bench and Wearables Lab share a physical area but remain separate editorial entries. Inverted Gallery is not a research workstation.
 
 ### Visit the atelier
 Visits can be arranged individually. If you are interested in using a workstation for research, get in touch to discuss the possibilities. Access is arranged through conversation, not unrestricted public entry.

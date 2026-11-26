@@ -1,6 +1,13 @@
 import { mkdirSync, readFileSync, renameSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import type { ArchiveEntry, EventItem, FeedId, FeedSnapshot, HeroSlide } from './types.ts';
+import type {
+  ArchiveEntry,
+  EventItem,
+  FeedId,
+  FeedSnapshot,
+  HeroSlide,
+  WorkstationEntry,
+} from './types.ts';
 import { FeedValidationError } from './types.ts';
 
 // Resolve from process.cwd() so Astro prerender bundles still find the
@@ -170,6 +177,35 @@ export function loadArchiveSnapshot(): FeedSnapshot<ArchiveEntry> {
   const text = readSnapshotFile('archive');
   if (!text) throw new FeedValidationError('Required archive snapshot is missing');
   return parseArchiveSnapshot(JSON.parse(text));
+}
+
+export function parseWorkstationsSnapshot(raw: unknown): FeedSnapshot<WorkstationEntry> {
+  return assertSnapshotShape('workstations', raw, (item, index) => {
+    if (!isObject(item)) throw new FeedValidationError(`workstations snapshot item ${index} is invalid`);
+    const order = item.order;
+    if (typeof order !== 'number' || !Number.isInteger(order)) {
+      throw new FeedValidationError(`workstations snapshot item ${index} has an invalid order`);
+    }
+    if (typeof item.published !== 'boolean') {
+      throw new FeedValidationError(`workstations snapshot item ${index} has invalid published`);
+    }
+    return {
+      id: requireString(item, 'id', `workstations item ${index}`),
+      title: requireString(item, 'title', `workstations item ${index}`),
+      tagline: requireString(item, 'tagline', `workstations item ${index}`),
+      description: requireString(item, 'description', `workstations item ${index}`),
+      imageUrl: requireNullableString(item, 'imageUrl', `workstations item ${index}`),
+      imageAlt: requireNullableString(item, 'imageAlt', `workstations item ${index}`),
+      order,
+      published: item.published,
+    };
+  });
+}
+
+export function loadWorkstationsSnapshot(): FeedSnapshot<WorkstationEntry> {
+  const text = readSnapshotFile('workstations');
+  if (!text) throw new FeedValidationError('Required workstations snapshot is missing');
+  return parseWorkstationsSnapshot(JSON.parse(text));
 }
 
 export function writeSnapshotAtomic<T>(snapshot: FeedSnapshot<T>): void {

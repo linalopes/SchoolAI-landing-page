@@ -4,7 +4,7 @@
 English only, including Inverted Gallery. Clear, curious, concrete, experimental, understated. Use evidence of making and research rather than generic innovation language. Avoid fear-driven AI rhetoric, inflated claims, invented affiliations and vague institutional plural implying staff. Use “the School” for the institution and “we” only where appropriate to the actual collaboration. Keep the existing tagline and brand typography, colors, patterns and hero composition.
 
 ## Vocabulary
-School of Tomorrow’s AI; Wetzikon-Zürich; Artificial Emotion (singular); Embodied AI; Open Research Studio; Research Wishlist; Inverted Gallery; BioLab; Makerspace (working label); Dirty Workshop; Electronics Bench & Wearables Lab (one area); Office; Studio; Saloon. Use Biosignals consistently unless the research notebook establishes a different official spelling. Preserve original project titles. Do not invent project details based on repository names.
+School of Tomorrow’s AI; Wetzikon-Zürich; Artificial Emotion (singular); Embodied AI; Open Research Studio; Research Wishlist; Inverted Gallery; BioLab; Makerspace; Dirty Workshop; Electronics Bench; Wearables Lab; Craft Office; Studio; Saloon. Electronics Bench and Wearables Lab are separate editorial workstations that share a physical area. Inverted Gallery is not a research workstation. Prefer Bio-signals for Artificial Emotion research threads unless the research notebook establishes a different official spelling. Preserve original project titles. Do not invent project details based on repository names.
 
 ## Content principles
 - Short institutional introduction first; deeper context on relevant pages.

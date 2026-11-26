@@ -1110,6 +1110,7 @@
 
   /* ── SELECTED RESEARCH & GALLERY ── */
   #selected-research,
+  .research-archive-section,
   #gallery {
     background: var(--white);
     position: relative;
@@ -1121,6 +1122,193 @@
     flex-wrap: wrap;
     gap: var(--space-3);
     margin-top: var(--space-5);
+  }
+
+  .archive-feed,
+  .workstations-feed {
+    margin-top: var(--space-5);
+  }
+
+  .archive-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2px;
+  }
+
+  .archive-card {
+    background: rgba(34, 17, 62, 0.03);
+    border: 1px solid rgba(34, 17, 62, 0.08);
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    overflow: hidden;
+  }
+
+  .archive-card-media {
+    aspect-ratio: 4 / 3;
+    background-color: var(--deep-purple);
+    background-size: cover;
+    background-position: center;
+  }
+
+  .archive-card-media--fallback {
+    display: grid;
+    place-items: center;
+    background-image: url('https://raw.githubusercontent.com/linalopes/SchoolAI-brand-kit/main/patterns/pattern-2.png');
+    background-size: cover;
+    opacity: 1;
+  }
+
+  .archive-card-fallback-label {
+    color: var(--pink);
+  }
+
+  .archive-card-body {
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .archive-card-meta {
+    color: var(--pink);
+  }
+
+  .archive-card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .archive-card-desc {
+    font-size: 15px;
+    line-height: 1.6;
+    opacity: 0.72;
+    flex: 1;
+  }
+
+  .archive-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: center;
+    margin-top: var(--space-2);
+  }
+
+  .archive-card-secondary {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    opacity: 0.55;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .archive-empty,
+  .workstations-empty {
+    opacity: 0.65;
+    font-size: 18px;
+    line-height: 1.7;
+  }
+
+  .workstations-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2px;
+  }
+
+  .workstation-card {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    background: rgba(34, 17, 62, 0.03);
+    border: 1px solid rgba(34, 17, 62, 0.08);
+    min-height: 220px;
+  }
+
+  .workstation-card-media {
+    background-color: var(--gray-green);
+    background-size: cover;
+    background-position: center;
+    min-height: 220px;
+  }
+
+  .workstation-card-media--fallback {
+    display: grid;
+    place-items: center;
+    background-image: url('https://raw.githubusercontent.com/linalopes/SchoolAI-brand-kit/main/patterns/pattern-1.png');
+    background-size: cover;
+    color: var(--pink);
+  }
+
+  .workstation-card-body {
+    padding: var(--space-4);
+  }
+
+  .workstation-card-index {
+    color: var(--pink);
+    margin-bottom: var(--space-2);
+  }
+
+  .workstation-card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: 26px;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+
+  .workstation-card-tagline {
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    opacity: 0.55;
+    margin-bottom: var(--space-3);
+  }
+
+  .workstation-card-desc {
+    font-size: 16px;
+    line-height: 1.7;
+    opacity: 0.72;
+  }
+
+  .research-threads {
+    list-style: none;
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-4) 0;
+  }
+
+  .research-threads li {
+    font-size: 17px;
+    line-height: 1.6;
+    opacity: 0.78;
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--pink);
+  }
+
+  .editorial-panel {
+    margin-bottom: var(--space-6);
+  }
+
+  .editorial-subtitle {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: clamp(28px, 3vw, 40px);
+    letter-spacing: -0.01em;
+    margin: var(--space-3) 0;
+  }
+
+  .prose-p {
+    font-size: 18px;
+    line-height: 1.8;
+    opacity: 0.78;
+    margin-bottom: var(--space-4);
+    max-width: 720px;
+  }
+
+  .atelier-tour {
+    margin: var(--space-5) 0 var(--space-6);
   }
 
   /* ── EDITORIAL PAGES ── */
@@ -1136,6 +1324,14 @@
     grid-template-columns: minmax(0, 1fr) 280px;
     gap: var(--space-6);
     align-items: start;
+  }
+  .editorial--wide {
+    grid-template-columns: 1fr;
+    max-width: 1180px;
+  }
+  .editorial--wide .research-archive-section,
+  .editorial--wide .workstations-section {
+    padding: 0;
   }
   .editorial-header {
     grid-column: 1 / -1;
@@ -1601,4 +1797,8 @@
     }
     .editorial-aside { position: static; max-width: 320px; }
     .editorial-main { padding-top: 100px; }
+    .archive-grid { grid-template-columns: 1fr; }
+    .workstations-grid { grid-template-columns: 1fr; }
+    .workstation-card { grid-template-columns: 1fr; }
+    .workstation-card-media { min-height: 180px; }
   }

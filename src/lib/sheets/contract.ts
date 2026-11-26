@@ -11,6 +11,7 @@ const publishedCsvBase =
 export const heroCsvUrl = `${publishedCsvBase}?gid=1398027263&single=true&output=csv`;
 export const eventsCsvUrl = `${publishedCsvBase}?gid=0&single=true&output=csv`;
 export const archiveCsvUrl = `${publishedCsvBase}?gid=20271126&single=true&output=csv`;
+export const workstationsCsvUrl = `${publishedCsvBase}?gid=20271127&single=true&output=csv`;
 
 export const heroColumns = [
   'type',
@@ -48,10 +49,20 @@ export const archiveColumns = [
   'order',
 ] as const;
 
+export const workstationColumns = [
+  'id',
+  'title',
+  'tagline',
+  'description',
+  'image_url',
+  'image_alt',
+  'order',
+  'published',
+] as const;
+
 export const eventsVisibleCount = 4;
 export const archiveVisibleCount = 6;
 
-/** Public CTA for the Selected Research teaser. Full archive cards ship later. */
 export const archiveCta = {
   label: 'Explore the Research Archive',
   url: 'https://blog.linalopes.info/',
@@ -61,4 +72,16 @@ export const formspreeAction = 'https://formspree.io/f/mvgbznoe';
 
 export const feedClientTimeoutMs = 8000;
 
-export const requiredFeeds = ['hero', 'events', 'archive'] as const;
+export const requiredFeeds = ['hero', 'events', 'archive', 'workstations'] as const;
+
+/** Confirmed editorial workstation titles. Inverted Gallery is not a workstation. */
+export const workstationTitles = [
+  'BioLab',
+  'Makerspace',
+  'Dirty Workshop',
+  'Electronics Bench',
+  'Wearables Lab',
+  'Craft Office',
+  'Studio',
+  'Saloon',
+] as const;

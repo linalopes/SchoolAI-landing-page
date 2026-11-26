@@ -38,7 +38,18 @@ export type ArchiveEntry = {
   order: number;
 };
 
-export type FeedId = 'hero' | 'events' | 'archive';
+export type WorkstationEntry = {
+  id: string;
+  title: string;
+  tagline: string;
+  description: string;
+  imageUrl: string | null;
+  imageAlt: string | null;
+  order: number;
+  published: boolean;
+};
+
+export type FeedId = 'hero' | 'events' | 'archive' | 'workstations';
 
 export type FeedSnapshot<T> = {
   feed: FeedId;

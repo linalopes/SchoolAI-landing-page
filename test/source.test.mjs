@@ -4,9 +4,12 @@ import { extname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import {
+  loadArchiveSnapshot,
   loadEventsSnapshot,
   loadHeroSnapshot,
+  loadWorkstationsSnapshot,
   selectUpcomingEvents,
+  workstationTitles,
 } from '../src/lib/sheets/index.ts';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
@@ -28,6 +31,8 @@ test('brand tokens match the SchoolAI kit', () => {
   assert.match(globalCss, /prefers-reduced-motion/);
   assert.match(globalCss, /hero-carousel-pause/);
   assert.match(globalCss, /\.editorial-main/);
+  assert.match(globalCss, /\.archive-grid/);
+  assert.match(globalCss, /\.workstations-grid/);
 });
 
 test('homepage keeps the split hero, sheet carousel, atelier, and Formspree', () => {
@@ -45,12 +50,19 @@ test('homepage keeps the split hero, sheet carousel, atelier, and Formspree', ()
   assert.match(newsletter, /https:\/\/formspree.io\/f\/mvgbznoe/);
   assert.match(contract, /https:\/\/formspree.io\/f\/mvgbznoe/);
   assert.match(atelier, /src="\/space3d\.html"/);
+  assert.match(atelier, /id="atelier"/);
+  assert.match(atelier, /Eight interconnected research workstations/);
+  assert.match(atelier, /href="\/atelier\/"/);
+  assert.doesNotMatch(atelier, /seven|later phase|planned route|snapshot/i);
   assert.match(contract, /gid=1398027263/);
   assert.match(contract, /gid=0/);
   assert.match(contract, /gid=20271126/);
+  assert.match(contract, /gid=20271127/);
   assert.match(contract, /1XIkDn7NrSSQbcVyYgrlcQxjFsOkraDdfJmI1qzaq54I/);
   assert.match(homepage, /prefers-reduced-motion/);
   assert.match(homepage, /hero-carousel-pause|Pause/);
+  assert.match(homepage, /refreshArchive/);
+  assert.match(homepage, /refreshWorkstations/);
   assert.match(indexPage, /SchoolIntro/);
   assert.match(indexPage, /ArtificialEmotion/);
   assert.match(indexPage, /SelectedResearch/);
@@ -58,36 +70,93 @@ test('homepage keeps the split hero, sheet carousel, atelier, and Formspree', ()
   assert.match(indexPage, /Gallery/);
 });
 
-test('research archive cards are not published; Selected Research teaser and CTA are', () => {
-  const indexPage = read('src/pages/index.astro');
+test('Selected Research uses the archive feed without hardcoded project cards', () => {
   const selected = read('src/components/home/SelectedResearch.astro');
+  const archiveComponent = read('src/components/research/ResearchArchive.astro');
   const contract = read('src/lib/sheets/contract.ts');
-  assert.doesNotMatch(indexPage, /loadArchiveSnapshot|archive\.json/);
-  assert.doesNotMatch(selected, /loadArchiveSnapshot/);
-  assert.match(selected, /archiveCta\.label/);
+  assert.match(selected, /ResearchArchive/);
+  assert.match(archiveComponent, /loadArchiveSnapshot/);
+  assert.match(archiveComponent, /data-feed="archive"/);
+  assert.match(archiveComponent, /Explore the Research Archive|archiveCta/);
   assert.match(contract, /Explore the Research Archive/);
   assert.match(contract, /blog\.linalopes\.info/);
+  assert.doesNotMatch(archiveComponent, /Affective Atmosphere 2046|Mr\. Sonnet|Claw-Pilot/);
   assert.match(read('src/data/feeds/archive.json'), /affective-atmosphere-2046/);
 });
 
-test('navigation exposes only live destinations for Phase 3A', () => {
+test('navigation promotes Research and Atelier pages while keeping homepage anchors', () => {
   const nav = read('src/data/navigation.ts');
   const view = read('src/components/navigation/SiteNav.astro');
+  const researchHome = read('src/components/home/ArtificialEmotion.astro');
+  const atelierHome = read('src/components/home/Atelier.astro');
   for (const label of ['The School', 'Research', 'The Atelier', 'Programme', 'Inverted Gallery', 'Collaborate']) {
     assert.match(nav, new RegExp(label));
   }
   assert.match(nav, /href: '\/about\/'/);
-  assert.match(nav, /href: '\/#research'/);
-  assert.match(nav, /href: '\/#atelier'/);
+  assert.match(nav, /href: '\/research\/'/);
+  assert.match(nav, /href: '\/atelier\/'/);
   assert.match(nav, /href: '\/#programme'/);
   assert.match(nav, /href: '\/#gallery'/);
   assert.match(nav, /href: '\/#collaborate'/);
   assert.match(nav, /plannedRoutes/);
-  assert.doesNotMatch(nav, /blog\.linalopes\.info\/schoolai\.html/);
-  assert.doesNotMatch(nav, /Programs'|The Base'|Events'|Lina'/);
+  assert.doesNotMatch(nav, /href: '\/#research'/);
+  assert.doesNotMatch(nav, /href: '\/#atelier'/);
+  assert.match(researchHome, /id="research"/);
+  assert.match(atelierHome, /id="atelier"/);
   assert.match(view, /navItems/);
   assert.match(view, /homeHref/);
   assert.match(view, /id="nav-hamburger"/);
+});
+
+test('Research and Atelier pages exist with approved institutional content', () => {
+  const research = read('src/pages/research/index.astro');
+  const atelier = read('src/pages/atelier/index.astro');
+  assert.match(research, /Artificial Emotion/);
+  assert.match(research, /Kinetic Studies/);
+  assert.match(research, /Soft Mechanisms/);
+  assert.match(research, /Bio-signals/);
+  assert.match(research, /site\.researchNotebookUrl/);
+  assert.match(read('src/data/site.ts'), /emotion\.linalopes\.info/);
+  assert.match(research, /Open research and open source/);
+  assert.match(research, /ResearchArchive/);
+  assert.doesNotMatch(research, /PhD|phase 3|snapshot|planned route/i);
+  assert.match(atelier, /WorkstationsDirectory/);
+  assert.match(atelier, /space3d\.html/);
+  assert.match(atelier, /Arrange a visit/);
+  assert.match(atelier, /Propose a research collaboration/);
+  assert.match(atelier, /not available for rental/);
+  assert.doesNotMatch(atelier, /seven workstation|phase 3|snapshot|planned route/i);
+});
+
+test('eight-workstation nomenclature is confirmed and seven-station copy is gone from public pages', () => {
+  assert.deepEqual([...workstationTitles], [
+    'BioLab',
+    'Makerspace',
+    'Dirty Workshop',
+    'Electronics Bench',
+    'Wearables Lab',
+    'Craft Office',
+    'Studio',
+    'Saloon',
+  ]);
+  for (const path of [
+    'src/components/home/Atelier.astro',
+    'src/pages/atelier/index.astro',
+    'src/pages/research/index.astro',
+    'src/pages/index.astro',
+    'src/components/home/Gallery.astro',
+  ]) {
+    const text = read(path);
+    assert.doesNotMatch(text, /seven interconnected|seven stations|Electronics Bench & Wearables Lab|(?<!Craft )Office(?! of)/i);
+  }
+  const publicBundle = [
+    read('src/components/home/Atelier.astro'),
+    read('src/pages/atelier/index.astro'),
+    read('src/components/atelier/WorkstationsDirectory.astro'),
+  ].join('\n');
+  for (const title of workstationTitles) {
+    assert.match(publicBundle + read('src/data/feeds/workstations.json'), new RegExp(title));
+  }
 });
 
 test('The School page is Markdown-backed and links to the founder site', () => {
@@ -160,11 +229,16 @@ test('no editorial media was added outside the preserved legacy paths', () => {
   assert.deepEqual(unexpected, []);
 });
 
-test('offline build can read committed snapshots without Google', () => {
+test('offline build can read all four committed snapshots without Google', () => {
   const hero = loadHeroSnapshot();
   const events = loadEventsSnapshot();
+  const archive = loadArchiveSnapshot();
+  const workstations = loadWorkstationsSnapshot();
   assert.equal(hero.items.length > 0, true);
   assert.equal(selectUpcomingEvents(events.items).length, 0);
+  assert.equal(archive.items.length, 6);
+  assert.equal(workstations.items.length, 8);
+  assert.deepEqual(workstations.items.map((item) => item.title), [...workstationTitles]);
   assert.match(read('docs/feed-resilience.md'), /Last-known-good snapshots/);
   assert.match(read('docs/csv-parser.md'), /csv-parse/);
 });
