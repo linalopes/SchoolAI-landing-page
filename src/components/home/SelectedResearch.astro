@@ -1,0 +1,23 @@
+---
+import { archiveCta } from '../../lib/sheets/contract.ts';
+---
+<!--
+  Extension point for the curated Research Archive (max six sheet-driven entries).
+  Phase 3A publishes a concise teaser and external CTA only — no hardcoded project cards.
+-->
+<section id="selected-research">
+  <div class="section-header fade-up">
+    <span class="section-number t-label">03</span>
+    <div>
+      <h2 class="section-title">Selected<br>research</h2>
+      <p class="section-intro">
+        A selection of previous investigations, tools and experiments developed in and around the atelier. Each entry links to its original documentation, where available. This is a curated archive rather than a comprehensive portfolio.
+      </p>
+      <div class="section-actions">
+        <a href={archiveCta.url} target="_blank" rel="noopener" class="button button--primary">
+          {archiveCta.label} &#x2197;&#xFE0E;
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

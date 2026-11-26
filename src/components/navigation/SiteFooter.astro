@@ -1,14 +1,18 @@
-<!-- ── FOOTER ── -->
+---
+import { homeHref } from '../../data/navigation';
+import { site } from '../../data/site';
+---
 <footer>
   <div class="footer-pattern"></div>
   <div class="footer-brand">
-    <a href="#hero" class="footer-program-link">School of Tomorrow's AI</a>
-    <p class="footer-place">Wetzikon — Zürich, Switzerland</p>
-    <a href="mailto:lilothink.science@gmail.com" class="footer-contact">lilothink.science@gmail.com</a>
-    <p class="footer-lead">Lina Lopes, Artist &amp; Research Lead</p>
+    <a href={homeHref} class="footer-program-link">{site.title}</a>
+    <p class="footer-place">{site.locationLine}</p>
+    <a href={`mailto:${site.contactEmail}`} class="footer-contact">{site.contactEmail}</a>
+    <p class="footer-lead">Founded in {site.founded} by Lina Lopes. Independent research atelier.</p>
   </div>
   <div class="footer-text-links">
-    <a href="https://linalopes.info" target="_blank" rel="noopener" class="footer-text-link">linalopes.info &#x2197;&#xFE0E;</a>
+    <a href="/about/" class="footer-text-link">The School</a>
+    <a href={site.founderUrl} target="_blank" rel="noopener" class="footer-text-link">Lina Lopes &#x2197;&#xFE0E;</a>
     <a href="https://blog.linalopes.info" target="_blank" rel="noopener" class="footer-text-link">Blog &#x2197;&#xFE0E;</a>
   </div>
   <div class="footer-social">
@@ -35,5 +39,5 @@
       </svg>
     </a>
   </div>
-  <p class="footer-copy">© 2026 Lina Lopes · School of Tomorrow's AI</p>
+  <p class="footer-copy">© 2026 Lina Lopes · {site.title}</p>
 </footer>

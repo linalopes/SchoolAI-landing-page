@@ -4,30 +4,26 @@ import SiteNav from '../components/navigation/SiteNav.astro';
 import SiteFooter from '../components/navigation/SiteFooter.astro';
 import Hero from '../components/home/Hero.astro';
 import Marquee from '../components/home/Marquee.astro';
-import Investigation from '../components/home/Investigation.astro';
-import Method from '../components/home/Method.astro';
-import Programs from '../components/home/Programs.astro';
-import Lead from '../components/home/Lead.astro';
+import SchoolIntro from '../components/home/SchoolIntro.astro';
+import ArtificialEmotion from '../components/home/ArtificialEmotion.astro';
+import SelectedResearch from '../components/home/SelectedResearch.astro';
 import Atelier from '../components/home/Atelier.astro';
+import Programme from '../components/home/Programme.astro';
+import Gallery from '../components/home/Gallery.astro';
 import Collaborate from '../components/home/Collaborate.astro';
-import Events from '../components/home/Events.astro';
 import Newsletter from '../components/home/Newsletter.astro';
 ---
 <BaseLayout>
   <SiteNav />
   <Hero />
   <Marquee />
-  <Investigation />
-  <Method />
-  <!--
-    Research Archive infrastructure is prepared in the sheets library and feed snapshots.
-    Phase 2 does not publish that section. Do not hardcode project cards here.
-  -->
-  <Programs />
-  <Lead />
+  <SchoolIntro />
+  <ArtificialEmotion />
+  <SelectedResearch />
   <Atelier />
+  <Programme />
+  <Gallery />
   <Collaborate />
-  <Events />
   <Newsletter />
   <SiteFooter />
   <script>

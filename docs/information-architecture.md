@@ -12,9 +12,9 @@
 | `/collaborate/wishlist/` | Editorial research needs and campaign links | Offer a contribution |
 | `/collaborate/contributors/` | Permanent permission-based credits | Learn about support |
 
-Space hire means the Inverted Gallery only. The research atelier and its workstations are not rental spaces. The homepage navigation stays as published until the new pages exist.
+Space hire means the Inverted Gallery only. The research atelier and its workstations are not rental spaces.
 
-Navigation proposal: The School, Research, The Atelier, Programme, Inverted Gallery, Collaborate. Logo returns home. Footer: location, contact, newsletter, Lina Lopes, GitHub, legal/privacy information. No standalone news blog; hero updates are short links to meaningful content. No automatic detail pages for archived projects; external links are preferred, add a detail route only when original institutional content warrants it.
+Phase 3A navigation (live destinations only): The School → `/about/`; Research → `/#research`; The Atelier → `/#atelier`; Programme → `/#programme`; Inverted Gallery → `/#gallery`; Collaborate → `/#collaborate`. Logo returns `/`. Future full routes are listed in `src/data/navigation.ts` as `plannedRoutes` and are not linked until they ship. Footer: location, contact, The School, Lina Lopes, blog. No standalone news blog; hero updates are short links to meaningful content. No automatic detail pages for archived projects; external links are preferred.
 
 ## Homepage composition
 Preserve current split hero and carousel, including responsive behavior and brand pattern. Left: tagline, Wetzikon-Zürich, short descriptor, CTAs. Right: spreadsheet-driven featured items (image, short text, link). Below: school intro, flagship research, atelier preview, programme, gallery introduction, collaboration and credits teaser, occasional newsletter. Reuse current visual components rather than creating a new design language.

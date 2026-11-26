@@ -1,7 +1,7 @@
 # Technical architecture
 
-## Phase 2 status, 26 November 2026
-`website-2027` is an Astro static project with typed Google Sheets adapters, committed feed snapshots, and an offline build. Production GitHub Pages still serves `main` at the repository root. Legacy pages and media remain in `public/`. `.github/workflows/validate.yml` typechecks, tests, and builds. It does not deploy. Feed behaviour is [feed resilience](feed-resilience.md). Confirmed names and boundaries are in [decisions](decisions-2026-11-26.md). The Research Archive snapshot is prepared and not rendered on the homepage.
+## Phase 3A status, 26 November 2026
+`website-2027` is an Astro static project with typed Google Sheets adapters, committed feed snapshots, offline builds, primary navigation for live destinations, Markdown `/about/`, and a restructured homepage. Production GitHub Pages still serves `main` at the repository root. Legacy pages and media remain in `public/`. `.github/workflows/validate.yml` typechecks, tests, and builds. It does not deploy. Feed behaviour is [feed resilience](feed-resilience.md). Confirmed names and boundaries are in [decisions](decisions-2026-11-26.md). The Research Archive snapshot remains available; the homepage shows a Selected Research teaser and external CTA only.
 
 ## Baseline and choices
 Existing repository `linalopes/SchoolAI-landing-page` is a static HTML site. Root includes `index.html`, `space3d.html`, `room-for-interaction.html`, `room-for-interaction.json`, `arduino-day-2026.html`, `peppers-ghost.html`, `imgs/`, `history/`, `CNAME`. Homepage combines CSS, HTML and JS (approximately 73k characters). Existing split hero is a spreadsheet-driven carousel; events use a separate tab of the same public sheet; newsletter uses Formspree. Audit was limited to root listing and homepage code, not every integration or live sheet. Preserve current behavior before improvements.

@@ -51,7 +51,7 @@ export const archiveColumns = [
 export const eventsVisibleCount = 4;
 export const archiveVisibleCount = 6;
 
-/** Reserved for Phase 3. Not rendered in Phase 2. */
+/** Public CTA for the Selected Research teaser. Full archive cards ship later. */
 export const archiveCta = {
   label: 'Explore the Research Archive',
   url: 'https://blog.linalopes.info/',

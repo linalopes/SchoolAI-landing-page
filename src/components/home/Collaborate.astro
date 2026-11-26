@@ -1,34 +1,40 @@
-<!-- ── WORK WITH THE SCHOOL ── -->
+---
+import { site } from '../../data/site';
+
+const contactHref = `mailto:${site.contactEmail}`;
+---
 <section id="collaborate">
-  <div class="collaborate-pattern"></div>
+  <div class="collaborate-pattern" aria-hidden="true"></div>
   <div class="section-header fade-up">
-    <span class="section-number t-label">06</span>
+    <span class="section-number t-label">07</span>
     <div>
-      <h2 class="section-title">Work with<br>the School</h2>
-      <p class="section-intro">The School collaborates with cultural institutions, funders, research labs, foundations and organisations interested in unusual experimental research. Collaboration begins with a shared question.</p>
+      <h2 class="section-title">Collaborate</h2>
+      <p class="section-intro">
+        Research grows through exchange. We welcome artists, researchers, students, laboratories, cultural institutions, companies and individuals interested in expanding what can be investigated, made and learned together.
+      </p>
     </div>
   </div>
   <div class="divider"></div>
   <div class="invite-grid fade-up">
     <div class="invite">
       <span class="t-label invite-index">01</span>
-      <h3 class="invite-title">Fund a research question</h3>
-      <p class="invite-desc">Support an artistic investigation over time — a question that needs space, materials and the possibility to change as the prototype changes.</p>
+      <h3 class="invite-title">Research collaboration</h3>
+      <p class="invite-desc">Propose a joint or independent investigation, including projects outside Artificial Emotion.</p>
     </div>
     <div class="invite">
       <span class="t-label invite-index">02</span>
-      <h3 class="invite-title">Commission an experiment</h3>
-      <p class="invite-desc">Commission a prototype, artwork or experimental research process around a question relevant to your context.</p>
+      <h3 class="invite-title">Technology &amp; commissions</h3>
+      <p class="invite-desc">Offer access to equipment or expertise, or discuss experimental projects with companies and institutions.</p>
     </div>
     <div class="invite">
       <span class="t-label invite-index">03</span>
-      <h3 class="invite-title">Propose a collaboration</h3>
-      <p class="invite-desc">Bring a scientific, technological, cultural or institutional setting into a shared investigation. The School enters as an artistic research partner.</p>
+      <h3 class="invite-title">Hands-on contributions</h3>
+      <p class="invite-desc">Share skills, time, materials or practical assistance. Financial support options will be confirmed before publication.</p>
     </div>
   </div>
   <div class="collaborate-actions fade-up">
-    <p class="collaborate-cta-note">For funding, commissions and research collaborations.</p>
-    <a href="mailto:lilothink.science@gmail.com" class="collaborate-cta-link">Start a conversation &#x2192;&#xFE0E;</a>
-    <a href="mailto:lilothink.science@gmail.com" class="contact-email collaborate-cta-email">lilothink.science@gmail.com</a>
+    <p class="collaborate-cta-note">For research, visits, partnerships and commissions.</p>
+    <a href={contactHref} class="collaborate-cta-link">Contact the School &#x2192;&#xFE0E;</a>
+    <a href={contactHref} class="contact-email collaborate-cta-email">{site.contactEmail}</a>
   </div>
 </section>

@@ -27,6 +27,7 @@ test('brand tokens match the SchoolAI kit', () => {
   assert.match(globalCss, /font-family: 'Inter'/);
   assert.match(globalCss, /prefers-reduced-motion/);
   assert.match(globalCss, /hero-carousel-pause/);
+  assert.match(globalCss, /\.editorial-main/);
 });
 
 test('homepage keeps the split hero, sheet carousel, atelier, and Formspree', () => {
@@ -35,40 +36,70 @@ test('homepage keeps the split hero, sheet carousel, atelier, and Formspree', ()
   const atelier = read('src/components/home/Atelier.astro');
   const contract = read('src/lib/sheets/contract.ts');
   const homepage = read('src/scripts/homepage.ts');
+  const indexPage = read('src/pages/index.astro');
   assert.match(hero, /id="hero-carousel"/);
   assert.match(hero, /Strange questions/);
+  assert.match(hero, /site\.description/);
+  assert.match(read('src/data/site.ts'), /independent atelier for experimental research/);
   assert.match(hero, /loadHeroSnapshot/);
   assert.match(newsletter, /https:\/\/formspree.io\/f\/mvgbznoe/);
   assert.match(contract, /https:\/\/formspree.io\/f\/mvgbznoe/);
-  assert.match(atelier, /src="space3d.html"/);
+  assert.match(atelier, /src="\/space3d\.html"/);
   assert.match(contract, /gid=1398027263/);
   assert.match(contract, /gid=0/);
   assert.match(contract, /gid=20271126/);
   assert.match(contract, /1XIkDn7NrSSQbcVyYgrlcQxjFsOkraDdfJmI1qzaq54I/);
   assert.match(homepage, /prefers-reduced-motion/);
   assert.match(homepage, /hero-carousel-pause|Pause/);
+  assert.match(indexPage, /SchoolIntro/);
+  assert.match(indexPage, /ArtificialEmotion/);
+  assert.match(indexPage, /SelectedResearch/);
+  assert.match(indexPage, /Programme/);
+  assert.match(indexPage, /Gallery/);
 });
 
-test('research archive infrastructure exists but is not published on the homepage', () => {
+test('research archive cards are not published; Selected Research teaser and CTA are', () => {
   const indexPage = read('src/pages/index.astro');
+  const selected = read('src/components/home/SelectedResearch.astro');
   const contract = read('src/lib/sheets/contract.ts');
   assert.doesNotMatch(indexPage, /loadArchiveSnapshot|archive\.json/);
-  assert.doesNotMatch(indexPage, /<section[^>]+id=["']research["']/);
+  assert.doesNotMatch(selected, /loadArchiveSnapshot/);
+  assert.match(selected, /archiveCta\.label/);
   assert.match(contract, /Explore the Research Archive/);
   assert.match(contract, /blog\.linalopes\.info/);
   assert.match(read('src/data/feeds/archive.json'), /affective-atmosphere-2046/);
 });
 
-test('navigation labels match the current site', () => {
+test('navigation exposes only live destinations for Phase 3A', () => {
   const nav = read('src/data/navigation.ts');
   const view = read('src/components/navigation/SiteNav.astro');
-  for (const label of ['The School', 'Research', 'Programs', 'Events', 'The Base', 'Lina', 'Blog']) {
+  for (const label of ['The School', 'Research', 'The Atelier', 'Programme', 'Inverted Gallery', 'Collaborate']) {
     assert.match(nav, new RegExp(label));
   }
-  assert.match(nav, /blog\.linalopes\.info\/schoolai\.html/);
-  assert.match(nav, /#collaborate/);
+  assert.match(nav, /href: '\/about\/'/);
+  assert.match(nav, /href: '\/#research'/);
+  assert.match(nav, /href: '\/#atelier'/);
+  assert.match(nav, /href: '\/#programme'/);
+  assert.match(nav, /href: '\/#gallery'/);
+  assert.match(nav, /href: '\/#collaborate'/);
+  assert.match(nav, /plannedRoutes/);
+  assert.doesNotMatch(nav, /blog\.linalopes\.info\/schoolai\.html/);
+  assert.doesNotMatch(nav, /Programs'|The Base'|Events'|Lina'/);
   assert.match(view, /navItems/);
+  assert.match(view, /homeHref/);
   assert.match(view, /id="nav-hamburger"/);
+});
+
+test('The School page is Markdown-backed and links to the founder site', () => {
+  const aboutMd = read('src/content/pages/about.md');
+  const aboutPage = read('src/pages/about/index.astro');
+  assert.match(aboutMd, /September 2025/);
+  assert.match(aboutMd, /Wetzikon/);
+  assert.match(aboutMd, /tool, a medium, a material or a subject/);
+  assert.match(aboutMd, /https:\/\/www\.linalopes\.info\//);
+  assert.match(aboutPage, /getEntry\('pages', 'about'\)/);
+  assert.match(aboutPage, /EditorialLayout/);
+  assert.match(aboutPage, /\/imgs\/lina\.jpg/);
 });
 
 test('dependency set stays Astro, TypeScript, and native CSS', () => {

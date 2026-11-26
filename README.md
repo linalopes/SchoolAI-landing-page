@@ -1,6 +1,6 @@
 # School of Tomorrow’s AI
 
-Institutional website for [schoolai.linalopes.info](https://schoolai.linalopes.info/). Phase 2 lives on `website-2027`. Production GitHub Pages still publishes `main` from the repository root. This branch does not change that.
+Institutional website for [schoolai.linalopes.info](https://schoolai.linalopes.info/). Phase 3A lives on `website-2027`. Production GitHub Pages still publishes `main` from the repository root. This branch does not change that.
 
 ## Read first
 
@@ -20,7 +20,7 @@ Institutional website for [schoolai.linalopes.info](https://schoolai.linalopes.i
 
 ## Current phase
 
-Astro 7 static output, TypeScript, and the current homepage CSS. The homepage reproduces the live page: split hero, spreadsheet carousel with pause/resume and reduced-motion support, events list, Formspree, and the Three.js atelier. Legacy HTML, JSON, photographs, and `CNAME` are in `public/` at their existing URLs. Wishlist Markdown and the Research Archive snapshot exist; neither is published on the homepage yet.
+Astro 7 static output, TypeScript, and the SchoolAI brand CSS. The homepage keeps the split hero and spreadsheet carousel (pause/resume, reduced-motion), then follows the Phase 3A editorial hierarchy through School, Artificial Emotion, Selected Research teaser, Atelier, Programme, Inverted Gallery, Collaborate, newsletter and footer. `/about/` is Markdown. Legacy HTML, JSON, photographs, and `CNAME` remain in `public/`. Full Research Archive cards, workstation directory, wishlist and payments are not published yet.
 
 Editorial feeds use last-known-good snapshots in `src/data/feeds/`. Builds do not call Google Sheets. Refresh with `npm run refresh-feeds` before committing updated snapshots.
 

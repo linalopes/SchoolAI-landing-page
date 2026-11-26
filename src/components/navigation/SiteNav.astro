@@ -1,17 +1,15 @@
 ---
-import { collaborateHref, navItems } from '../../data/navigation';
+import { collaborateHref, homeHref, navItems } from '../../data/navigation';
 ---
 <!-- External-link arrows: &#x2197; + &#xFE0E; (VS15) forces text style on iOS/Safari instead of emoji. -->
 <nav id="nav">
-  <a href="#hero" class="nav-logo">
-    <img src="imgs/sota-horizontal-bg-transparent-dark.svg" alt="School of Tomorrow's AI">
+  <a href={homeHref} class="nav-logo">
+    <img src="/imgs/sota-horizontal-bg-transparent-dark.svg" alt="School of Tomorrow's AI">
   </a>
   <ul class="nav-links">
     {navItems.map((item) => (
       <li>
-        <a href={item.href} target={'external' in item ? '_blank' : undefined} rel={'external' in item ? 'noopener' : undefined}>
-          {item.label}{'external' in item ? ' \u2197\uFE0E' : ''}
-        </a>
+        <a href={item.href}>{item.label}</a>
       </li>
     ))}
   </ul>
@@ -23,9 +21,7 @@ import { collaborateHref, navItems } from '../../data/navigation';
     <ul class="nav-mobile-links">
       {navItems.map((item) => (
         <li>
-          <a href={item.href} target={'external' in item ? '_blank' : undefined} rel={'external' in item ? 'noopener' : undefined} class="nav-mobile-link">
-            {item.label}{'external' in item ? ' \u2197\uFE0E' : ''}
-          </a>
+          <a href={item.href} class="nav-mobile-link">{item.label}</a>
         </li>
       ))}
     </ul>

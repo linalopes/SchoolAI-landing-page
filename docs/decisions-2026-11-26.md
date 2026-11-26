@@ -16,3 +16,7 @@ These decisions amend the planning baseline. Phase 1 records them and does not t
 - Research Archive GID `20271126` is active. The public CTA label is “Explore the Research Archive”, linking to https://blog.linalopes.info/. The archive section is not published in Phase 2.
 - CSV parsing uses the shared `src/lib/sheets/csv.ts` parser (no `csv-parse`). See [csv-parser.md](csv-parser.md).
 - Node runtime for this branch is 22.23.4 or newer (`engines.node`).
+- Phase 3A navigation labels are The School, Research, The Atelier, Programme, Inverted Gallery, Collaborate. Only implemented destinations are linked.
+- The School institutional page is `/about/`, sourced from Markdown in `src/content/pages/about.md`.
+- Founder biography and portfolio remain on https://www.linalopes.info/.
+- Artificial Emotion notebook remains on https://emotion.linalopes.info/.
