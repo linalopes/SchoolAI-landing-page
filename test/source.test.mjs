@@ -170,6 +170,7 @@ test('institutional editorial content is sourced from Markdown', () => {
   assert.equal(statSync(join(root, 'src/content/gallery/rental-rates.md')).isFile(), true);
   assert.equal(statSync(join(root, 'src/content/support/financial-support.md')).isFile(), true);
   assert.equal(statSync(join(root, 'src/content/site/footer.md')).isFile(), true);
+  assert.equal(statSync(join(root, 'src/content/site/location.md')).isFile(), true);
 
   const researchMd = read('src/content/pages/research.md');
   assert.match(researchMd, /Artificial Emotion/);
@@ -194,11 +195,20 @@ test('institutional editorial content is sourced from Markdown', () => {
   assert.match(collaborateMd, /Let's start a conversation/);
   assert.doesNotMatch(collaborateMd, /formal employment|residency programmes|internships/);
   const footerMd = read('src/content/site/footer.md');
-  assert.match(footerMd, /Schönaustrasse 13/);
-  assert.match(footerMd, /8620 Wetzikon/);
+  const locationMd = read('src/content/site/location.md');
+  assert.match(locationMd, /Schönaustrasse 13/);
+  assert.match(locationMd, /8620 Wetzikon, Switzerland/);
+  assert.match(locationMd, /maps\.google\.com/);
+  assert.match(locationMd, /Wetzikon-Zürich/);
   assert.match(footerMd, /Get directions/);
+  assert.match(footerMd, /Explore/);
+  assert.match(footerMd, /Elsewhere/);
+  assert.match(footerMd, /Research Blog/);
   assert.match(footerMd, /github\.com\/linalopes/);
+  assert.doesNotMatch(footerMd, /Schönaustrasse 13/);
   assert.doesNotMatch(footerMd, /lilothink\.science@gmail\.com/);
+  assert.doesNotMatch(read('src/content/pages/home.md'), /maps_url:/);
+  assert.doesNotMatch(read('src/content/pages/atelier.md'), /maps_url:/);
 
   const researchPage = read('src/pages/research/index.astro');
   const atelierPage = read('src/pages/atelier/index.astro');
@@ -395,6 +405,7 @@ test('README includes the editorial administration guide', () => {
   assert.match(readme, /gid=20271128/);
   assert.match(readme, /Contributors|Made possible by/);
   assert.match(readme, /src\/content\/site\/footer\.md/);
+  assert.match(readme, /src\/content\/site\/location\.md/);
   assert.match(readme, /published checkbox|not a private contributor register/i);
   assert.match(readme, /refresh once in the browser|Requires a new \*\*build and deployment\*\*/i);
   assert.match(readme, /Deploy production site|deploy\.yml/);

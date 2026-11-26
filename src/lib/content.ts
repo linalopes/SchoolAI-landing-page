@@ -32,6 +32,37 @@ export async function requireSiteDoc(id: string) {
   return entry;
 }
 
+export type InstitutionalLocation = {
+  venue: string;
+  street: string;
+  locality: string;
+  region_label: string;
+  maps_url: string;
+};
+
+export async function requireLocation(): Promise<InstitutionalLocation> {
+  const entry = await requireSiteDoc('location');
+  if (entry.data.doc !== 'location') {
+    throw new Error('src/content/site/location.md must declare doc: location');
+  }
+  return {
+    venue: entry.data.venue,
+    street: entry.data.street,
+    locality: entry.data.locality,
+    region_label: entry.data.region_label,
+    maps_url: entry.data.maps_url,
+  };
+}
+
+/** Canonical postal lines for presentation (venue, street, locality). */
+export function locationAddressLines(location: InstitutionalLocation): string[] {
+  return [location.venue, location.street, location.locality];
+}
+
+export function locationMetaLine(location: InstitutionalLocation): string {
+  return `${location.street} · ${location.locality}`;
+}
+
 export function mailtoHref(email: string, subject?: string): string {
   if (!subject) return `mailto:${email}`;
   return `mailto:${email}?subject=${encodeURIComponent(subject)}`;

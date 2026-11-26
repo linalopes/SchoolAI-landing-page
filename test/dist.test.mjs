@@ -116,13 +116,31 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   assert.doesNotMatch(collaborate, /formal employment|residency programmes|internships/);
 
   const footer = readFileSync(dist('index.html'), 'utf8');
+  assert.match(footer, /footer-main/);
+  assert.match(footer, /footer-col--explore/);
+  assert.match(footer, /footer-col--elsewhere/);
+  assert.match(footer, /Explore/);
+  assert.match(footer, /Elsewhere/);
+  assert.match(footer, /Schönau Areal/);
   assert.match(footer, /Schönaustrasse 13/);
-  assert.match(footer, /8620 Wetzikon/);
+  assert.match(footer, /8620 Wetzikon, Switzerland/);
   assert.match(footer, /Get directions/);
   assert.match(footer, /maps\.google\.com/);
+  assert.match(footer, /Research Blog/);
   assert.match(footer, /github\.com\/linalopes/);
+  assert.match(footer, /footer-bar/);
+  assert.match(footer, /© 20\d{2} School of Tomorrow/);
+  assert.match(footer, /Wetzikon-Zürich/);
   assert.doesNotMatch(footer, /<footer[\s\S]*lilothink\.science@gmail\.com/);
   assert.doesNotMatch(footer, /Founded in September 2025 by Lina Lopes/);
+
+  const homeAtelier = readFileSync(dist('index.html'), 'utf8');
+  assert.match(homeAtelier, /Schönau Areal/);
+  assert.match(homeAtelier, /Open in Google Maps/);
+
+  const atelierPage = readFileSync(dist('atelier/index.html'), 'utf8');
+  assert.match(atelierPage, /Schönaustrasse 13 · 8620 Wetzikon, Switzerland/);
+  assert.match(atelierPage, /maps\.google\.com/);
 
   assert.equal(statSync(dist('imgs/contact-twint.png')).isFile(), true);
   assert.equal(statSync(dist('imgs/stripe.png')).isFile(), true);

@@ -1,7 +1,12 @@
 ---
 import EditorialLayout from '../../layouts/EditorialLayout.astro';
 import WorkstationsDirectory from '../../components/atelier/WorkstationsDirectory.astro';
-import { resolveCtaHref, requirePage } from '../../lib/content';
+import {
+  locationMetaLine,
+  requireLocation,
+  resolveCtaHref,
+  requirePage,
+} from '../../lib/content';
 import { site } from '../../data/site';
 
 const entry = await requirePage('atelier');
@@ -9,8 +14,10 @@ const atelier = entry.data.atelier;
 if (!atelier) {
   throw new Error('atelier.md is missing the atelier frontmatter section.');
 }
+const location = await requireLocation();
 const pageTitle = `${entry.data.title} · ${site.title}`;
 const ctas = entry.data.ctas ?? [];
+const meta = locationMetaLine(location);
 ---
 <EditorialLayout title={pageTitle} description={entry.data.description}>
   <article class="editorial editorial--wide">
@@ -18,7 +25,7 @@ const ctas = entry.data.ctas ?? [];
       {entry.data.eyebrow && <p class="t-label editorial-eyebrow">{entry.data.eyebrow}</p>}
       <h1 class="editorial-title">{entry.data.title}</h1>
       {entry.data.lede && <p class="editorial-lede">{entry.data.lede}</p>}
-      {entry.data.meta && <p class="editorial-meta t-mono">{entry.data.meta}</p>}
+      <p class="editorial-meta t-mono">{meta}</p>
     </header>
 
     <section class="editorial-panel fade-up">
@@ -27,10 +34,12 @@ const ctas = entry.data.ctas ?? [];
       ))}
       <div class="section-actions">
         {ctas.map((cta) => {
-          const href = resolveCtaHref(cta.href, {
-            email: site.contactEmail,
-            subject: cta.subject,
-          });
+          const href = cta.href === 'maps'
+            ? location.maps_url
+            : resolveCtaHref(cta.href, {
+                email: site.contactEmail,
+                subject: cta.subject,
+              });
           return (
             <a
               href={href}

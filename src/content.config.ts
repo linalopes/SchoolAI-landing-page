@@ -78,8 +78,9 @@ const pages = defineCollection({
         title_lines: titleLinesSchema,
         intro: z.string(),
         location_name: z.string(),
-        address_lines: z.array(z.string()),
-        maps_url: z.string(),
+        /** Prefer shared src/content/site/location.md; kept optional for legacy. */
+        address_lines: z.array(z.string()).optional(),
+        maps_url: z.string().optional(),
         maps_label: z.string(),
         body: z.array(z.string()),
         cta: ctaSchema,
@@ -353,28 +354,38 @@ const wishlist = defineCollection({
 
 const siteContent = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/site' }),
-  schema: z.object({
-    title: z.string(),
-    tagline: z.string(),
-    location_line: z.string(),
-    address_lines: z.array(z.string()).min(1),
-    maps_url: z.string().startsWith('https://'),
-    maps_label: z.string(),
-    external_links: z.array(
-      z.object({
-        label: z.string(),
-        href: z.string().startsWith('https://'),
-        external: z.boolean().optional(),
-      }),
-    ),
-    social_links: z.array(
-      z.object({
-        label: z.string(),
-        href: z.string().startsWith('https://'),
-      }),
-    ),
-    copyright: z.string(),
-  }),
+  schema: z.discriminatedUnion('doc', [
+    z.object({
+      doc: z.literal('footer'),
+      title: z.string(),
+      tagline: z.string(),
+      explore_label: z.string(),
+      elsewhere_label: z.string(),
+      copyright_name: z.string(),
+      maps_label: z.string(),
+      external_links: z.array(
+        z.object({
+          label: z.string(),
+          href: z.string().startsWith('https://'),
+          external: z.boolean().optional(),
+        }),
+      ),
+      social_links: z.array(
+        z.object({
+          label: z.string(),
+          href: z.string().startsWith('https://'),
+        }),
+      ),
+    }),
+    z.object({
+      doc: z.literal('location'),
+      venue: z.string(),
+      street: z.string(),
+      locality: z.string(),
+      region_label: z.string(),
+      maps_url: z.string().startsWith('https://'),
+    }),
+  ]),
 });
 
 export const collections = { pages, gallery, support, wishlist, site: siteContent };

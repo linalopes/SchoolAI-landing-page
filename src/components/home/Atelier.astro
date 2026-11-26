@@ -1,11 +1,17 @@
 ---
-import { requirePage } from '../../lib/content';
+import {
+  locationAddressLines,
+  requireLocation,
+  requirePage,
+} from '../../lib/content';
 
 const home = await requirePage('home');
 const atelier = home.data.atelier;
 if (!atelier) {
   throw new Error('home.md is missing the atelier frontmatter section.');
 }
+const location = await requireLocation();
+const addressLines = locationAddressLines(location);
 ---
 <section id="atelier">
   <div class="section-header fade-up">
@@ -21,9 +27,9 @@ if (!atelier) {
     <div class="location-header-left">
       <div class="location-name">{atelier.location_name}</div>
       <div class="location-address">
-        {atelier.address_lines.map((line) => <span>{line}</span>)}
+        {addressLines.map((line) => <span>{line}</span>)}
       </div>
-      <a href={atelier.maps_url} target="_blank" rel="noopener" class="location-map-link">
+      <a href={location.maps_url} target="_blank" rel="noopener" class="location-map-link">
         {atelier.maps_label} &#x2197;&#xFE0E;
       </a>
     </div>

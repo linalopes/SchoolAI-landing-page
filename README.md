@@ -93,7 +93,8 @@ src/content/
   support/
     financial-support.md    # TWINT / Stripe copy, images, Payment Link, enabled flags
   site/
-    footer.md               # Footer address, maps link, external + social links
+    location.md             # Canonical physical address + maps URL
+    footer.md               # Footer labels, Explore/Elsewhere links, social
   wishlist/                 # Empty until approved needs exist
 ```
 
@@ -149,8 +150,11 @@ Edit the Contributors tab (`id`, `name`, `category`, optional `url`, `year`, `or
 
 Set `published` to TRUE only for authorised public acknowledgements. Order with the `order` column. Empty rows and unchecked-only rows are ignored. Section titles and category labels live in `src/content/pages/collaborate.md`. → `npm run refresh-feeds`.
 
-**Edit the footer address and directions**  
-Edit `src/content/site/footer.md` — physical address lines, Wetzikon-Zürich line, Get directions URL/label, external links (including GitHub) and social links. Rebuild to publish. Do not put the contact email in the footer; keep email for inquiry buttons elsewhere.
+**Edit the institutional address**  
+Edit `src/content/site/location.md` — venue, street, locality and maps URL. Homepage, Atelier, footer and Maps CTAs read this file. Keep Wetzikon-Zürich narrative wording in page Markdown where needed.
+
+**Edit footer labels and external links**  
+Edit `src/content/site/footer.md` — Explore/Elsewhere headings, Get directions label, external links (Lina Lopes, Research Blog, GitHub) and social links. Copyright year is generated at build time. Do not put the contact email in the footer.
 
 **Add gallery photographs**  
 In `src/content/pages/inverted-gallery.md`, add items under `photos:`:

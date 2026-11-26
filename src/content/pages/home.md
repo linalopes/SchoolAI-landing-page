@@ -71,10 +71,6 @@ atelier:
   intro: >-
     A place to make questions physical. Eight interconnected research workstations bring together different ways of making, testing and documenting ideas. The atelier is both a physical space and a way of working.
   location_name: Research atelier
-  address_lines:
-    - Schönaustrasse 13
-    - 8620 Wetzikon, Zürich
-  maps_url: https://maps.google.com/?q=Schönaustrasse+13+8620+Wetzikon
   maps_label: Open in Google Maps
   body:
     - The School is based in an atelier at Schönau Areal in Wetzikon-Zürich. Visits can be arranged individually. Access is arranged through conversation, not unrestricted public entry.

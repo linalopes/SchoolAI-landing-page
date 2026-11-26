@@ -4,8 +4,6 @@ description: The research atelier of School of Tomorrow’s AI in Wetzikon-Züri
 eyebrow: The Atelier
 lede: >-
   The atelier is a physical research environment and a way of working. Questions become material through speculative prototyping, making and public testing.
-meta: Schönaustrasse 13 · 8620 Wetzikon, Zürich
-
 atelier:
   number: "01"
   title_lines:
@@ -14,10 +12,6 @@ atelier:
   intro: >-
     The atelier is a physical research environment and a way of working. Questions become material through speculative prototyping, making and public testing.
   location_name: Research atelier
-  address_lines:
-    - Schönaustrasse 13
-    - 8620 Wetzikon, Zürich
-  maps_url: https://maps.google.com/?q=Schönaustrasse+13+8620+Wetzikon
   maps_label: Open in Google Maps
   body:
     - >-
@@ -44,6 +38,6 @@ ctas:
     href: mailto
     subject: Research collaboration
   - label: Open in Google Maps
-    href: https://maps.google.com/?q=Schönaustrasse+13+8620+Wetzikon
+    href: maps
     external: true
 ---
