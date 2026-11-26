@@ -382,6 +382,7 @@ test('production workflows deploy only from main and keep validation separate', 
   const refresh = read('.github/workflows/refresh-snapshots.yml');
   assert.match(deploy, /branches:\s*\n\s*-\s*main/);
   assert.match(deploy, /workflow_dispatch/);
+  assert.match(deploy, /github\.ref == 'refs\/heads\/main'/);
   assert.match(deploy, /actions\/upload-pages-artifact@v3/);
   assert.match(deploy, /actions\/deploy-pages@v4/);
   assert.match(deploy, /github-pages/);
@@ -392,11 +393,16 @@ test('production workflows deploy only from main and keep validation separate', 
   assert.match(validate, /main/);
   assert.doesNotMatch(validate, /deploy-pages|upload-pages-artifact/);
   assert.match(refresh, /workflow_dispatch/);
-  assert.match(refresh, /# schedule:/);
+  assert.match(refresh, /cron:\s*'0 6 \* \* \*'/);
+  assert.match(refresh, /github\.ref == 'refs\/heads\/main'/);
   assert.match(refresh, /npm run refresh-feeds/);
-  assert.match(refresh, /GITHUB_TOKEN|github-actions\[bot\]/);
+  assert.match(refresh, /actions:\s*write/);
+  assert.match(refresh, /createWorkflowDispatch/);
+  assert.match(refresh, /deploy\.yml/);
+  assert.match(refresh, /github-actions\[bot\]/);
   assert.match(read('docs/production-release.md'), /legacy-html-2026/);
-  assert.match(read('docs/production-release.md'), /Do \*\*not\*\* execute this procedure until Phase 4B/);
+  assert.match(read('docs/production-release.md'), /Deploy from a branch/);
+  assert.match(read('docs/production-release.md'), /does \*\*not\*\* restore/);
 });
 
 test('archive snapshot includes Drawing Machines and Maze Circuit image URLs', () => {

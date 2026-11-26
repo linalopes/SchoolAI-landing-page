@@ -243,6 +243,8 @@ test('workstations adapter rejects duplicate ids and unsafe image URLs', () => {
 test('refresh script distinguishes network keep from invalid failure', async () => {
   const source = readFileSync(new URL('../scripts/refresh-feeds.ts', import.meta.url), 'utf8');
   assert.match(source, /kept-network/);
+  assert.match(source, /unchanged/);
+  assert.match(source, /editorialPayloadEqual/);
   assert.match(source, /status === 'invalid'/);
   assert.match(source, /writeSnapshotAtomic/);
   assert.match(source, /parseAndSelectArchive/);

@@ -16,6 +16,7 @@ import {
   parseAndSelectWorkstations,
   parseEventsCsv,
   parseHeroCsv,
+  readSnapshotFile,
   snapshotAgeMs,
   snapshotExists,
   workstationsCsvUrl,
@@ -25,9 +26,18 @@ import {
 
 type RefreshOutcome = {
   feed: FeedId;
-  status: 'updated' | 'kept-network' | 'invalid' | 'failed';
+  status: 'updated' | 'unchanged' | 'kept-network' | 'invalid' | 'failed';
   message: string;
 };
+
+function editorialPayloadEqual(previous: unknown, next: { sourceUrl: string; items: unknown[] }): boolean {
+  if (!previous || typeof previous !== 'object') return false;
+  const prior = previous as { sourceUrl?: unknown; items?: unknown };
+  return (
+    prior.sourceUrl === next.sourceUrl
+    && JSON.stringify(prior.items) === JSON.stringify(next.items)
+  );
+}
 
 const FETCH_TIMEOUT_MS = 15000;
 
@@ -83,7 +93,23 @@ async function refreshOne(
 
   try {
     const { items, warnings } = parse(csv);
-    writeSnapshotAtomic(createSnapshot(feed, url, items));
+    const next = createSnapshot(feed, url, items);
+    const previousText = readSnapshotFile(feed);
+    if (previousText) {
+      try {
+        const previous = JSON.parse(previousText);
+        if (editorialPayloadEqual(previous, next)) {
+          return {
+            feed,
+            status: 'unchanged',
+            message: `editorial data unchanged; kept existing snapshot (${ageLabel(feed)})`,
+          };
+        }
+      } catch {
+        // If the previous file cannot be compared, fall through and write.
+      }
+    }
+    writeSnapshotAtomic(next);
     return {
       feed,
       status: 'updated',
@@ -116,7 +142,7 @@ async function main(): Promise<void> {
 
   for (const outcome of outcomes) {
     const prefix =
-      outcome.status === 'updated' ? 'OK'
+      outcome.status === 'updated' || outcome.status === 'unchanged' ? 'OK'
         : outcome.status === 'kept-network' ? 'WARN'
           : 'FAIL';
     console.log(`[${prefix}] ${outcome.feed}: ${outcome.message}`);

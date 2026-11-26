@@ -1,19 +1,19 @@
 name: Refresh editorial snapshots
 
-# Optional Google Sheets snapshot refresh. Scheduling stays commented out
-# until the owner explicitly approves automatic runs.
-# Uses the default GITHUB_TOKEN so commits from this workflow do not
-# re-trigger other workflows (including Deploy). Run Deploy manually or
-# push an ordinary human commit to main if a production rebuild is needed
-# after a bot snapshot commit.
+# Daily Google Sheets snapshot refresh for production (main).
+# Validates feeds before replacing snapshots. Last-known-good policy lives in
+# npm run refresh-feeds. Commits only when public editorial data changes
+# (not merely fetchedAt). GITHUB_TOKEN commits do not re-trigger Deploy;
+# this workflow explicitly dispatches deploy.yml when snapshots change.
 
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: '0 6 * * *'  # Optional daily 06:00 UTC — enable only after approval
+  schedule:
+    - cron: '0 6 * * *'  # Daily 06:00 UTC
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: refresh-snapshots
@@ -22,10 +22,13 @@ concurrency:
 jobs:
   refresh:
     name: Refresh validated feed snapshots
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout main
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -39,7 +42,7 @@ jobs:
       - name: Refresh feeds
         run: npm run refresh-feeds
 
-      - name: Detect snapshot changes
+      - name: Detect meaningful snapshot changes
         id: changes
         run: |
           if git diff --quiet -- src/data/feeds; then
@@ -56,4 +59,16 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add src/data/feeds
           git commit -m "Refresh validated Google Sheets feed snapshots."
-          git push
+          git push origin HEAD:main
+
+      - name: Dispatch production deployment
+        if: steps.changes.outputs.changed == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'deploy.yml',
+              ref: 'main',
+            });

@@ -2,7 +2,7 @@
 
 Institutional website for [schoolai.linalopes.info](https://schoolai.linalopes.info/).
 
-**Phase 4A release candidate** lives on `website-2027`. Production `main` still serves the legacy HTML site until Phase 4B. Do not merge, change Pages settings, or deploy without explicit approval.
+**Phase 4B production release** is authorised from `website-2027` at the reviewed Astro tip. Legacy HTML remains on `main` until Pages is switched to GitHub Actions and Astro is merged.
 
 ## Read first
 
@@ -27,15 +27,16 @@ Institutional website for [schoolai.linalopes.info](https://schoolai.linalopes.i
 - **Editorial Markdown:** `src/content/` for institutional pages, homepage copy, gallery rates/photos, financial support.
 - **Google Sheets feeds:** hero, events, research archive, workstations — validated snapshots in `src/data/feeds/`.
 - **Builds:** offline against committed snapshots. Production deploy never calls Google Sheets.
-- **Hosting (after Phase 4B):** GitHub Pages via `.github/workflows/deploy.yml` on pushes to `main`.
+- **Hosting:** GitHub Pages via `.github/workflows/deploy.yml` on `refs/heads/main` only (push or manual dispatch).
 - **Domain:** `schoolai.linalopes.info` (no repository-name base path).
 - **Routes:** `/`, `/about/`, `/research/`, `/atelier/`, `/programme/`, `/inverted-gallery/`, `/collaborate/`, plus legacy HTML under `public/`.
+- **Legacy preservation:** `legacy-html-2026` / `v1.0.0-legacy` at `0a84b8c`. Rollback uses temporary branch-root publishing of that branch — merging an ancestor does not restore its tree. See [docs/production-release.md](docs/production-release.md).
 
 ### Local development
 
 ```sh
 npm ci
-npm run refresh-feeds   # fetch and validate public CSV feeds
+npm run refresh-feeds   # fetch and validate public CSV feeds (skips write if editorial data unchanged)
 npm run dev             # http://localhost:4321
 npm run check
 npm test
@@ -51,18 +52,18 @@ Node **22.23.4** or newer. The lockfile is the dependency source.
 | Workflow | Purpose | Triggers |
 |---|---|---|
 | `validate.yml` | Check, test, offline build | Push to `website-2027` / `main`, pull requests |
-| `deploy.yml` | Validate, build, deploy `dist/` to Pages | Push to `main`, manual `workflow_dispatch` |
-| `refresh-snapshots.yml` | Refresh feed snapshots and commit if changed | Manual `workflow_dispatch` only (daily schedule commented out) |
+| `deploy.yml` | Validate, build, deploy `dist/` to Pages | Push to `main`, manual `workflow_dispatch` on `main` only |
+| `refresh-snapshots.yml` | Refresh feed snapshots; commit + dispatch Deploy when editorial data changes | Daily 06:00 UTC + manual `workflow_dispatch` on `main` |
 
-Bot commits from `refresh-snapshots.yml` use `GITHUB_TOKEN` and **do not** re-trigger Deploy. After a bot snapshot update on `main`, run **Deploy production site** manually if the live site must rebuild.
+`refresh-snapshots.yml` commits with `GITHUB_TOKEN` (push events do not chain Deploy) and **explicitly dispatches** `deploy.yml` when public editorial payload changes. Timestamp-only `fetchedAt` updates do not create commits.
 
-### Owner GitHub Pages settings (Phase 4B)
+### Owner GitHub Pages settings (required before Astro lands on `main`)
 
 1. Settings → Pages → Source → **GitHub Actions**
 2. Custom domain: **schoolai.linalopes.info**
-3. **Enforce HTTPS**
+3. **Enforce HTTPS** when available
 
-Exact release and rollback steps: [docs/production-release.md](docs/production-release.md) (`legacy-html-2026`, `v1.0.0-legacy`, promote Astro, `v2.0.0`).
+Exact release and rollback steps: [docs/production-release.md](docs/production-release.md).
 
 ## How to update website content
 
@@ -166,6 +167,6 @@ Add Markdown files under `src/content/wishlist/` with the required frontmatter (
 - Authorised functional exceptions in Git: `public/imgs/contact-twint.png`, `public/imgs/stripe.png`.
 - Legacy media already under `public/imgs/` and `public/history/` remains for compatibility.
 
-## Still open before Phase 4B
+## Non-blocking editorial limitations
 
-Wishlist publication, contributor credits with permission, workstation photographs, Nextcloud preview availability from some networks, and owner-approved merge/deploy.
+Wishlist publication, contributor credits with permission, and workstation photographs remain open and do not block production.

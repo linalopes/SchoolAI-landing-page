@@ -1,7 +1,7 @@
 name: Deploy production site
 
 # Official GitHub Pages deployment for the Astro website.
-# Runs only on main after Phase 4B promotion. Feature branches never deploy.
+# Production only: refs/heads/main (push or manual dispatch). Feature branches never deploy.
 
 on:
   push:
@@ -21,6 +21,7 @@ concurrency:
 jobs:
   build:
     name: Validate and build
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -54,6 +55,7 @@ jobs:
 
   deploy:
     name: Deploy to GitHub Pages
+    if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     environment:
