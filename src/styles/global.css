@@ -1529,7 +1529,8 @@
     padding-top: var(--space-5);
   }
   .wishlist-teaser-label {
-    color: var(--pink);
+    color: var(--deep-purple);
+    opacity: 0.72;
     margin-bottom: var(--space-2);
   }
   .wishlist-directory {
@@ -1544,6 +1545,7 @@
   .wishlist-section-header .prose-p {
     margin-top: var(--space-2);
     max-width: 40rem;
+    color: rgba(34, 17, 62, 0.82);
   }
   .wishlist-section--fulfilled {
     background: var(--gray-green);
@@ -1552,29 +1554,38 @@
   }
   .wishlist-category {
     margin-bottom: var(--space-5);
+    padding-top: var(--space-2);
   }
   .wishlist-category:last-child {
     margin-bottom: 0;
   }
   .wishlist-category-title {
-    color: var(--pink);
-    margin-bottom: var(--space-3);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: clamp(18px, 2vw, 22px);
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    color: var(--deep-purple);
+    margin: 0 0 var(--space-3);
+    padding-bottom: var(--space-2);
+    border-bottom: 2px solid rgba(234, 125, 255, 0.45);
   }
   .wishlist-items {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-3);
   }
   .wishlist-item {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-3);
-    padding-bottom: var(--space-4);
-    border-bottom: 1px solid var(--color-border);
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    background: rgba(255, 255, 255, 0.72);
   }
-  .wishlist-item:last-child {
-    border-bottom: 0;
-    padding-bottom: 0;
+  .wishlist-section--fulfilled .wishlist-item {
+    background: rgba(255, 255, 255, 0.55);
+    border-color: rgba(34, 17, 62, 0.12);
   }
   .wishlist-item-media {
     max-width: 280px;
@@ -1587,24 +1598,53 @@
     object-fit: cover;
     background: rgba(34, 17, 62, 0.04);
   }
-  .wishlist-item-labels {
+  .wishlist-item-header {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-2) var(--space-3);
+    align-items: center;
+    gap: var(--space-2);
     margin-bottom: var(--space-2);
   }
   .wishlist-item-category {
-    color: var(--pink);
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(34, 17, 62, 0.72);
     margin: 0;
   }
-  .wishlist-item-status {
+  .wishlist-status {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.2;
+    padding: 4px 8px;
+    border: 1px solid transparent;
     color: var(--deep-purple);
-    opacity: 0.72;
-    margin: 0;
+    background: rgba(34, 17, 62, 0.06);
   }
-  .wishlist-item--in-progress .wishlist-item-status {
-    color: var(--brand-magenta);
-    opacity: 1;
+  .wishlist-status--open {
+    background: rgba(8, 242, 219, 0.18);
+    border-color: rgba(8, 242, 219, 0.35);
+    color: var(--deep-purple);
+  }
+  .wishlist-status--in-progress {
+    background: rgba(162, 28, 175, 0.16);
+    border-color: rgba(90, 15, 98, 0.35);
+    color: #3d0a44;
+  }
+  .wishlist-status--fulfilled {
+    background: rgba(34, 17, 62, 0.08);
+    border-color: rgba(34, 17, 62, 0.16);
+    color: var(--deep-purple);
+  }
+  .wishlist-status--paused {
+    background: rgba(34, 17, 62, 0.05);
+    border-color: rgba(34, 17, 62, 0.14);
+    color: rgba(34, 17, 62, 0.78);
   }
   .wishlist-item-title {
     font-family: 'Space Grotesk', sans-serif;
@@ -1620,17 +1660,17 @@
     font-weight: 300;
     font-size: 16px;
     line-height: 1.65;
-    color: var(--deep-purple);
+    color: rgba(34, 17, 62, 0.88);
     max-width: 42rem;
     margin: 0;
   }
   .wishlist-item-meta {
-    font-family: 'Courier Prime', monospace;
-    font-size: 13px;
-    letter-spacing: 0.03em;
-    color: var(--deep-purple);
-    opacity: 0.78;
-    margin: var(--space-2) 0 0;
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(34, 17, 62, 0.78);
+    margin: var(--space-3) 0 0;
   }
   .wishlist-item-credit {
     font-family: 'Inter', sans-serif;
@@ -1667,8 +1707,7 @@
     font-weight: 300;
     font-size: 16px;
     line-height: 1.6;
-    color: var(--deep-purple);
-    opacity: 0.8;
+    color: rgba(34, 17, 62, 0.82);
   }
   .wishlist-closing {
     margin-top: var(--space-5);
@@ -1895,7 +1934,9 @@
     margin-bottom: 0;
   }
   .editorial-eyebrow {
-    color: var(--pink);
+    /* Dark plum on light surfaces for WCAG AA; pink remains accent via title rule */
+    color: var(--deep-purple);
+    opacity: 0.72;
     margin-bottom: var(--space-3);
   }
   .editorial-title {

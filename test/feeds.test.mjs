@@ -450,10 +450,13 @@ test('wishlist adapter filters published rows, ignores empty checkbox rows, grou
     fulfilledEmpty: 'No fulfilled items',
   });
   assert.match(panels.current, /Offer equipment/);
+  assert.match(panels.current, /wishlist-status--in-progress/);
   assert.match(panels.current, /In progress/);
+  assert.match(panels.current, /Quantity:/);
   assert.doesNotMatch(panels.current, /Paused|Draft/);
   assert.match(panels.fulfilled, /Made possible by/);
   assert.match(panels.fulfilled, /Nina Judge/);
+  assert.match(panels.fulfilled, /wishlist-status--fulfilled/);
   assert.doesNotMatch(panels.fulfilled, /Offer equipment/);
 });
 

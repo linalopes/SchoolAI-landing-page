@@ -316,9 +316,16 @@ export function renderWishlistItemMarkup(
     ? `<div class="wishlist-item-media"><img src="${escapeHTML(entry.imageUrl)}" alt="${escapeHTML(entry.imageAlt ?? '')}" loading="lazy" decoding="async" /></div>`
     : '';
 
+  // Current needs already group by category — do not repeat the category on each card.
+  const categoryMeta = mode === 'fulfilled'
+    ? `<p class="wishlist-item-category">${escapeHTML(categoryLabel)}</p>`
+    : '';
+
   const metaParts: string[] = [];
   if (entry.quantity) {
-    metaParts.push(`<span class="wishlist-item-quantity">${escapeHTML(entry.quantity)}</span>`);
+    metaParts.push(
+      `<span class="wishlist-item-quantity">Quantity: ${escapeHTML(entry.quantity)}</span>`,
+    );
   }
   if (entry.targetAmountChf !== null) {
     metaParts.push(
@@ -326,20 +333,20 @@ export function renderWishlistItemMarkup(
     );
   }
   if (mode === 'fulfilled' && entry.fulfilledYear !== null) {
-    metaParts.push(`<span class="wishlist-item-year">${entry.fulfilledYear}</span>`);
+    metaParts.push(`<span class="wishlist-item-year">Year: ${entry.fulfilledYear}</span>`);
   }
 
   const actions: string[] = [];
+  if (entry.referenceUrl) {
+    actions.push(
+      `<a class="wishlist-item-reference" href="${escapeHTML(entry.referenceUrl)}" target="_blank" rel="noopener">${escapeHTML(options.referenceLabel)} &#x2197;&#xFE0E;</a>`,
+    );
+  }
   if (mode === 'current') {
     const ctaLabel = options.ctaLabels[entry.category] ?? 'Get in touch';
     const subject = `Wishlist: ${entry.title}`;
     actions.push(
       `<a class="wishlist-item-cta button button--primary button--sm" href="${wishlistMailto(options.contactEmail, subject)}">${escapeHTML(ctaLabel)}</a>`,
-    );
-  }
-  if (entry.referenceUrl) {
-    actions.push(
-      `<a class="wishlist-item-reference" href="${escapeHTML(entry.referenceUrl)}" target="_blank" rel="noopener">${escapeHTML(options.referenceLabel)} &#x2197;&#xFE0E;</a>`,
     );
   }
 
@@ -351,13 +358,13 @@ export function renderWishlistItemMarkup(
     <article class="wishlist-item wishlist-item--${escapeHTML(entry.status)}" data-wishlist-id="${escapeHTML(entry.id)}">
       ${image}
       <div class="wishlist-item-body">
-        <div class="wishlist-item-labels">
-          <p class="t-label wishlist-item-category">${escapeHTML(categoryLabel)}</p>
-          <p class="t-label wishlist-item-status">${escapeHTML(statusLabel)}</p>
+        <div class="wishlist-item-header">
+          ${categoryMeta}
+          <span class="wishlist-status wishlist-status--${escapeHTML(entry.status)}">${escapeHTML(statusLabel)}</span>
         </div>
         <h3 class="wishlist-item-title">${escapeHTML(entry.title)}</h3>
         <p class="wishlist-item-desc">${escapeHTML(entry.description)}</p>
-        ${metaParts.length ? `<p class="wishlist-item-meta">${metaParts.join('<span aria-hidden="true"> · </span>')}</p>` : ''}
+        ${metaParts.length ? `<p class="wishlist-item-meta">${metaParts.join('<span class="wishlist-item-meta-sep" aria-hidden="true"> · </span>')}</p>` : ''}
         ${credit}
         ${actions.length ? `<div class="wishlist-item-actions">${actions.join('')}</div>` : ''}
       </div>
@@ -381,8 +388,8 @@ export function renderWishlistCurrentMarkup(
       .map((entry) => renderWishlistItemMarkup(entry, options, 'current'))
       .join('');
     return `
-      <section class="wishlist-category" aria-label="${escapeHTML(label)}">
-        <h3 class="wishlist-category-title t-label">${escapeHTML(label)}</h3>
+      <section class="wishlist-category" aria-labelledby="wishlist-cat-${escapeHTML(group.category)}">
+        <h3 id="wishlist-cat-${escapeHTML(group.category)}" class="wishlist-category-title">${escapeHTML(label)}</h3>
         <div class="wishlist-items">${items}</div>
       </section>
     `;
