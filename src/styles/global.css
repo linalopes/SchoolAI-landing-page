@@ -148,7 +148,9 @@
   }
 
   /* ── HERO ── */
-  #hero {
+  /* Homepage split hero only. Event pages may keep id="hero" for fragment
+     compatibility (e.g. Arduino Day) via .ad-hero — do not style those here. */
+  #hero:not(.ad-hero) {
     min-height: 100vh;
     background: var(--deep-purple);
     position: relative;
@@ -2430,7 +2432,7 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
-    #hero { grid-template-columns: 1fr; }
+    #hero:not(.ad-hero) { grid-template-columns: 1fr; }
     .hero-left { padding: 72px var(--space-4); }
     .hero-right {
       display: block;

@@ -4,6 +4,15 @@ Verified against Git history and release tags. Intermediate commits that were ne
 
 Git release tags (`v2.0.0`, `v2.1.0`) are distinct from the npm package version (`2027.1.0`), which tracks the Website 2027 product line.
 
+## Unreleased maintenance
+
+### Arduino Day 2026 — Astro migration
+
+- Migrated `/arduino-day-2026.html` from standalone `public/` HTML to Markdown (`src/content/pages/arduino-day-2026.md`) + Astro presentation.  
+- Preserved the public URL via `scripts/flatten-html-routes.mjs` after the static build.  
+- Reuses shared navigation, footer, Brand Kit tokens and button styles; page-specific styles remain scoped under `.arduino-day`.  
+- Programme past-event sheet link and sitemap entry remain `/arduino-day-2026.html`.
+
 ## [v2.1.0] — 2026-11-26 — School of Tomorrow’s AI — Website 2027
 
 Final institutional website release after the Astro production cutover. Closes the Website 2027 migration project. Production: https://schoolai.linalopes.info/

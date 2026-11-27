@@ -22,7 +22,8 @@ Node **≥ 22.23.4**. Prefer `npm ci` for a clean install.
 - Contributors grouping and Markdown labels  
 - Footer composition and canonical location  
 - TWINT / Stripe assets and Payment Link  
-- Legacy public HTML paths  
+- Legacy public HTML paths (Room for Interaction, Pepper’s Ghost, 3D tour)  
+- Astro-generated `/arduino-day-2026.html` (flattened route; Markdown-backed)  
 - Sitemap and robots  
 - Canonical / Open Graph metadata  
 

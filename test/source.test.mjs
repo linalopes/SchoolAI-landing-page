@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { extname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
@@ -336,7 +336,6 @@ test('legacy public paths remain', () => {
     'public/space3d.html',
     'public/room-for-interaction.html',
     'public/room-for-interaction.json',
-    'public/arduino-day-2026.html',
     'public/peppers-ghost.html',
     'public/CNAME',
     'public/imgs/favicon.svg',
@@ -349,6 +348,36 @@ test('legacy public paths remain', () => {
     assert.equal(statSync(join(root, path)).isFile(), true, path);
   }
   assert.equal(read('public/CNAME').trim(), 'schoolai.linalopes.info');
+  assert.equal(existsSync(join(root, 'public/arduino-day-2026.html')), false);
+  assert.equal(statSync(join(root, 'src/pages/arduino-day-2026.astro')).isFile(), true);
+  assert.equal(statSync(join(root, 'src/content/pages/arduino-day-2026.md')).isFile(), true);
+  assert.match(read('scripts/flatten-html-routes.mjs'), /arduino-day-2026/);
+  assert.match(read('package.json'), /flatten-html-routes/);
+});
+
+test('Arduino Day 2026 editorial content is Markdown-backed', () => {
+  const md = read('src/content/pages/arduino-day-2026.md');
+  assert.match(md, /Paper as Interface/);
+  assert.match(md, /arduino_day:/);
+  assert.match(md, /28 March 2026/);
+  assert.match(md, /twitch\.tv\/lina_lopes/);
+  assert.match(md, /#timeline/);
+  assert.match(md, /#details/);
+  assert.match(md, /#faq/);
+  assert.doesNotMatch(md, /retrospective|documentation of the outcome/i);
+  assert.match(read('src/components/programme/ArduinoDayPage.astro'), /arduino-day/);
+});
+
+test('Arduino Day hero keeps #hero fragment while isolating homepage #hero CSS', () => {
+  const page = read('src/components/programme/ArduinoDayPage.astro');
+  const css = read('src/styles/global.css');
+  assert.match(page, /id="hero"/);
+  assert.match(page, /class="ad-hero"/);
+  assert.match(page, /\.arduino-day #hero\.ad-hero/);
+  assert.match(css, /#hero:not\(\.ad-hero\)/);
+  assert.doesNotMatch(css, /(?:^|\n)\s*#hero\s*\{/);
+  assert.match(read('src/components/home/Hero.astro'), /id="hero"/);
+  assert.doesNotMatch(read('src/components/home/Hero.astro'), /ad-hero/);
 });
 
 test('no unauthorised editorial media was added outside preserved and functional paths', () => {
