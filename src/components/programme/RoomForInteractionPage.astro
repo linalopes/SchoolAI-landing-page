@@ -1,0 +1,773 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Newsletter from '../home/Newsletter.astro';
+import { resolveCtaHref } from '../../lib/content';
+
+interface Props {
+  entry: CollectionEntry<'pages'>;
+}
+
+const { entry } = Astro.props;
+const copy = entry.data.room_for_interaction;
+if (!copy) {
+  throw new Error('room-for-interaction.md is missing the room_for_interaction frontmatter section.');
+}
+
+const hero = copy.hero;
+const about = copy.about;
+const format = copy.format;
+const workshopsSection = copy.workshops_section;
+const quote = copy.quote;
+const location = copy.location;
+const faq = copy.faq;
+const closing = copy.closing;
+const workshops = copy.workshops;
+const pageNav = copy.page_nav ?? [];
+const marqueeLoop = [...copy.marquee, ...copy.marquee];
+
+function emphasize(text: string, phrase?: string): string {
+  if (!phrase || !text.includes(phrase)) return text;
+  return text.replace(phrase, `<em>${phrase}</em>`);
+}
+
+const quoteHtml = emphasize(quote.text, quote.emphasis);
+---
+<article class="room-for-interaction">
+  <section id="hero" class="rfi-hero" aria-labelledby="rfi-hero-title">
+    <div class="rfi-hero-pattern" aria-hidden="true"></div>
+    <div class="rfi-container rfi-hero-inner">
+      <p class="t-label rfi-hero-eyebrow">{hero.eyebrow}</p>
+      <h1 id="rfi-hero-title" class="rfi-hero-title">
+        {hero.title_line}<br /><em>{hero.title_emphasis}</em>
+      </h1>
+      <p class="rfi-hero-tagline">{hero.tagline}</p>
+      <p class="rfi-hero-meta">{hero.meta}</p>
+      <div class="rfi-hero-actions">
+        <a class="button button--accent" href={resolveCtaHref(hero.primary_cta.href)}>
+          {hero.primary_cta.label}
+        </a>
+        <a class="button button--on-dark" href={resolveCtaHref(hero.secondary_cta.href)}>
+          {hero.secondary_cta.label}
+        </a>
+      </div>
+      {pageNav.length > 0 && (
+        <nav class="rfi-page-nav" aria-label="On this page">
+          {pageNav.map((item) => (
+            <a href={item.href}>{item.label}</a>
+          ))}
+        </nav>
+      )}
+    </div>
+  </section>
+
+  <div class="marquee-strip" aria-hidden="true">
+    <div class="marquee-inner">
+      {marqueeLoop.map((item) => <span>{item}</span>)}
+    </div>
+  </div>
+
+  <section id="about" class="rfi-section rfi-section--light" aria-labelledby="rfi-about-title">
+    <div class="rfi-container">
+      <header class="rfi-section-header fade-up">
+        <span class="t-label rfi-section-number">{about.number}</span>
+        <h2 id="rfi-about-title" class="rfi-section-title">
+          {about.title_lines.map((line, i) => (
+            <>{i > 0 && <br />}{line}</>
+          ))}
+        </h2>
+      </header>
+      <div class="rfi-divider"></div>
+      <p class="rfi-lead fade-up">{about.lead}</p>
+      <p class="rfi-curiosity fade-up">{about.curiosity}</p>
+      <p class="rfi-note fade-up">{about.archive_note}</p>
+    </div>
+  </section>
+
+  <section id="format" class="rfi-section" aria-labelledby="rfi-format-title">
+    <div class="rfi-container">
+      <header class="rfi-section-header fade-up">
+        <span class="t-label rfi-section-number">{format.number}</span>
+        <h2 id="rfi-format-title" class="rfi-section-title">
+          {format.title_lines.map((line, i) => (
+            <>{i > 0 && <br />}{line}</>
+          ))}
+        </h2>
+      </header>
+      <div class="rfi-divider"></div>
+      <div class="rfi-prose fade-up">
+        {format.paragraphs.map((paragraph) => (
+          <p>{paragraph}</p>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="workshops" class="rfi-section rfi-section--workshops" aria-labelledby="rfi-workshops-title">
+    <div class="rfi-workshops-pattern" aria-hidden="true"></div>
+    <div class="rfi-container">
+      <header class="rfi-section-header fade-up">
+        <span class="t-label rfi-section-number">{workshopsSection.number}</span>
+        <div>
+          <h2 id="rfi-workshops-title" class="rfi-section-title">
+            {workshopsSection.title_lines.map((line, i) => (
+              <>{i > 0 && <br />}{line}</>
+            ))}
+          </h2>
+          <p class="rfi-section-intro">{workshopsSection.intro}</p>
+        </div>
+      </header>
+      <div class="rfi-divider"></div>
+
+      <div class="rfi-season fade-up">
+        <div class="rfi-season-item">
+          <div class="rfi-season-label">{workshopsSection.season_label}</div>
+          <div class="rfi-season-value">{workshopsSection.season_value}</div>
+        </div>
+        <div class="rfi-season-item">
+          <div class="rfi-season-label">{workshopsSection.format_label}</div>
+          <div class="rfi-season-value">{workshopsSection.format_value}</div>
+        </div>
+        <div class="rfi-season-item">
+          <div class="rfi-season-label">{workshopsSection.outcome_label}</div>
+          <div class="rfi-season-value">{workshopsSection.outcome_value}</div>
+        </div>
+      </div>
+
+      <div class="rfi-workshop-list">
+        {workshops.map((workshop) => (
+          <details
+            id={`workshop-${workshop.id}`}
+            class:list={[
+              'rfi-workshop',
+              workshop.status === 'completed' && 'is-completed',
+              workshop.status === 'cancelled' && 'is-cancelled',
+            ]}
+          >
+            <summary class="rfi-workshop-summary">
+              <div class="rfi-workshop-top">
+                <span class="rfi-workshop-tag">{workshop.subtitle}</span>
+                <span class="rfi-workshop-status">{workshop.status_label}</span>
+              </div>
+              <h3 class="rfi-workshop-name">{workshop.title}</h3>
+              <p class="rfi-workshop-desc">{workshop.summary}</p>
+              <p class="rfi-workshop-meta">
+                {workshop.schedule.in_person_dates}
+                {workshop.status === 'completed' ? ' · Documentation' : ' · Proposal dates'}
+              </p>
+            </summary>
+            <div class="rfi-workshop-body">
+              <p class="rfi-status-note">{workshop.status_note}</p>
+              <div class="rfi-schedule">
+                <div class="rfi-schedule-block">
+                  <div class="rfi-schedule-label">{workshop.schedule.online_title}</div>
+                  {workshop.schedule.online_dates ? (
+                    <>
+                      <div class="rfi-schedule-dates">{workshop.schedule.online_dates}</div>
+                      {workshop.schedule.online_time && (
+                        <div class="rfi-schedule-time">{workshop.schedule.online_time}</div>
+                      )}
+                    </>
+                  ) : (
+                    <div class="rfi-schedule-time">Online session details unavailable</div>
+                  )}
+                </div>
+                <div class="rfi-schedule-block">
+                  <div class="rfi-schedule-label">{workshop.schedule.in_person_title}</div>
+                  <div class="rfi-schedule-dates">{workshop.schedule.in_person_dates}</div>
+                  {workshop.schedule.in_person_time && (
+                    <div class="rfi-schedule-time">{workshop.schedule.in_person_time}</div>
+                  )}
+                </div>
+              </div>
+              {workshop.description.split('\n\n').map((paragraph) => (
+                <p class="rfi-workshop-copy">{paragraph}</p>
+              ))}
+              <p class="rfi-overlay-label">What you'll learn</p>
+              <ul class="rfi-learn-list">
+                {workshop.learning_objectives.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+              <p class="rfi-overlay-label">Who should join</p>
+              <p class="rfi-workshop-copy">{workshop.audience}</p>
+              <p class="rfi-overlay-label">Location</p>
+              <p class="rfi-workshop-copy">
+                {location.venue_name}, {location.address_lines.join(', ')}
+              </p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div class="rfi-quote-break">
+    <div class="rfi-quote-pattern" aria-hidden="true"></div>
+    <blockquote set:html={quoteHtml} />
+    <cite>{quote.cite}</cite>
+  </div>
+
+  <section id="location" class="rfi-section rfi-section--light" aria-labelledby="rfi-location-title">
+    <div class="rfi-container">
+      <header class="rfi-section-header fade-up">
+        <span class="t-label rfi-section-number">{location.number}</span>
+        <h2 id="rfi-location-title" class="rfi-section-title">
+          {location.title_lines.map((line, i) => (
+            <>{i > 0 && <br />}{line}</>
+          ))}
+        </h2>
+      </header>
+      <div class="rfi-divider"></div>
+      <div class="rfi-location-grid fade-up">
+        <div>
+          <div class="rfi-location-name">{location.venue_name}</div>
+          <div class="rfi-location-address">
+            {location.address_lines.map((line) => (
+              <span>{line}</span>
+            ))}
+          </div>
+          <a
+            href={location.maps_url}
+            target="_blank"
+            rel="noopener"
+            class="rfi-map-link"
+          >
+            {location.maps_label} ↗︎
+          </a>
+        </div>
+        <div class="rfi-prose">
+          {location.paragraphs.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="rfi-section" aria-labelledby="rfi-faq-title">
+    <div class="rfi-container">
+      <header class="rfi-section-header fade-up">
+        <span class="t-label rfi-section-number">{faq.number}</span>
+        <h2 id="rfi-faq-title" class="rfi-section-title">
+          {faq.title_lines.map((line, i) => (
+            <>{i > 0 && <br />}{line}</>
+          ))}
+        </h2>
+      </header>
+      <div class="rfi-divider"></div>
+      <div class="rfi-faq-list">
+        {faq.items.map((item) => (
+          <details class="rfi-faq-item fade-up">
+            <summary>{item.question}</summary>
+            <p>{item.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="rfi-closing" aria-labelledby="rfi-closing-title">
+    <div class="rfi-closing-pattern" aria-hidden="true"></div>
+    <div class="rfi-container rfi-closing-inner fade-up">
+      <p class="t-label rfi-closing-kicker">{closing.kicker}</p>
+      <h2 id="rfi-closing-title" class="rfi-closing-title">
+        {closing.title_before}<br /><em>{closing.title_emphasis}</em>
+      </h2>
+      <p class="rfi-closing-body">{closing.body}</p>
+    </div>
+  </section>
+
+  <Newsletter />
+</article>
+
+<script>
+  function openWorkshopFromHash() {
+    const hash = window.location.hash;
+    if (!hash.startsWith('#workshop-')) return;
+    const target = document.getElementById(hash.slice(1));
+    if (!(target instanceof HTMLDetailsElement)) return;
+    target.open = true;
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  openWorkshopFromHash();
+  window.addEventListener('hashchange', openWorkshopFromHash);
+</script>
+
+<style is:global>
+  .room-for-interaction {
+    --rfi-max-width: 1100px;
+    color: var(--deep-purple);
+  }
+
+  .room-for-interaction .rfi-container {
+    width: min(calc(100% - 48px), var(--rfi-max-width));
+    margin-inline: auto;
+  }
+
+  /* Keep #hero fragment; .rfi-hero isolates from homepage #hero grid/padding */
+  .room-for-interaction #hero.rfi-hero {
+    position: relative;
+    min-height: min(88vh, 820px);
+    display: flex;
+    align-items: flex-end;
+    padding: 140px 0 72px;
+    background: var(--deep-purple);
+    color: var(--white);
+    overflow: hidden;
+    grid-template-columns: unset;
+  }
+
+  .room-for-interaction .rfi-hero-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://raw.githubusercontent.com/linalopes/SchoolAI-brand-kit/main/patterns/pattern-4.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.18;
+    mix-blend-mode: screen;
+    pointer-events: none;
+  }
+
+  .room-for-interaction .rfi-hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+  }
+
+  .room-for-interaction .rfi-hero-eyebrow {
+    color: var(--pink);
+    margin-bottom: var(--space-4);
+  }
+
+  .room-for-interaction .rfi-hero-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: clamp(48px, 8vw, 84px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin: 0 0 var(--space-4);
+  }
+
+  .room-for-interaction .rfi-hero-title em {
+    font-style: normal;
+    color: var(--pink);
+  }
+
+  .room-for-interaction .rfi-hero-tagline {
+    font-size: clamp(20px, 2.4vw, 28px);
+    line-height: 1.35;
+    margin: 0 0 var(--space-3);
+    max-width: 28ch;
+  }
+
+  .room-for-interaction .rfi-hero-meta {
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    opacity: 0.72;
+    margin: 0 0 var(--space-5);
+  }
+
+  .room-for-interaction .rfi-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+  }
+
+  .room-for-interaction .rfi-page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-4);
+  }
+
+  .room-for-interaction .rfi-page-nav a {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--gray-green);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .room-for-interaction .rfi-section {
+    position: relative;
+    padding: clamp(64px, 8vw, 112px) 0;
+    background: var(--white);
+  }
+
+  .room-for-interaction .rfi-section--light {
+    background: var(--soft, #faf9fc);
+  }
+
+  .room-for-interaction .rfi-section--workshops {
+    background: var(--deep-purple);
+    color: var(--white);
+    overflow: hidden;
+  }
+
+  .room-for-interaction .rfi-workshops-pattern,
+  .room-for-interaction .rfi-quote-pattern,
+  .room-for-interaction .rfi-closing-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://raw.githubusercontent.com/linalopes/SchoolAI-brand-kit/main/patterns/pattern-6.png');
+    background-size: cover;
+    opacity: 0.08;
+    pointer-events: none;
+  }
+
+  .room-for-interaction .rfi-section-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-4);
+    align-items: start;
+    margin-bottom: var(--space-4);
+  }
+
+  .room-for-interaction .rfi-section-number {
+    color: var(--pink);
+  }
+
+  .room-for-interaction .rfi-section--workshops .rfi-section-number {
+    color: var(--turquoise);
+  }
+
+  .room-for-interaction .rfi-section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: clamp(32px, 4.5vw, 52px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+
+  .room-for-interaction .rfi-section-intro {
+    margin: var(--space-3) 0 0;
+    max-width: 52ch;
+    opacity: 0.78;
+    line-height: 1.7;
+  }
+
+  .room-for-interaction .rfi-divider {
+    height: 1px;
+    background: rgba(34, 17, 62, 0.14);
+    margin: 0 0 var(--space-5);
+  }
+
+  .room-for-interaction .rfi-section--workshops .rfi-divider {
+    background: rgba(202, 216, 216, 0.22);
+  }
+
+  .room-for-interaction .rfi-lead {
+    font-size: clamp(20px, 2.4vw, 26px);
+    line-height: 1.55;
+    max-width: 42ch;
+    margin: 0 0 var(--space-4);
+  }
+
+  .room-for-interaction .rfi-curiosity {
+    font-family: 'Courier Prime', monospace;
+    font-size: 16px;
+    color: var(--pink);
+    margin: 0 0 var(--space-4);
+  }
+
+  .room-for-interaction .rfi-note,
+  .room-for-interaction .rfi-prose p,
+  .room-for-interaction .rfi-workshop-copy,
+  .room-for-interaction .rfi-status-note {
+    font-size: 17px;
+    line-height: 1.75;
+    opacity: 0.8;
+    margin: 0 0 var(--space-4);
+    max-width: 68ch;
+  }
+
+  .room-for-interaction .rfi-season {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  .room-for-interaction .rfi-season-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--turquoise);
+    margin-bottom: 8px;
+  }
+
+  .room-for-interaction .rfi-season-value {
+    font-size: 16px;
+    line-height: 1.45;
+  }
+
+  .room-for-interaction .rfi-workshop-list {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .room-for-interaction .rfi-workshop {
+    border: 1px solid rgba(202, 216, 216, 0.22);
+    background: rgba(255, 255, 255, 0.03);
+    padding: var(--space-4);
+  }
+
+  .room-for-interaction .rfi-workshop.is-completed {
+    border-color: rgba(8, 242, 219, 0.45);
+  }
+
+  .room-for-interaction .rfi-workshop-summary {
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .room-for-interaction .rfi-workshop-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .room-for-interaction .rfi-workshop-top {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .room-for-interaction .rfi-workshop-tag,
+  .room-for-interaction .rfi-workshop-status,
+  .room-for-interaction .rfi-overlay-label,
+  .room-for-interaction .rfi-schedule-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .room-for-interaction .rfi-workshop-tag {
+    color: var(--pink);
+  }
+
+  .room-for-interaction .rfi-workshop-status {
+    color: var(--gray-green);
+    opacity: 0.85;
+  }
+
+  .room-for-interaction .rfi-workshop.is-completed .rfi-workshop-status {
+    color: var(--turquoise);
+  }
+
+  .room-for-interaction .rfi-workshop-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 400;
+    font-size: clamp(24px, 3vw, 32px);
+    margin: 0 0 var(--space-2);
+  }
+
+  .room-for-interaction .rfi-workshop-desc,
+  .room-for-interaction .rfi-workshop-meta {
+    margin: 0;
+    opacity: 0.78;
+    line-height: 1.6;
+  }
+
+  .room-for-interaction .rfi-workshop-meta {
+    margin-top: var(--space-3);
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+  }
+
+  .room-for-interaction .rfi-workshop-body {
+    margin-top: var(--space-5);
+    padding-top: var(--space-5);
+    border-top: 1px solid rgba(202, 216, 216, 0.18);
+  }
+
+  .room-for-interaction .rfi-schedule {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+  }
+
+  .room-for-interaction .rfi-schedule-label {
+    color: var(--turquoise);
+    margin-bottom: 8px;
+  }
+
+  .room-for-interaction .rfi-schedule-dates,
+  .room-for-interaction .rfi-schedule-time {
+    font-size: 15px;
+    line-height: 1.5;
+    opacity: 0.85;
+  }
+
+  .room-for-interaction .rfi-overlay-label {
+    color: var(--pink);
+    margin: var(--space-4) 0 var(--space-2);
+  }
+
+  .room-for-interaction .rfi-learn-list {
+    margin: 0 0 var(--space-4);
+    padding-left: 1.2em;
+    display: grid;
+    gap: 8px;
+  }
+
+  .room-for-interaction .rfi-learn-list li {
+    opacity: 0.82;
+    line-height: 1.55;
+  }
+
+  .room-for-interaction .rfi-quote-break {
+    position: relative;
+    background: var(--deep-purple);
+    color: var(--white);
+    padding: clamp(64px, 8vw, 96px) var(--space-5);
+    text-align: center;
+  }
+
+  .room-for-interaction .rfi-quote-break blockquote {
+    position: relative;
+    z-index: 1;
+    margin: 0 auto var(--space-4);
+    max-width: 40ch;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: clamp(22px, 3vw, 32px);
+    line-height: 1.35;
+  }
+
+  .room-for-interaction .rfi-quote-break em {
+    font-style: normal;
+    color: var(--pink);
+  }
+
+  .room-for-interaction .rfi-quote-break cite {
+    position: relative;
+    z-index: 1;
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    opacity: 0.7;
+  }
+
+  .room-for-interaction .rfi-location-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: var(--space-6);
+  }
+
+  .room-for-interaction .rfi-location-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px;
+    margin-bottom: var(--space-3);
+  }
+
+  .room-for-interaction .rfi-location-address {
+    display: grid;
+    gap: 4px;
+    margin-bottom: var(--space-4);
+    opacity: 0.78;
+  }
+
+  .room-for-interaction .rfi-map-link {
+    color: var(--pink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .room-for-interaction .rfi-faq-list {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .room-for-interaction .rfi-faq-item {
+    border-bottom: 1px solid rgba(34, 17, 62, 0.12);
+    padding-bottom: var(--space-3);
+  }
+
+  .room-for-interaction .rfi-faq-item summary {
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    line-height: 1.4;
+    padding: var(--space-2) 0;
+  }
+
+  .room-for-interaction .rfi-faq-item p {
+    margin: 0;
+    opacity: 0.78;
+    line-height: 1.7;
+    max-width: 68ch;
+  }
+
+  .room-for-interaction .rfi-closing {
+    position: relative;
+    background: var(--deep-purple);
+    color: var(--white);
+    padding: clamp(72px, 9vw, 120px) 0;
+    overflow: hidden;
+  }
+
+  .room-for-interaction .rfi-closing-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+  }
+
+  .room-for-interaction .rfi-closing-kicker {
+    color: var(--turquoise);
+    margin-bottom: var(--space-4);
+  }
+
+  .room-for-interaction .rfi-closing-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: clamp(36px, 5vw, 56px);
+    line-height: 1.05;
+    margin: 0 0 var(--space-4);
+  }
+
+  .room-for-interaction .rfi-closing-title em {
+    font-style: normal;
+    color: var(--pink);
+  }
+
+  .room-for-interaction .rfi-closing-body {
+    opacity: 0.78;
+    line-height: 1.7;
+    margin: 0;
+    max-width: 42ch;
+  }
+
+  @media (max-width: 760px) {
+    .room-for-interaction .rfi-container {
+      width: min(calc(100% - 28px), var(--rfi-max-width));
+    }
+
+    .room-for-interaction #hero.rfi-hero {
+      padding-top: 128px;
+      min-height: auto;
+    }
+
+    .room-for-interaction .rfi-hero-actions,
+    .room-for-interaction .rfi-season,
+    .room-for-interaction .rfi-schedule,
+    .room-for-interaction .rfi-location-grid {
+      grid-template-columns: 1fr;
+      display: grid;
+    }
+
+    .room-for-interaction .rfi-hero-actions {
+      display: grid;
+    }
+
+    .room-for-interaction .rfi-section-header {
+      grid-template-columns: 1fr;
+      gap: var(--space-2);
+    }
+  }
+</style>

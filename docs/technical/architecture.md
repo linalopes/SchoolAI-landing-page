@@ -63,7 +63,7 @@ src/
   data/           # site.ts, navigation.ts (not narrative copy)
   styles/         # tokens, typography, global
   scripts/        # Client bootstrap (nav, feeds, newsletter)
-public/           # Remaining legacy HTML (Room for Interaction, Pepper’s Ghost, 3D tour), CNAME, QR assets, robots, sitemap
+public/           # Remaining legacy HTML (Pepper’s Ghost, 3D tour), CNAME, QR assets, robots, sitemap
 scripts/          # refresh-feeds.ts, flatten-html-routes.mjs (legacy `.html` URL emit)
 .github/workflows/
 docs/
@@ -71,13 +71,13 @@ docs/
 
 ## Editorial separation
 
-- **Markdown** — institutional copy, CTAs, SEO, rental rates, payments, footer, location, wishlist labels, Arduino Day 2026 event page.  
+- **Markdown** — institutional copy, CTAs, SEO, rental rates, payments, footer, location, wishlist labels, Arduino Day 2026 event page, Room for Interaction archive page.  
 - **Sheets** — hero, events, archive, workstations, contributors, wishlist **records**.  
 - **Astro / TypeScript** — presentation and validation only. Do not hardcode editable copy.
 
 ### Legacy `.html` Astro routes
 
-`/arduino-day-2026.html` is generated from Markdown + Astro (`src/pages/arduino-day-2026.astro`), then flattened by `scripts/flatten-html-routes.mjs` so the public URL stays a root-level `.html` file (Programme sheet links and sitemap unchanged). Remaining standalone HTML under `public/` is intentionally untouched.
+`/arduino-day-2026.html` and `/room-for-interaction.html` are generated from Markdown + Astro, then flattened by `scripts/flatten-html-routes.mjs` so the public URLs stay root-level `.html` files (Programme sheet links and sitemap unchanged). Room for Interaction also emits `/room-for-interaction.json` from the same Markdown source for compatibility. Remaining standalone HTML under `public/` (Pepper’s Ghost, 3D tour) is intentionally untouched.
 
 ## Feeds
 

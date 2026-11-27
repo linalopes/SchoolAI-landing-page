@@ -122,6 +122,7 @@ You can edit files in the browser:
 | Collaborate | [collaborate.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/collaborate.md) |
 | Research Wishlist page copy | [wishlist.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/wishlist.md) |
 | Arduino Day 2026 (past event page) | [arduino-day-2026.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/arduino-day-2026.md) |
+| Room for Interaction (archived programme) | [room-for-interaction.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/room-for-interaction.md) |
 | Gallery rental rates | [rental-rates.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/gallery/rental-rates.md) |
 | Financial support (TWINT / Stripe) | [financial-support.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/support/financial-support.md) |
 | Footer labels and links | [footer.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/site/footer.md) |

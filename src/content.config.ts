@@ -436,6 +436,109 @@ const pages = defineCollection({
           .optional(),
       })
       .optional(),
+
+    room_for_interaction: z
+      .object({
+        hero: z.object({
+          eyebrow: z.string(),
+          title_line: z.string(),
+          title_emphasis: z.string(),
+          tagline: z.string(),
+          meta: z.string(),
+          primary_cta: ctaSchema,
+          secondary_cta: ctaSchema,
+        }),
+        marquee: z.array(z.string()),
+        about: z.object({
+          number: z.string(),
+          title_lines: titleLinesSchema,
+          lead: z.string(),
+          curiosity: z.string(),
+          archive_note: z.string(),
+        }),
+        format: z.object({
+          number: z.string(),
+          title_lines: titleLinesSchema,
+          paragraphs: z.array(z.string()),
+        }),
+        workshops_section: z.object({
+          number: z.string(),
+          title_lines: titleLinesSchema,
+          intro: z.string(),
+          season_label: z.string(),
+          season_value: z.string(),
+          format_label: z.string(),
+          format_value: z.string(),
+          outcome_label: z.string(),
+          outcome_value: z.string(),
+        }),
+        quote: z.object({
+          text: z.string(),
+          emphasis: z.string().optional(),
+          cite: z.string(),
+        }),
+        location: z.object({
+          number: z.string(),
+          title_lines: titleLinesSchema,
+          venue_name: z.string(),
+          address_lines: z.array(z.string()),
+          maps_url: z.string(),
+          maps_label: z.string(),
+          paragraphs: z.array(z.string()),
+        }),
+        faq: z.object({
+          number: z.string(),
+          title_lines: titleLinesSchema,
+          items: z.array(
+            z.object({
+              question: z.string(),
+              answer: z.string(),
+            }),
+          ),
+        }),
+        closing: z.object({
+          kicker: z.string(),
+          title_before: z.string(),
+          title_emphasis: z.string(),
+          body: z.string(),
+          newsletter_subject: z.string(),
+        }),
+        page_nav: z
+          .array(
+            z.object({
+              label: z.string(),
+              href: z.string(),
+            }),
+          )
+          .optional(),
+        workshops: z
+          .array(
+            z.object({
+              id: z.string(),
+              title: z.string(),
+              subtitle: z.string(),
+              summary: z.string(),
+              color: z.string().optional(),
+              status: z.enum(['completed', 'cancelled', 'proposed']),
+              status_label: z.string(),
+              status_note: z.string(),
+              schedule: z.object({
+                online_title: z.string(),
+                online_dates: z.string().optional(),
+                online_time: z.string().optional(),
+                in_person_title: z.string(),
+                in_person_dates: z.string(),
+                in_person_time: z.string().optional(),
+              }),
+              description: z.string(),
+              learning_objectives: z.array(z.string()),
+              audience: z.string(),
+              historical_luma_url: z.string().optional(),
+            }),
+          )
+          .min(1),
+      })
+      .optional(),
   }),
 });
 

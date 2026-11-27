@@ -1,0 +1,16 @@
+---
+import EditorialLayout from '../layouts/EditorialLayout.astro';
+import RoomForInteractionPage from '../components/programme/RoomForInteractionPage.astro';
+import { requirePage } from '../lib/content';
+
+const entry = await requirePage('room-for-interaction');
+const pageTitle = entry.data.title;
+const description = entry.data.description;
+---
+<EditorialLayout
+  title={pageTitle}
+  description={description}
+  canonicalPath="/room-for-interaction.html"
+>
+  <RoomForInteractionPage entry={entry} />
+</EditorialLayout>

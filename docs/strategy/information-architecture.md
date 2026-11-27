@@ -95,12 +95,12 @@ Six pathways (research, students, technology partnerships, commissions, hands-on
 
 ## Legacy compatibility
 
-Preserve functioning URLs under `public/`:
+Preserve functioning public URLs:
 
-- `space3d.html`  
-- `room-for-interaction.html` (+ JSON)  
+- `space3d.html` (standalone under `public/`)  
+- `room-for-interaction.html` (+ JSON compatibility endpoint; Astro-generated from Markdown)  
 - `arduino-day-2026.html` (Astro-generated from Markdown; legacy URL preserved)  
-- `peppers-ghost.html`  
+- `peppers-ghost.html` (standalone under `public/`)  
 - `/history/` where present  
 
 Existing domain and HTTPS remain. Do not delete legacy content without review.
