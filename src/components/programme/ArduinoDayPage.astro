@@ -317,12 +317,14 @@ const quoteHtml = emphasize(about.quote, about.quote_emphasis);
   }
   .arduino-day {
     --ad-soft: #faf9fc;
+    --ad-max-width: 1200px;
   }
   .arduino-day .ad-container {
-    width: min(calc(100% - 48px), var(--max-width));
-    margin: 0 auto;
+    width: min(calc(100% - 48px), var(--ad-max-width));
+    margin-inline: auto;
   }
-  .arduino-day .ad-hero {
+  /* #hero.ad-hero keeps the legacy fragment while beating any residual #hero rules */
+  .arduino-day #hero.ad-hero {
     position: relative;
     min-height: min(100vh, 920px);
     display: flex;
@@ -331,6 +333,7 @@ const quoteHtml = emphasize(about.quote, about.quote_emphasis);
     background: var(--deep-purple);
     color: var(--white);
     overflow: hidden;
+    grid-template-columns: unset;
   }
   .arduino-day .ad-hero-pattern {
     position: absolute;
@@ -873,9 +876,9 @@ const quoteHtml = emphasize(about.quote, about.quote_emphasis);
 
   @media (max-width: 760px) {
     .arduino-day .ad-container {
-      width: min(calc(100% - 28px), var(--max-width));
+      width: min(calc(100% - 28px), var(--ad-max-width));
     }
-    .arduino-day .ad-hero {
+    .arduino-day #hero.ad-hero {
       padding-top: 128px;
     }
     .arduino-day .ad-hero-actions,

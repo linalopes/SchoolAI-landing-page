@@ -184,6 +184,8 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   const arduinoDay = readFileSync(dist('arduino-day-2026.html'), 'utf8');
   assert.match(arduinoDay, /Paper as/);
   assert.match(arduinoDay, /Interface/);
+  assert.match(arduinoDay, /id="hero"[^>]*class="[^"]*ad-hero|class="[^"]*ad-hero[^"]*"[^>]*id="hero"/);
+  assert.match(arduinoDay, /#hero:not\(\.ad-hero\)|\.arduino-day #hero\.ad-hero/);
   assert.match(arduinoDay, /id="timeline"/);
   assert.match(arduinoDay, /id="details"/);
   assert.match(arduinoDay, /id="faq"/);
@@ -193,6 +195,10 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   assert.match(arduinoDay, /id="nav"|Site of Tomorrow|School of Tomorrow/);
   assert.match(arduinoDay, /footer-main|footer-col/);
   assert.match(readFileSync(dist('sitemap.xml'), 'utf8'), /arduino-day-2026\.html/);
+  const home = readFileSync(dist('index.html'), 'utf8');
+  assert.match(home, /id="hero"/);
+  assert.doesNotMatch(home, /class="ad-hero"/);
+  assert.match(home, /#hero:not\(\.ad-hero\)/);
   assert.equal(existsSync(dist('collaborate/wishlist/index.html')), true);
   assert.equal(existsSync(dist('collaborate/contributors/index.html')), false);
 });

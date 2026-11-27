@@ -368,6 +368,18 @@ test('Arduino Day 2026 editorial content is Markdown-backed', () => {
   assert.match(read('src/components/programme/ArduinoDayPage.astro'), /arduino-day/);
 });
 
+test('Arduino Day hero keeps #hero fragment while isolating homepage #hero CSS', () => {
+  const page = read('src/components/programme/ArduinoDayPage.astro');
+  const css = read('src/styles/global.css');
+  assert.match(page, /id="hero"/);
+  assert.match(page, /class="ad-hero"/);
+  assert.match(page, /\.arduino-day #hero\.ad-hero/);
+  assert.match(css, /#hero:not\(\.ad-hero\)/);
+  assert.doesNotMatch(css, /(?:^|\n)\s*#hero\s*\{/);
+  assert.match(read('src/components/home/Hero.astro'), /id="hero"/);
+  assert.doesNotMatch(read('src/components/home/Hero.astro'), /ad-hero/);
+});
+
 test('no unauthorised editorial media was added outside preserved and functional paths', () => {
   const allowedPrefixes = ['public/imgs/', 'public/history/'];
   const allowedExact = new Set(authorisedFunctionalMedia);
