@@ -25,6 +25,6 @@ programme:
       description: >-
         Hands-on activities emerging from the School’s ongoing investigations, sharing methods, tools and discoveries through practice.
   past_title: Past Events
-  past_intro: A record of public encounters hosted by the School.
+  past_intro: A record of public encounters hosted by the School. Cancelled dates are omitted.
   past_more_label: View earlier events
 ---
