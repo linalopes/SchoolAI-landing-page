@@ -99,7 +99,7 @@ Preserve functioning URLs under `public/`:
 
 - `space3d.html`  
 - `room-for-interaction.html` (+ JSON)  
-- `arduino-day-2026.html`  
+- `arduino-day-2026.html` (Astro-generated from Markdown; legacy URL preserved)  
 - `peppers-ghost.html`  
 - `/history/` where present  
 

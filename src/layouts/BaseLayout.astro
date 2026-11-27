@@ -9,6 +9,8 @@ interface Props {
   title?: string;
   description?: string;
   image?: string | null;
+  /** Override pathname used for the canonical URL (e.g. legacy `.html` routes). */
+  canonicalPath?: string;
 }
 
 const home = await requirePage('home');
@@ -17,9 +19,10 @@ const {
   title = site.title,
   description = defaultDescription,
   image = null,
+  canonicalPath,
 } = Astro.props;
 
-const canonical = new URL(Astro.url.pathname, site.url).href;
+const canonical = new URL(canonicalPath ?? Astro.url.pathname, site.url).href;
 const ogImage = image;
 ---
 <!DOCTYPE html>

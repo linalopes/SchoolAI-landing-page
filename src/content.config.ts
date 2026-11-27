@@ -318,6 +318,124 @@ const pages = defineCollection({
     photos: z.array(photoSchema).optional(),
 
     ctas: z.array(ctaSchema).optional(),
+
+    arduino_day: z
+      .object({
+        hero: z.object({
+          kicker: z.string(),
+          title_line: z.string(),
+          title_emphasis: z.string(),
+          sub: z.string(),
+          primary_cta: ctaSchema,
+          secondary_cta: ctaSchema,
+          panel_title: z.string(),
+          panel_body: z.string(),
+          meta: z.array(
+            z.object({
+              label: z.string(),
+              value: z.string(),
+            }),
+          ),
+        }),
+        marquee: z.array(z.string()),
+        about: z.object({
+          number: z.string(),
+          title_lines: titleLinesSchema,
+          quote: z.string(),
+          quote_emphasis: z.string().optional(),
+          cite: z.string(),
+          paragraphs: z.array(z.string()),
+          tags: z.array(z.string()),
+        }),
+        challenge: z.object({
+          number: z.string(),
+          title_lines: titleLinesSchema,
+          intro: z.string(),
+          prototype_title: z.string(),
+          prototype_body: z.string(),
+          variations_title: z.string(),
+          variations_intro: z.string(),
+          variations: z.array(
+            z.object({
+              title: z.string(),
+              description: z.string(),
+            }),
+          ),
+        }),
+        timeline: z.object({
+          number: z.string(),
+          title_lines: titleLinesSchema,
+          intro: z.string(),
+          blocks: z.array(
+            z.object({
+              time: z.string(),
+              title: z.string(),
+              description: z.string(),
+            }),
+          ),
+        }),
+        access: z.object({
+          number: z.string(),
+          title_lines: titleLinesSchema,
+          audiences: z.array(
+            z.object({
+              title: z.string(),
+              description: z.string(),
+            }),
+          ),
+        }),
+        details: z.object({
+          number: z.string(),
+          title_lines: titleLinesSchema,
+          event_title: z.string(),
+          event_rows: z.array(
+            z.object({
+              label: z.string(),
+              value: z.string(),
+            }),
+          ),
+          materials_title: z.string(),
+          materials: z.array(z.string()),
+        }),
+        host: z.object({
+          number: z.string(),
+          title_lines: titleLinesSchema,
+          image: z.string(),
+          image_alt: z.string(),
+          caption: z.string(),
+          name_line: z.string(),
+          name_emphasis: z.string(),
+          paragraphs: z.array(z.string()),
+          links: z.array(ctaSchema),
+        }),
+        faq: z.object({
+          number: z.string(),
+          title_lines: titleLinesSchema,
+          items: z.array(
+            z.object({
+              question: z.string(),
+              answer: z.string(),
+            }),
+          ),
+        }),
+        closing: z.object({
+          kicker: z.string(),
+          title_before: z.string(),
+          title_emphasis: z.string(),
+          body: z.string(),
+          primary_cta: ctaSchema,
+          secondary_cta: ctaSchema,
+        }),
+        page_nav: z
+          .array(
+            z.object({
+              label: z.string(),
+              href: z.string(),
+            }),
+          )
+          .optional(),
+      })
+      .optional(),
   }),
 });
 

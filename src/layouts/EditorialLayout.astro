@@ -7,11 +7,12 @@ interface Props {
   title: string;
   description?: string;
   image?: string | null;
+  canonicalPath?: string;
 }
 
-const { title, description, image = null } = Astro.props;
+const { title, description, image = null, canonicalPath } = Astro.props;
 ---
-<BaseLayout title={title} description={description} image={image}>
+<BaseLayout title={title} description={description} image={image} canonicalPath={canonicalPath}>
   <SiteNav />
   <main class="editorial-main">
     <slot />
