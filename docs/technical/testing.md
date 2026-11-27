@@ -26,6 +26,7 @@ Node **≥ 22.23.4**. Prefer `npm ci` for a clean install.
 - Astro-generated `/arduino-day-2026.html` and `/room-for-interaction.html` (flattened routes; Markdown-backed)  
 - Room for Interaction JSON compatibility endpoint and archived workshop statuses  
 - Homepage `#hero` isolation from Arduino Day / Room for Interaction heroes  
+- Programme section order and Markdown-driven Current / Past Programme CTAs  
 - Sitemap and robots  
 - Canonical / Open Graph metadata  
 

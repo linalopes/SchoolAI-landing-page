@@ -99,6 +99,16 @@ const pages = defineCollection({
         title_lines: titleLinesSchema,
         intro: z.string(),
         cta: ctaSchema.optional(),
+        current: z
+          .object({
+            section_title: z.string(),
+            period: z.string(),
+            title: z.string(),
+            description: z.string(),
+            threads: z.array(z.string()).optional(),
+            cta: ctaSchema,
+          })
+          .optional(),
         offerings: z.array(
           z.object({
             id: z.string().optional(),
@@ -113,6 +123,19 @@ const pages = defineCollection({
         upcoming_intro: z.string().optional(),
         formats_title: z.string().optional(),
         formats_intro: z.string().optional(),
+        past_programmes_title: z.string().optional(),
+        past_programmes: z
+          .array(
+            z.object({
+              period: z.string(),
+              category: z.string().optional(),
+              title: z.string(),
+              tagline: z.string().optional(),
+              description: z.string(),
+              cta: ctaSchema,
+            }),
+          )
+          .optional(),
         past_title: z.string().optional(),
         past_intro: z.string().optional(),
         past_more_label: z.string().optional(),

@@ -65,15 +65,31 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   assert.match(atelier, /not available for rental/);
 
   const programme = readFileSync(dist('programme/index.html'), 'utf8');
+  assert.match(programme, /Current Programme/);
+  assert.match(programme, /January – June 2027/);
+  assert.match(programme, /Artificial Emotion/);
+  assert.match(programme, /emotion\.linalopes\.info/);
   assert.match(programme, /Open Research Studio/);
   assert.match(programme, /Research-based Workshops/);
   assert.match(programme, /Upcoming Events/);
   assert.match(programme, /Activity Formats/);
+  assert.match(programme, /Past Programmes/);
+  assert.match(programme, /Room for Interaction/);
+  assert.match(programme, /href="\/room-for-interaction\.html"/);
   assert.match(programme, /Past Events/);
   assert.match(programme, /Arduino Day|Paper as Interface/);
-  assert.doesNotMatch(programme, /Room for Interaction/);
   assert.doesNotMatch(programme, /#workshop-augmented-cinema/);
   assert.doesNotMatch(programme, /Singing to a Garden/);
+  // Section order: Current → Upcoming → Formats → Past Programmes → Past Events
+  const currentIdx = programme.indexOf('id="current-programme"');
+  const upcomingIdx = programme.indexOf('id="upcoming-events-heading"');
+  const formatsIdx = programme.indexOf('id="activity-formats-heading"');
+  const pastProgrammesIdx = programme.indexOf('id="past-programmes"');
+  const pastEventsIdx = programme.indexOf('id="past-events-heading"');
+  assert.ok(currentIdx > -1 && upcomingIdx > currentIdx);
+  assert.ok(formatsIdx > upcomingIdx);
+  assert.ok(pastProgrammesIdx > formatsIdx);
+  assert.ok(pastEventsIdx > pastProgrammesIdx);
   assert.match(programme, /aria-current="page"/);
   assert.match(programme, /formspree\.io\/f\/mvgbznoe/);
 

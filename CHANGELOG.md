@@ -6,6 +6,12 @@ Git release tags (`v2.0.0`, `v2.1.0`) are distinct from the npm package version 
 
 ## Unreleased maintenance
 
+### Programme integration — Current and Past Programmes
+
+- Extended `/programme/` with Markdown-driven Current Programme (Artificial Emotion, January–June 2027) and Past Programmes (Room for Interaction, 2026).  
+- Section order: Current Programme → Upcoming Events → Activity Formats → Past Programmes → Past Events → newsletter.  
+- Programme periods describe public programme framing; Artificial Emotion research remains on `/research/`.
+
 ### Room for Interaction — Astro migration
 
 - Migrated `/room-for-interaction.html` from standalone `public/` HTML to Markdown (`src/content/pages/room-for-interaction.md`) + Astro presentation.  

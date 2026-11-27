@@ -218,11 +218,29 @@ test('institutional editorial content is sourced from Markdown', () => {
   const researchPage = read('src/pages/research/index.astro');
   const atelierPage = read('src/pages/atelier/index.astro');
   const programmePage = read('src/pages/programme/index.astro');
+  const programmeMd = read('src/content/pages/programme.md');
   const galleryPage = read('src/pages/inverted-gallery/index.astro');
   const collaboratePage = read('src/pages/collaborate/index.astro');
   assert.match(researchPage, /requirePage\('research'\)/);
   assert.match(atelierPage, /requirePage\('atelier'\)/);
   assert.match(programmePage, /requirePage\('programme'\)/);
+  assert.match(programmeMd, /current:/);
+  assert.match(programmeMd, /January – June 2027/);
+  assert.match(programmeMd, /Artificial Emotion/);
+  assert.match(programmeMd, /past_programmes:/);
+  assert.match(programmeMd, /Room for Interaction/);
+  assert.match(programmeMd, /href: \/room-for-interaction\.html/);
+  assert.match(programmePage, /id="current-programme"/);
+  assert.match(programmePage, /id="past-programmes"/);
+  const programmeOrder = [
+    'id="current-programme"',
+    'upcoming-events-heading',
+    'activity-formats-heading',
+    'id="past-programmes"',
+    'past-events-heading',
+  ].map((token) => programmePage.indexOf(token));
+  assert.ok(programmeOrder.every((idx) => idx > -1));
+  assert.deepEqual(programmeOrder, [...programmeOrder].sort((a, b) => a - b));
   assert.match(galleryPage, /requirePage\('inverted-gallery'\)/);
   assert.match(collaboratePage, /requirePage\('collaborate'\)/);
   assert.match(collaboratePage, /FinancialSupport/);

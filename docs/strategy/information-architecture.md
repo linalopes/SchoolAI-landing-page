@@ -10,7 +10,7 @@ Production institutional website for School of Tomorrow’s AI. Routes and navig
 | `/about/` | The School — origin, philosophy, open research and founder |
 | `/research/` | Artificial Emotion flagship and curated Research Archive |
 | `/atelier/` | Eight research workstations and existing 3D tour |
-| `/programme/` | Open Research Studio, research-based workshops, upcoming and past events |
+| `/programme/` | Current programme, upcoming events, activity formats, past programmes, past events |
 | `/inverted-gallery/` | Gallery concept, cultural programme, space rental and inquiry |
 | `/collaborate/` | Collaboration pathways, Research Wishlist teaser, financial support, Made possible by, contact |
 | `/collaborate/wishlist/` | Research Wishlist — current needs and fulfilled contributions |
@@ -53,10 +53,16 @@ Dedicated pages hold full detail; homepage sections stay concise.
 
 ## Programme
 
-- Open Research Studio  
-- Research-based workshops  
-- Upcoming events (from Events feed; cancelled rows omitted)  
-- Past events preview  
+Section order on `/programme/`:
+
+1. Current Programme (Markdown — Artificial Emotion public programme, January–June 2027)  
+2. Upcoming Events (Events feed; cancelled rows omitted)  
+3. Activity Formats (Open Research Studio; research-based workshops)  
+4. Past Programmes (Markdown — archived programmes such as Room for Interaction)  
+5. Past Events preview (Events feed)  
+6. Newsletter  
+
+The Current Programme period describes the public programme semester. It does not redefine the duration of the Artificial Emotion research project on `/research/`. Past Programmes remain distinct from Past Events (individual dates).
 
 ## Atelier workstations
 

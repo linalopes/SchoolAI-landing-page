@@ -71,7 +71,7 @@ docs/
 
 ## Editorial separation
 
-- **Markdown** — institutional copy, CTAs, SEO, rental rates, payments, footer, location, wishlist labels, Arduino Day 2026 event page, Room for Interaction archive page.  
+- **Markdown** — institutional copy, CTAs, SEO, rental rates, payments, footer, location, wishlist labels, Programme current/past programme features, Arduino Day 2026 event page, Room for Interaction archive page.  
 - **Sheets** — hero, events, archive, workstations, contributors, wishlist **records**.  
 - **Astro / TypeScript** — presentation and validation only. Do not hardcode editable copy.
 

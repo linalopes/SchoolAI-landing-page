@@ -117,7 +117,7 @@ You can edit files in the browser:
 | About | [about.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/about.md) |
 | Research | [research.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/research.md) |
 | Atelier | [atelier.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/atelier.md) |
-| Programme | [programme.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/programme.md) |
+| Programme (including Current / Past Programmes) | [programme.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/programme.md) |
 | Inverted Gallery | [inverted-gallery.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/inverted-gallery.md) |
 | Collaborate | [collaborate.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/collaborate.md) |
 | Research Wishlist page copy | [wishlist.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/wishlist.md) |
@@ -127,6 +127,15 @@ You can edit files in the browser:
 | Financial support (TWINT / Stripe) | [financial-support.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/support/financial-support.md) |
 | Footer labels and links | [footer.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/site/footer.md) |
 | Physical address | [location.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/site/location.md) |
+
+### Replace the Current Programme or add a Past Programme
+
+Edit [programme.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/programme.md) only:
+
+1. **Current Programme** — update `programme.current` (`section_title`, `period`, `title`, `description`, optional `threads`, and `cta`). The `period` should stay visible so a future semester is not implied to have already started.  
+2. **Past Programmes** — add an object under `programme.past_programmes` with `period`, optional `category`, `title`, optional `tagline`, `description`, and `cta` (usually an internal `/….html` or institutional route).  
+3. Keep Artificial Emotion’s full research description on [research.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/research.md); Programme only frames the public semester.  
+4. Commit to `main` and wait for Deploy production site.
 
 Do **not** edit `.astro` or `.ts` files to change wording, prices or photograph URLs.
 
