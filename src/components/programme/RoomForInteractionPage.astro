@@ -144,19 +144,17 @@ const quoteHtml = emphasize(quote.text, quote.emphasis);
             ]}
           >
             <summary class="rfi-workshop-summary">
-              <div class="rfi-workshop-top">
-                <span class="rfi-workshop-tag">{workshop.subtitle}</span>
-                <span class="rfi-workshop-status">{workshop.status_label}</span>
-              </div>
+              <p class="rfi-workshop-tag">{workshop.subtitle}</p>
               <h3 class="rfi-workshop-name">{workshop.title}</h3>
               <p class="rfi-workshop-desc">{workshop.summary}</p>
               <p class="rfi-workshop-meta">
-                {workshop.schedule.in_person_dates}
-                {workshop.status === 'completed' ? ' · Documentation' : ' · Proposal dates'}
+                <span>{workshop.schedule.in_person_dates}</span>
+                <span class="rfi-workshop-status" data-status={workshop.status}>
+                  {workshop.status_label}
+                </span>
               </p>
             </summary>
             <div class="rfi-workshop-body">
-              <p class="rfi-status-note">{workshop.status_note}</p>
               <div class="rfi-schedule">
                 <div class="rfi-schedule-block">
                   <div class="rfi-schedule-label">{workshop.schedule.online_title}</div>
@@ -194,6 +192,7 @@ const quoteHtml = emphasize(quote.text, quote.emphasis);
               <p class="rfi-workshop-copy">
                 {location.venue_name}, {location.address_lines.join(', ')}
               </p>
+              <p class="rfi-status-note">{workshop.status_note}</p>
             </div>
           </details>
         ))}
@@ -266,7 +265,7 @@ const quoteHtml = emphasize(quote.text, quote.emphasis);
     </div>
   </section>
 
-  <section id="contact" class="rfi-closing" aria-labelledby="rfi-closing-title">
+  <section id="cta" class="rfi-closing" aria-labelledby="rfi-closing-title">
     <div class="rfi-closing-pattern" aria-hidden="true"></div>
     <div class="rfi-container rfi-closing-inner fade-up">
       <p class="t-label rfi-closing-kicker">{closing.kicker}</p>
@@ -478,10 +477,11 @@ const quoteHtml = emphasize(quote.text, quote.emphasis);
   .room-for-interaction .rfi-prose p,
   .room-for-interaction .rfi-workshop-copy,
   .room-for-interaction .rfi-status-note {
-    font-size: 17px;
-    line-height: 1.75;
-    opacity: 0.8;
-    margin: 0 0 var(--space-4);
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    opacity: 0.62;
+    margin: var(--space-5) 0 0;
     max-width: 68ch;
   }
 
@@ -530,15 +530,7 @@ const quoteHtml = emphasize(quote.text, quote.emphasis);
     display: none;
   }
 
-  .room-for-interaction .rfi-workshop-top {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--space-3);
-    margin-bottom: var(--space-3);
-  }
-
   .room-for-interaction .rfi-workshop-tag,
-  .room-for-interaction .rfi-workshop-status,
   .room-for-interaction .rfi-overlay-label,
   .room-for-interaction .rfi-schedule-label {
     font-family: 'Courier Prime', monospace;
@@ -549,15 +541,21 @@ const quoteHtml = emphasize(quote.text, quote.emphasis);
 
   .room-for-interaction .rfi-workshop-tag {
     color: var(--pink);
+    margin: 0 0 var(--space-3);
   }
 
   .room-for-interaction .rfi-workshop-status {
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     color: var(--gray-green);
-    opacity: 0.85;
+    opacity: 0.55;
   }
 
   .room-for-interaction .rfi-workshop.is-completed .rfi-workshop-status {
     color: var(--turquoise);
+    opacity: 0.9;
   }
 
   .room-for-interaction .rfi-workshop-name {
@@ -578,6 +576,11 @@ const quoteHtml = emphasize(quote.text, quote.emphasis);
     margin-top: var(--space-3);
     font-family: 'Courier Prime', monospace;
     font-size: 13px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.75rem;
+    align-items: baseline;
+    opacity: 0.78;
   }
 
   .room-for-interaction .rfi-workshop-body {

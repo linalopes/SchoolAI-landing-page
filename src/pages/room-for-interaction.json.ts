@@ -31,7 +31,8 @@ export const GET: APIRoute = async () => {
       title: workshop.title,
       subtitle: workshop.subtitle,
       description: workshop.summary,
-      color: workshop.color,
+      icon: workshop.icon ?? null,
+      color: workshop.color ?? null,
       status: workshop.status,
       status_label: workshop.status_label,
       status_note: workshop.status_note,
@@ -54,6 +55,7 @@ export const GET: APIRoute = async () => {
       },
       // Historical registration URLs retained for compatibility only — not active CTAs.
       lumaEventUrl: workshop.historical_luma_url ?? null,
+      lumaEmbedUrl: workshop.historical_luma_embed_url ?? null,
     })),
   };
 

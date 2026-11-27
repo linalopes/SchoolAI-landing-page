@@ -524,7 +524,6 @@ const pages = defineCollection({
           title_before: z.string(),
           title_emphasis: z.string(),
           body: z.string(),
-          newsletter_subject: z.string(),
         }),
         page_nav: z
           .array(
@@ -542,6 +541,7 @@ const pages = defineCollection({
               subtitle: z.string(),
               summary: z.string(),
               color: z.string().optional(),
+              icon: z.string().optional(),
               status: z.enum(['completed', 'cancelled', 'proposed']),
               status_label: z.string(),
               status_note: z.string(),
@@ -557,6 +557,7 @@ const pages = defineCollection({
               learning_objectives: z.array(z.string()),
               audience: z.string(),
               historical_luma_url: z.string().optional(),
+              historical_luma_embed_url: z.string().optional(),
             }),
           )
           .min(1),

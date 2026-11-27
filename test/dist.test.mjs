@@ -234,20 +234,47 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   }
   assert.match(room, /Completed/);
   assert.match(room, /28–29 August 2026|28-29 August 2026/);
-  assert.match(room, /Cancelled proposal/);
+  assert.match(room, />Proposal</);
+  assert.doesNotMatch(room, /Cancelled proposal|Events snapshot|Events feed/i);
   assert.match(room, /Glitch Lab/);
   assert.doesNotMatch(room, /Next workshop/i);
   assert.doesNotMatch(room, /View registration page/i);
+  assert.match(room, /id="cta"/);
+  assert.equal((room.match(/id="contact"/g) || []).length, 1);
   assert.match(room, /id="nav"|School of Tomorrow/);
   assert.match(room, /footer-main|footer-col/);
 
   const roomJson = JSON.parse(readFileSync(dist('room-for-interaction.json'), 'utf8'));
+  for (const key of ['title', 'subtitle', 'tagline', 'description', 'format', 'location']) {
+    assert.equal(typeof roomJson.program[key], 'string');
+  }
   assert.equal(roomJson.program.status, 'archived');
   assert.equal(roomJson.workshops.length, 7);
+  for (const workshop of roomJson.workshops) {
+    for (const key of [
+      'id',
+      'title',
+      'subtitle',
+      'description',
+      'icon',
+      'color',
+      'schedule',
+      'content',
+      'lumaEventUrl',
+      'lumaEmbedUrl',
+    ]) {
+      assert.ok(key in workshop, `missing ${key} on ${workshop.id}`);
+    }
+    assert.ok(workshop.content.whatYoullLearn.length > 0);
+    assert.ok(workshop.content.whoShouldJoin);
+    assert.ok(workshop.content.description);
+  }
   const maze = roomJson.workshops.find((item) => item.id === 'maze-circuit');
   assert.ok(maze);
   assert.equal(maze.status, 'completed');
+  assert.equal(maze.icon, 'zap');
   assert.match(maze.schedule.inPerson.dates, /August 2026/);
+  assert.match(maze.lumaEmbedUrl, /luma\.com\/embed/);
   assert.equal(
     roomJson.workshops.filter((item) => item.status === 'cancelled').length,
     6,

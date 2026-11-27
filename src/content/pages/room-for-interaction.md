@@ -35,8 +35,8 @@ room_for_interaction:
     curiosity: "You don't need to code. You need curiosity."
     archive_note: >-
       This page documents the 2026 programme as an archive. It preserves the original pedagogical
-      proposals. Only workshops recorded as completed in the Events feed are marked completed;
-      other proposals remain listed without implying they were delivered.
+      proposals. Only workshops that were held are marked as completed; other proposals remain
+      listed without implying they were delivered.
   format:
     number: "02"
     title_lines:
@@ -60,8 +60,7 @@ room_for_interaction:
       - "One season."
     intro: >-
       Seven independent workshop proposals formed the season. Detailed descriptions remain available
-      below. Completed and cancelled proposals are labelled from the Events snapshot — this is not
-      a claim that every proposal was delivered.
+      below. One workshop was held; the others remain documented as proposals that were not delivered.
     season_label: Season
     season_value: "2026"
     format_label: Format
@@ -103,9 +102,9 @@ room_for_interaction:
     items:
       - question: "Were all seven workshops delivered?"
         answer: >-
-          No. The programme was conceived around seven workshop proposals. The Events snapshot
-          records Maze Circuit as completed on 28 and 29 August 2026. Other proposals in this
-          season are documented here as cancelled or undelivered proposals, not as completed events.
+          No. The programme was conceived around seven workshop proposals. Maze Circuit was held on
+          28 and 29 August 2026. The other proposals are documented here for their pedagogical
+          concepts; they were not delivered as public workshops.
       - question: "Could I join a single workshop?"
         answer: >-
           Yes. Each workshop stood alone. Participants did not need to join the whole series.
@@ -136,7 +135,6 @@ room_for_interaction:
     body: >-
       Leave your email for School of Tomorrow’s AI updates. Room for Interaction itself is archived;
       new public encounters appear on the Programme page when scheduled.
-    newsletter_subject: "School of Tomorrow’s AI — updates"
   page_nav:
     - label: About
       href: "#about"
@@ -152,9 +150,10 @@ room_for_interaction:
       subtitle: "Video Mapping + AI"
       summary: "Turning the studio into an expanded cinema."
       color: "#EA7DFF"
+      icon: "video"
       status: cancelled
-      status_label: "Cancelled proposal"
-      status_note: "Proposed in the 2026 programme; Events snapshot records this workshop as cancelled. Not presented as delivered."
+      status_label: "Proposal"
+      status_note: "This workshop was proposed for the 2026 programme and was not held."
       schedule:
         online_title: "Online Sessions"
         online_dates: "April 7 & April 14, 2026"
@@ -171,14 +170,16 @@ room_for_interaction:
         - "Collaboratively design and present a two-minute immersive scene inside the studio."
       audience: "No previous experience is required — the workshop is designed for complete beginners. At the same time, professionals are welcome to join and use the setting as a space for experimentation. Open to performers, designers, educators, architects, and anyone interested in discovering how projection and AI can transform a room into a stage, a story, or a dreamscape."
       historical_luma_url: "https://luma.com/9nfn6wm2"
+      historical_luma_embed_url: "https://luma.com/embed/event/evt-xNrvmYUE6CxuAAC/simple"
     - id: maze-circuit
       title: "Maze Circuit"
       subtitle: "AI-Assisted Prototyping"
       summary: "Turn touch, circuits and AI-assisted coding into playful physical-digital interfaces."
       color: "#08F2DB"
+      icon: "zap"
       status: completed
       status_label: "Completed"
-      status_note: "Recorded as completed on 28 and 29 August 2026 (Events snapshot). An earlier May 2026 listing was cancelled and is not presented as a completed event."
+      status_note: "Held on 28 and 29 August 2026. An earlier May listing was cancelled and is not shown as a completed event."
       schedule:
         online_title: "Online Sessions"
         in_person_title: "In-Person Session"
@@ -195,14 +196,16 @@ room_for_interaction:
         - "Collaborate in small groups to build a physical-digital prototype."
       audience: "No previous experience is required. Maze Circuit is designed for curious beginners as well as people with experience in UX, interaction design, product design, education, creative technology, art, performance or coding. It is especially suitable for people from the UX, interaction and design communities who are curious about playful interfaces, embodied interaction, AI-assisted prototyping and designing experiences beyond the screen."
       historical_luma_url: "https://luma.com/iwq729r8"
+      historical_luma_embed_url: "https://luma.com/embed/event/evt-qJ5pyCoWsj8Q2et/simple"
     - id: singing-to-a-garden
       title: "Singing to a Garden"
       subtitle: "Voice Interaction"
       summary: "Voices make flowers bloom, silence makes them close."
       color: "#EA7DFF"
+      icon: "flower"
       status: cancelled
-      status_label: "Cancelled proposal"
-      status_note: "Proposed in the 2026 programme; Events snapshot records this workshop as cancelled. Not presented as delivered."
+      status_label: "Proposal"
+      status_note: "This workshop was proposed for the 2026 programme and was not held."
       schedule:
         online_title: "Online Sessions"
         online_dates: "June 2 & June 9, 2026"
@@ -218,14 +221,16 @@ room_for_interaction:
         - "Collaborative building of a garden installation that responds to sound."
       audience: "No previous experience is required — this workshop is designed for beginners as well as curious minds from any field. Open to designers, educators, architects, performers, and anyone over 16 interested in kinetic sculpture, paper craft, and interactive design."
       historical_luma_url: "https://luma.com/gpkaocvs"
+      historical_luma_embed_url: "https://luma.com/embed/event/evt-njJulGJrOK7B9ef/simple"
     - id: marble-machine-orchestra
       title: "Marble Machine Orchestra"
       subtitle: "Sound Installation"
       summary: "Build and play with rolling marbles and sound."
       color: "#08F2DB"
+      icon: "music"
       status: cancelled
-      status_label: "Cancelled proposal"
-      status_note: "Proposed in the 2026 programme; Events snapshot records this workshop as cancelled. Not presented as delivered."
+      status_label: "Proposal"
+      status_note: "This workshop was proposed for the 2026 programme and was not held."
       schedule:
         online_title: "Online Sessions"
         online_dates: "August 18 & August 25, 2026"
@@ -241,14 +246,16 @@ room_for_interaction:
         - "Collaborate in groups to design playful sound installations."
       audience: "Open to educators, designers, architects, performers, musicians, and anyone over 16 interested in interactive installations and creative mechanics. No previous experience required — beginners welcome."
       historical_luma_url: "https://luma.com/7uik3pz9"
+      historical_luma_embed_url: "https://luma.com/embed/event/evt-0E8azprqOAA2U1E/simple"
     - id: from-gesture-to-pen
       title: "From Gesture to Pen"
       subtitle: "Body Drawing"
       summary: "Draw with your body, print with a pen plotter."
       color: "#EA7DFF"
+      icon: "pen-tool"
       status: cancelled
-      status_label: "Cancelled proposal"
-      status_note: "Proposed in the 2026 programme; Events snapshot records this workshop as cancelled. Not presented as delivered."
+      status_label: "Proposal"
+      status_note: "This workshop was proposed for the 2026 programme and was not held."
       schedule:
         online_title: "Online Sessions"
         online_dates: "September 8 & September 15, 2026"
@@ -264,14 +271,16 @@ room_for_interaction:
         - "Operate an XY pen plotter to print the drawings on paper."
       audience: "Open to performers, designers, architects, educators, and anyone over 16 interested in body interaction and physical computing. No previous experience required — beginner friendly and guided step by step."
       historical_luma_url: "https://luma.com/lqsxq9en"
+      historical_luma_embed_url: "https://luma.com/embed/event/evt-3n7Cs4gd3THJKaN/simple"
     - id: room-as-instrument
       title: "Room as Instrument"
       subtitle: "AR Music"
       summary: "The studio becomes a giant musical instrument in AR."
       color: "#08F2DB"
+      icon: "waves"
       status: cancelled
-      status_label: "Cancelled proposal"
-      status_note: "Proposed in the 2026 programme; Events snapshot records this workshop as cancelled. Not presented as delivered."
+      status_label: "Proposal"
+      status_note: "This workshop was proposed for the 2026 programme and was not held."
       schedule:
         online_title: "Online Sessions"
         online_dates: "October 13 & October 20, 2026"
@@ -288,14 +297,16 @@ room_for_interaction:
         - "Collaborative composition methods for a final collective performance."
       audience: "Open to designers, performers, musicians, architects, educators, and anyone over 16 curious about AR and interactive sound. No prior experience is required — beginner-friendly and guided step by step."
       historical_luma_url: "https://luma.com/nmybnqnv"
+      historical_luma_embed_url: "https://luma.com/embed/event/evt-fk9NwurwBY8uAPR/simple"
     - id: embroidering-light
       title: "Embroidering Light"
       subtitle: "Textile Technology"
       summary: "Touch conductive embroidery to light up fabrics."
       color: "#EA7DFF"
+      icon: "shirt"
       status: cancelled
-      status_label: "Cancelled proposal"
-      status_note: "Proposed in the 2026 programme; Events snapshot records this workshop as cancelled. Not presented as delivered."
+      status_label: "Proposal"
+      status_note: "This workshop was proposed for the 2026 programme and was not held."
       schedule:
         online_title: "Online Sessions"
         online_dates: "November 10 & November 17, 2026"
@@ -311,4 +322,5 @@ room_for_interaction:
         - "Introduction to wearable technology with small-group prototyping."
       audience: "Open to designers, artists, architects, educators, performers, fashion makers, and anyone over 16 curious about textiles and interactive technology. No sewing or electronics experience required."
       historical_luma_url: "https://luma.com/doj9zfji"
+      historical_luma_embed_url: "https://luma.com/embed/event/evt-ihxQOMiaVxB2Fjp/simple"
 ---

@@ -421,8 +421,13 @@ test('Room for Interaction is Markdown-backed, archived, and hero-isolated', () 
   assert.match(md, /status: completed/);
   assert.match(md, /28–29 August 2026|28-29 August 2026/);
   assert.match(md, /status: cancelled/);
+  assert.match(md, /status_label: "Proposal"/);
   assert.match(md, /Glitch Lab/);
   assert.match(md, /Archived programme/);
+  assert.match(md, /icon: "zap"/);
+  assert.match(md, /historical_luma_embed_url:/);
+  assert.doesNotMatch(md, /Events snapshot|Events feed/i);
+  assert.doesNotMatch(md, /Cancelled proposal/);
   assert.doesNotMatch(md, /Next workshop/i);
   assert.doesNotMatch(md, /View registration page/i);
   assert.doesNotMatch(page, /Next workshop/i);
@@ -431,6 +436,8 @@ test('Room for Interaction is Markdown-backed, archived, and hero-isolated', () 
   assert.match(page, /class="rfi-hero"/);
   assert.match(page, /id={`workshop-\$\{workshop\.id\}`}|id="workshop-/);
   assert.match(page, /#workshop-/);
+  assert.match(page, /id="cta"/);
+  assert.doesNotMatch(page, /id="contact"/);
   assert.match(css, /#hero:not\(\.ad-hero\):not\(\.rfi-hero\)/);
   assert.match(page, /\.room-for-interaction #hero\.rfi-hero/);
   assert.match(read('src/pages/room-for-interaction.astro'), /canonicalPath="\/room-for-interaction\.html"/);
