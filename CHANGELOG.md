@@ -6,6 +6,19 @@ Git release tags (`v2.0.0`, `v2.1.0`) are distinct from the npm package version 
 
 ## Unreleased maintenance
 
+### Programme integration — Current and Past Programmes
+
+- Extended `/programme/` with Markdown-driven Current Programme (Artificial Emotion, January–June 2027) and Past Programmes (Room for Interaction, 2026).  
+- Section order: Current Programme → Upcoming Events → Activity Formats → Past Programmes → Past Events → newsletter.  
+- Programme periods describe public programme framing; Artificial Emotion research remains on `/research/`.
+
+### Room for Interaction — Astro migration
+
+- Migrated `/room-for-interaction.html` from standalone `public/` HTML to Markdown (`src/content/pages/room-for-interaction.md`) + Astro presentation.  
+- Preserved the public URL via `scripts/flatten-html-routes.mjs`; JSON compatibility endpoint is generated from the same Markdown source.  
+- Archived programme presentation: no active “Next workshop” or registration CTAs; Maze Circuit held 28–29 August 2026; other proposals documented without claiming delivery.  
+- Hero uses `id="hero"` with `.rfi-hero` isolation from homepage `#hero` styles; workshop anchors keep `#workshop-*` fragments; closing block uses `id="cta"` to avoid colliding with the shared newsletter `#contact`.
+
 ### Arduino Day 2026 — Astro migration
 
 - Migrated `/arduino-day-2026.html` from standalone `public/` HTML to Markdown (`src/content/pages/arduino-day-2026.md`) + Astro presentation.  

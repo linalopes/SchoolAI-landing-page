@@ -148,9 +148,9 @@
   }
 
   /* ── HERO ── */
-  /* Homepage split hero only. Event pages may keep id="hero" for fragment
-     compatibility (e.g. Arduino Day) via .ad-hero — do not style those here. */
-  #hero:not(.ad-hero) {
+  /* Homepage split hero only. Event/programme pages may keep id="hero" for
+     fragment compatibility via .ad-hero / .rfi-hero — do not style those here. */
+  #hero:not(.ad-hero):not(.rfi-hero) {
     min-height: 100vh;
     background: var(--deep-purple);
     position: relative;
@@ -1442,6 +1442,75 @@
     margin-bottom: var(--space-5);
   }
 
+  .programme-current {
+    padding: var(--space-5);
+    border-left: 3px solid var(--pink);
+    background: rgba(234, 125, 255, 0.06);
+  }
+
+  .programme-current-period {
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    margin: 0 0 var(--space-2);
+    opacity: 0.78;
+  }
+
+  .programme-current-title {
+    margin-top: 0;
+  }
+
+  .programme-current-threads {
+    margin-bottom: var(--space-5);
+  }
+
+  .programme-past-list {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .programme-past-card {
+    padding: var(--space-4) 0;
+    border-top: 1px solid rgba(34, 17, 62, 0.12);
+  }
+
+  .programme-past-card:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .programme-past-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: baseline;
+    margin-bottom: var(--space-2);
+  }
+
+  .programme-past-category {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    opacity: 0.65;
+  }
+
+  .programme-past-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 400;
+    font-size: clamp(22px, 2.4vw, 28px);
+    margin: 0 0 var(--space-2);
+  }
+
+  .programme-past-tagline {
+    font-size: 17px;
+    line-height: 1.5;
+    margin: 0 0 var(--space-3);
+    opacity: 0.78;
+  }
+
+  .programme-past-card .button {
+    margin-top: var(--space-3);
+  }
+
   .past-events-more {
     margin-top: var(--space-4);
   }
@@ -2432,7 +2501,7 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
-    #hero:not(.ad-hero) { grid-template-columns: 1fr; }
+    #hero:not(.ad-hero):not(.rfi-hero) { grid-template-columns: 1fr; }
     .hero-left { padding: 72px var(--space-4); }
     .hero-right {
       display: block;

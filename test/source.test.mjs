@@ -218,11 +218,29 @@ test('institutional editorial content is sourced from Markdown', () => {
   const researchPage = read('src/pages/research/index.astro');
   const atelierPage = read('src/pages/atelier/index.astro');
   const programmePage = read('src/pages/programme/index.astro');
+  const programmeMd = read('src/content/pages/programme.md');
   const galleryPage = read('src/pages/inverted-gallery/index.astro');
   const collaboratePage = read('src/pages/collaborate/index.astro');
   assert.match(researchPage, /requirePage\('research'\)/);
   assert.match(atelierPage, /requirePage\('atelier'\)/);
   assert.match(programmePage, /requirePage\('programme'\)/);
+  assert.match(programmeMd, /current:/);
+  assert.match(programmeMd, /January – June 2027/);
+  assert.match(programmeMd, /Artificial Emotion/);
+  assert.match(programmeMd, /past_programmes:/);
+  assert.match(programmeMd, /Room for Interaction/);
+  assert.match(programmeMd, /href: \/room-for-interaction\.html/);
+  assert.match(programmePage, /id="current-programme"/);
+  assert.match(programmePage, /id="past-programmes"/);
+  const programmeOrder = [
+    'id="current-programme"',
+    'upcoming-events-heading',
+    'activity-formats-heading',
+    'id="past-programmes"',
+    'past-events-heading',
+  ].map((token) => programmePage.indexOf(token));
+  assert.ok(programmeOrder.every((idx) => idx > -1));
+  assert.deepEqual(programmeOrder, [...programmeOrder].sort((a, b) => a - b));
   assert.match(galleryPage, /requirePage\('inverted-gallery'\)/);
   assert.match(collaboratePage, /requirePage\('collaborate'\)/);
   assert.match(collaboratePage, /FinancialSupport/);
@@ -334,8 +352,6 @@ test('validation workflow does not deploy', () => {
 test('legacy public paths remain', () => {
   for (const path of [
     'public/space3d.html',
-    'public/room-for-interaction.html',
-    'public/room-for-interaction.json',
     'public/peppers-ghost.html',
     'public/CNAME',
     'public/imgs/favicon.svg',
@@ -349,9 +365,15 @@ test('legacy public paths remain', () => {
   }
   assert.equal(read('public/CNAME').trim(), 'schoolai.linalopes.info');
   assert.equal(existsSync(join(root, 'public/arduino-day-2026.html')), false);
+  assert.equal(existsSync(join(root, 'public/room-for-interaction.html')), false);
+  assert.equal(existsSync(join(root, 'public/room-for-interaction.json')), false);
   assert.equal(statSync(join(root, 'src/pages/arduino-day-2026.astro')).isFile(), true);
   assert.equal(statSync(join(root, 'src/content/pages/arduino-day-2026.md')).isFile(), true);
+  assert.equal(statSync(join(root, 'src/pages/room-for-interaction.astro')).isFile(), true);
+  assert.equal(statSync(join(root, 'src/pages/room-for-interaction.json.ts')).isFile(), true);
+  assert.equal(statSync(join(root, 'src/content/pages/room-for-interaction.md')).isFile(), true);
   assert.match(read('scripts/flatten-html-routes.mjs'), /arduino-day-2026/);
+  assert.match(read('scripts/flatten-html-routes.mjs'), /room-for-interaction/);
   assert.match(read('package.json'), /flatten-html-routes/);
 });
 
@@ -374,10 +396,53 @@ test('Arduino Day hero keeps #hero fragment while isolating homepage #hero CSS',
   assert.match(page, /id="hero"/);
   assert.match(page, /class="ad-hero"/);
   assert.match(page, /\.arduino-day #hero\.ad-hero/);
-  assert.match(css, /#hero:not\(\.ad-hero\)/);
+  assert.match(css, /#hero:not\(\.ad-hero\):not\(\.rfi-hero\)/);
   assert.doesNotMatch(css, /(?:^|\n)\s*#hero\s*\{/);
   assert.match(read('src/components/home/Hero.astro'), /id="hero"/);
   assert.doesNotMatch(read('src/components/home/Hero.astro'), /ad-hero/);
+});
+
+test('Room for Interaction is Markdown-backed, archived, and hero-isolated', () => {
+  const md = read('src/content/pages/room-for-interaction.md');
+  const page = read('src/components/programme/RoomForInteractionPage.astro');
+  const css = read('src/styles/global.css');
+  const workshops = [
+    'Augmented Cinema',
+    'Maze Circuit',
+    'Singing to a Garden',
+    'Marble Machine Orchestra',
+    'From Gesture to Pen',
+    'Room as Instrument',
+    'Embroidering Light',
+  ];
+  for (const title of workshops) {
+    assert.match(md, new RegExp(title));
+  }
+  assert.match(md, /status: completed/);
+  assert.match(md, /28–29 August 2026|28-29 August 2026/);
+  assert.match(md, /status: cancelled/);
+  assert.match(md, /status_label: "Proposal"/);
+  assert.match(md, /Glitch Lab/);
+  assert.match(md, /Archived programme/);
+  assert.match(md, /icon: "zap"/);
+  assert.match(md, /historical_luma_embed_url:/);
+  assert.doesNotMatch(md, /Events snapshot|Events feed/i);
+  assert.doesNotMatch(md, /Cancelled proposal/);
+  assert.doesNotMatch(md, /Next workshop/i);
+  assert.doesNotMatch(md, /View registration page/i);
+  assert.doesNotMatch(page, /Next workshop/i);
+  assert.doesNotMatch(page, /View registration page|luma\.com/i);
+  assert.match(page, /id="hero"/);
+  assert.match(page, /class="rfi-hero"/);
+  assert.match(page, /id={`workshop-\$\{workshop\.id\}`}|id="workshop-/);
+  assert.match(page, /#workshop-/);
+  assert.match(page, /id="cta"/);
+  assert.doesNotMatch(page, /id="contact"/);
+  assert.match(css, /#hero:not\(\.ad-hero\):not\(\.rfi-hero\)/);
+  assert.match(page, /\.room-for-interaction #hero\.rfi-hero/);
+  assert.match(read('src/pages/room-for-interaction.astro'), /canonicalPath="\/room-for-interaction\.html"/);
+  assert.match(md, /id: maze-circuit/);
+  assert.doesNotMatch(md, /May 23, 2026/);
 });
 
 test('no unauthorised editorial media was added outside preserved and functional paths', () => {

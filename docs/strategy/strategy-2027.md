@@ -11,6 +11,7 @@ Research often begins in conversations, encounters and lived experiences, then d
 
 ## 2027 priorities
 - Artificial Emotion is the flagship research project, with Soft Mechanisms, Kinetic Studies and Biosignals as research threads. Expected outputs may include exhibitions, installations, articles, publications, prototypes and open documentation; these are intentions, not completed deliverables.
+- Distinguish **research** (ongoing investigation), **programme** (thematic public framework), **activity formats** (recurring ways of sharing research), and **events** (individual scheduled or completed activities). Artificial Emotion’s January–June 2027 period on Programme describes the public programme semester, not necessarily the full duration of the research itself.
 - Open research and open source are explicit commitments; use appropriate licenses and permissions, particularly for personal data and third-party materials.
 - Welcome independent research proposals, student projects, visits by arrangement and collaborative investigations. Workshops emerge from research; Open Research Studio is a recurring format when feasible, not a promised calendar.
 - Announce Inverted Gallery, a cultural and multi-use space inside the atelier. Only the Inverted Gallery is available for rental. The research atelier and its workstations are not rental spaces. Seek an associated curator interested in art, science and technology. It may develop independent programming; the School manages the space. Maintain the existing brand for now.

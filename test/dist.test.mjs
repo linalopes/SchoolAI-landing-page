@@ -65,15 +65,31 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   assert.match(atelier, /not available for rental/);
 
   const programme = readFileSync(dist('programme/index.html'), 'utf8');
+  assert.match(programme, /Current Programme/);
+  assert.match(programme, /January – June 2027/);
+  assert.match(programme, /Artificial Emotion/);
+  assert.match(programme, /emotion\.linalopes\.info/);
   assert.match(programme, /Open Research Studio/);
   assert.match(programme, /Research-based Workshops/);
   assert.match(programme, /Upcoming Events/);
   assert.match(programme, /Activity Formats/);
+  assert.match(programme, /Past Programmes/);
+  assert.match(programme, /Room for Interaction/);
+  assert.match(programme, /href="\/room-for-interaction\.html"/);
   assert.match(programme, /Past Events/);
   assert.match(programme, /Arduino Day|Paper as Interface/);
-  assert.doesNotMatch(programme, /Room for Interaction/);
   assert.doesNotMatch(programme, /#workshop-augmented-cinema/);
   assert.doesNotMatch(programme, /Singing to a Garden/);
+  // Section order: Current → Upcoming → Formats → Past Programmes → Past Events
+  const currentIdx = programme.indexOf('id="current-programme"');
+  const upcomingIdx = programme.indexOf('id="upcoming-events-heading"');
+  const formatsIdx = programme.indexOf('id="activity-formats-heading"');
+  const pastProgrammesIdx = programme.indexOf('id="past-programmes"');
+  const pastEventsIdx = programme.indexOf('id="past-events-heading"');
+  assert.ok(currentIdx > -1 && upcomingIdx > currentIdx);
+  assert.ok(formatsIdx > upcomingIdx);
+  assert.ok(pastProgrammesIdx > formatsIdx);
+  assert.ok(pastEventsIdx > pastProgrammesIdx);
   assert.match(programme, /aria-current="page"/);
   assert.match(programme, /formspree\.io\/f\/mvgbznoe/);
 
@@ -174,6 +190,7 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   for (const path of [
     'space3d.html',
     'room-for-interaction.html',
+    'room-for-interaction.json',
     'arduino-day-2026.html',
     'peppers-ghost.html',
     'CNAME',
@@ -181,11 +198,12 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
     assert.equal(statSync(dist(path)).isFile(), true, path);
   }
   assert.equal(existsSync(dist('arduino-day-2026/index.html')), false);
+  assert.equal(existsSync(dist('room-for-interaction/index.html')), false);
   const arduinoDay = readFileSync(dist('arduino-day-2026.html'), 'utf8');
   assert.match(arduinoDay, /Paper as/);
   assert.match(arduinoDay, /Interface/);
   assert.match(arduinoDay, /id="hero"[^>]*class="[^"]*ad-hero|class="[^"]*ad-hero[^"]*"[^>]*id="hero"/);
-  assert.match(arduinoDay, /#hero:not\(\.ad-hero\)|\.arduino-day #hero\.ad-hero/);
+  assert.match(arduinoDay, /#hero:not\(\.ad-hero\):not\(\.rfi-hero\)|\.arduino-day #hero\.ad-hero/);
   assert.match(arduinoDay, /id="timeline"/);
   assert.match(arduinoDay, /id="details"/);
   assert.match(arduinoDay, /id="faq"/);
@@ -195,10 +213,78 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   assert.match(arduinoDay, /id="nav"|Site of Tomorrow|School of Tomorrow/);
   assert.match(arduinoDay, /footer-main|footer-col/);
   assert.match(readFileSync(dist('sitemap.xml'), 'utf8'), /arduino-day-2026\.html/);
+  assert.match(readFileSync(dist('sitemap.xml'), 'utf8'), /room-for-interaction\.html/);
+
+  const room = readFileSync(dist('room-for-interaction.html'), 'utf8');
+  assert.match(room, /Room for/);
+  assert.match(room, /Interaction/);
+  assert.match(room, /canonical[^>]+room-for-interaction\.html/);
+  assert.match(room, /id="hero"[^>]*class="[^"]*rfi-hero|class="[^"]*rfi-hero[^"]*"[^>]*id="hero"/);
+  assert.match(room, /#hero:not\(\.ad-hero\):not\(\.rfi-hero\)|\.room-for-interaction #hero\.rfi-hero/);
+  for (const id of [
+    'workshop-augmented-cinema',
+    'workshop-maze-circuit',
+    'workshop-singing-to-a-garden',
+    'workshop-marble-machine-orchestra',
+    'workshop-from-gesture-to-pen',
+    'workshop-room-as-instrument',
+    'workshop-embroidering-light',
+  ]) {
+    assert.match(room, new RegExp(`id="${id}"`));
+  }
+  assert.match(room, /Completed/);
+  assert.match(room, /28–29 August 2026|28-29 August 2026/);
+  assert.match(room, />Proposal</);
+  assert.doesNotMatch(room, /Cancelled proposal|Events snapshot|Events feed/i);
+  assert.match(room, /Glitch Lab/);
+  assert.doesNotMatch(room, /Next workshop/i);
+  assert.doesNotMatch(room, /View registration page/i);
+  assert.match(room, /id="cta"/);
+  assert.equal((room.match(/id="contact"/g) || []).length, 1);
+  assert.match(room, /id="nav"|School of Tomorrow/);
+  assert.match(room, /footer-main|footer-col/);
+
+  const roomJson = JSON.parse(readFileSync(dist('room-for-interaction.json'), 'utf8'));
+  for (const key of ['title', 'subtitle', 'tagline', 'description', 'format', 'location']) {
+    assert.equal(typeof roomJson.program[key], 'string');
+  }
+  assert.equal(roomJson.program.status, 'archived');
+  assert.equal(roomJson.workshops.length, 7);
+  for (const workshop of roomJson.workshops) {
+    for (const key of [
+      'id',
+      'title',
+      'subtitle',
+      'description',
+      'icon',
+      'color',
+      'schedule',
+      'content',
+      'lumaEventUrl',
+      'lumaEmbedUrl',
+    ]) {
+      assert.ok(key in workshop, `missing ${key} on ${workshop.id}`);
+    }
+    assert.ok(workshop.content.whatYoullLearn.length > 0);
+    assert.ok(workshop.content.whoShouldJoin);
+    assert.ok(workshop.content.description);
+  }
+  const maze = roomJson.workshops.find((item) => item.id === 'maze-circuit');
+  assert.ok(maze);
+  assert.equal(maze.status, 'completed');
+  assert.equal(maze.icon, 'zap');
+  assert.match(maze.schedule.inPerson.dates, /August 2026/);
+  assert.match(maze.lumaEmbedUrl, /luma\.com\/embed/);
+  assert.equal(
+    roomJson.workshops.filter((item) => item.status === 'cancelled').length,
+    6,
+  );
+
   const home = readFileSync(dist('index.html'), 'utf8');
   assert.match(home, /id="hero"/);
   assert.doesNotMatch(home, /class="ad-hero"/);
-  assert.match(home, /#hero:not\(\.ad-hero\)/);
+  assert.doesNotMatch(home, /class="rfi-hero"/);
+  assert.match(home, /#hero:not\(\.ad-hero\):not\(\.rfi-hero\)/);
   assert.equal(existsSync(dist('collaborate/wishlist/index.html')), true);
   assert.equal(existsSync(dist('collaborate/contributors/index.html')), false);
 });

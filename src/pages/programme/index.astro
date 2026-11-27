@@ -8,7 +8,7 @@ import {
   selectPastEventsPreview,
   selectUpcomingEvents,
 } from '../../lib/sheets/index.ts';
-import { requirePage } from '../../lib/content';
+import { requirePage, resolveCtaHref } from '../../lib/content';
 import { site } from '../../data/site';
 
 const entry = await requirePage('programme');
@@ -24,6 +24,8 @@ const upcomingHtml = renderEventsMarkup(upcoming);
 const { recent, earlier } = selectPastEventsPreview(snapshot.items);
 const recentHtml = renderPastEventsMarkup(recent);
 const earlierHtml = earlier.length ? renderPastEventsMarkup(earlier) : '';
+const current = programme.current;
+const pastProgrammes = programme.past_programmes ?? [];
 ---
 <EditorialLayout title={pageTitle} description={entry.data.description}>
   <article class="editorial editorial--wide">
@@ -32,6 +34,38 @@ const earlierHtml = earlier.length ? renderPastEventsMarkup(earlier) : '';
       <h1 class="editorial-title">{entry.data.title}</h1>
       {entry.data.lede && <p class="editorial-lede">{entry.data.lede}</p>}
     </header>
+
+    {current && (
+      <section
+        id="current-programme"
+        class="editorial-panel programme-current fade-up"
+        aria-labelledby="current-programme-heading"
+      >
+        <p class="t-label editorial-eyebrow">{current.section_title}</p>
+        <p class="programme-current-period">{current.period}</p>
+        <h2 id="current-programme-heading" class="editorial-subtitle programme-current-title">
+          {current.title}
+        </h2>
+        <p class="prose-p">{current.description}</p>
+        {current.threads && current.threads.length > 0 && (
+          <ul class="research-threads programme-current-threads">
+            {current.threads.map((thread) => (
+              <li>{thread}</li>
+            ))}
+          </ul>
+        )}
+        <div class="section-actions">
+          <a
+            href={resolveCtaHref(current.cta.href)}
+            target={current.cta.external ? '_blank' : undefined}
+            rel={current.cta.external ? 'noopener' : undefined}
+            class="button button--primary"
+          >
+            {current.cta.label}{current.cta.external ? ' \u2197\uFE0E' : ''}
+          </a>
+        </div>
+      </section>
+    )}
 
     <section class="editorial-panel fade-up" aria-labelledby="upcoming-events-heading">
       <h2 id="upcoming-events-heading" class="editorial-subtitle">{programme.upcoming_title}</h2>
@@ -61,6 +95,39 @@ const earlierHtml = earlier.length ? renderPastEventsMarkup(earlier) : '';
         ))}
       </div>
     </section>
+
+    {pastProgrammes.length > 0 && (
+      <section
+        id="past-programmes"
+        class="editorial-panel fade-up"
+        aria-labelledby="past-programmes-heading"
+      >
+        <h2 id="past-programmes-heading" class="editorial-subtitle">
+          {programme.past_programmes_title}
+        </h2>
+        <div class="programme-past-list">
+          {pastProgrammes.map((item) => (
+            <article class="programme-past-card">
+              <div class="programme-past-meta">
+                <span class="t-label">{item.period}</span>
+                {item.category && <span class="programme-past-category">{item.category}</span>}
+              </div>
+              <h3 class="programme-past-title">{item.title}</h3>
+              {item.tagline && <p class="programme-past-tagline">{item.tagline}</p>}
+              <p class="workshop-desc">{item.description}</p>
+              <a
+                href={resolveCtaHref(item.cta.href)}
+                target={item.cta.external ? '_blank' : undefined}
+                rel={item.cta.external ? 'noopener' : undefined}
+                class="button button--primary button--sm"
+              >
+                {item.cta.label}{item.cta.external ? ' \u2197\uFE0E' : ''}
+              </a>
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
 
     <section class="editorial-panel fade-up" aria-labelledby="past-events-heading">
       <h2 id="past-events-heading" class="editorial-subtitle">{programme.past_title}</h2>
