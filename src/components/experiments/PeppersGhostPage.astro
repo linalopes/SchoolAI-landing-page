@@ -194,6 +194,11 @@ if (!pg) {
     color: var(--deep-purple);
   }
 
+  /* Isolate from global `section { padding: 100px … }` institutional rhythm. */
+  .peppers-ghost section {
+    padding: 0;
+  }
+
   .peppers-ghost .pg-container {
     max-width: 1120px;
     margin: 0 auto;
@@ -201,7 +206,7 @@ if (!pg) {
   }
 
   .peppers-ghost .pg-hero {
-    padding: 12px 0 28px;
+    padding: 36px 0 28px;
   }
 
   .peppers-ghost .pg-hero-kicker {
@@ -651,13 +656,18 @@ if (!pg) {
     visibility: hidden;
   }
 
+  /* Full-bleed stage: no safe-area padding on the stage itself (keeps four-view centre). */
   body.ghost-mode .peppers-ghost #ghost-stage {
     display: block;
     position: fixed;
     inset: 0;
+    width: 100%;
+    height: 100%;
     width: 100vw;
     height: 100vh;
     height: 100dvh;
+    max-width: 100vw;
+    max-height: 100dvh;
     z-index: 10000;
     background: #000;
     margin: 0;
@@ -673,6 +683,7 @@ if (!pg) {
     z-index: 1;
   }
 
+  /* Exit control only — safe-area offset must not shift the projection canvas. */
   .peppers-ghost .ghost-exit {
     position: absolute;
     top: calc(10px + var(--safe-top));

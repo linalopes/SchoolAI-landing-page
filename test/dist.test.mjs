@@ -219,6 +219,7 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
 
   const peppers = readFileSync(dist('peppers-ghost.html'), 'utf8');
   assert.match(peppers, /canonical[^>]+peppers-ghost\.html/);
+  assert.match(peppers, /viewport-fit=cover/);
   assert.match(peppers, /Open studio experiment/);
   assert.match(peppers, /Make your own ghost/);
   assert.match(peppers, /id="studio"/);
@@ -232,10 +233,13 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   assert.match(peppers, /data-example="particles"/);
   assert.match(peppers, /data-example="text"/);
   assert.match(peppers, /pepper_ghost_pyramid_template_6cm\.svg/);
+  assert.match(peppers, /\.peppers-ghost section\{padding:0\}|\.peppers-ghost section\s*\{[^}]*padding:\s*0/s);
   assert.match(peppers, /id="nav"|School of Tomorrow/);
   assert.match(peppers, /footer-main|footer-col/);
   assert.match(peppers, /id="ghost-stage"/);
   assert.equal(statSync(dist('imgs/pepper_ghost_pyramid_template_6cm.svg')).isFile(), true);
+  assert.doesNotMatch(readFileSync(dist('index.html'), 'utf8'), /viewport-fit=cover/);
+  assert.doesNotMatch(arduinoDay, /viewport-fit=cover/);
   const peppersScriptMatch = peppers.match(/src="(\/_astro\/[^"]*PeppersGhost[^"]+\.js)"/);
   assert.ok(peppersScriptMatch, 'Pepper’s Ghost client script should be bundled');
   const peppersScript = readFileSync(dist(peppersScriptMatch[1].replace(/^\//, '')), 'utf8');
@@ -245,6 +249,9 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   assert.match(peppersScript, /peppers-ghost-scale-v2/);
   assert.match(peppersScript, /peppers-ghost-distance-v2/);
   assert.match(peppersScript, /p5@1\.11\.3/);
+  assert.match(peppersScript, /took too long to start/);
+  assert.match(peppersScript, /typeof \w+\.type==[`'"]string[`'"]|typeof \([^)]+\)\.type === ["']string["']/);
+  assert.match(peppersScript, /Promise\.resolve\([^)]*\)\.catch/);
 
   const room = readFileSync(dist('room-for-interaction.html'), 'utf8');
   assert.match(room, /Room for/);

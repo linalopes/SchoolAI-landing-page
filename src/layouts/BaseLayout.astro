@@ -11,6 +11,8 @@ interface Props {
   image?: string | null;
   /** Override pathname used for the canonical URL (e.g. legacy `.html` routes). */
   canonicalPath?: string;
+  /** Pepper’s Ghost Ghost Mode needs notched-device full bleed; omit elsewhere. */
+  viewportFitCover?: boolean;
 }
 
 const home = await requirePage('home');
@@ -20,16 +22,20 @@ const {
   description = defaultDescription,
   image = null,
   canonicalPath,
+  viewportFitCover = false,
 } = Astro.props;
 
 const canonical = new URL(canonicalPath ?? Astro.url.pathname, site.url).href;
 const ogImage = image;
+const viewportContent = viewportFitCover
+  ? 'width=device-width, initial-scale=1.0, viewport-fit=cover'
+  : 'width=device-width, initial-scale=1.0';
 ---
 <!DOCTYPE html>
 <html lang={site.lang}>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content={viewportContent}>
   <title>{title}</title>
   <meta name="description" content={description}>
   <link rel="canonical" href={canonical}>

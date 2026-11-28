@@ -413,6 +413,8 @@ test("Pepper's Ghost is Markdown-backed with preserved experiment contracts", ()
   const page = read('src/components/experiments/PeppersGhostPage.astro');
   const script = read('src/scripts/peppers-ghost.ts');
   const route = read('src/pages/peppers-ghost.astro');
+  const baseLayout = read('src/layouts/BaseLayout.astro');
+  const editorialLayout = read('src/layouts/EditorialLayout.astro');
   assert.match(md, /peppers_ghost:/);
   assert.match(md, /Open studio experiment/);
   assert.match(md, /Make your own ghost/);
@@ -427,6 +429,7 @@ test("Pepper's Ghost is Markdown-backed with preserved experiment contracts", ()
     assert.match(page, new RegExp(`id="${anchor.slice(1)}"`));
   }
   assert.match(page, /sandbox|startPeppersGhost/);
+  assert.match(page, /\.peppers-ghost section\s*\{[^}]*padding:\s*0/s);
   assert.match(script, /sandbox', 'allow-scripts'|sandbox", "allow-scripts"/);
   assert.doesNotMatch(script, /allow-same-origin/);
   assert.match(script, /peppers-ghost-code/);
@@ -436,7 +439,19 @@ test("Pepper's Ghost is Markdown-backed with preserved experiment contracts", ()
   assert.match(script, /p5@1\.11\.3/);
   assert.match(script, /scale: 0\.85/);
   assert.match(script, /imageDistance: 0\.35/);
+  assert.match(script, /runGeneration|cancelActiveRun|abortActiveRun/);
+  assert.match(script, /took too long to start/);
+  assert.doesNotMatch(
+    script,
+    /keepPreviousOnError && currentIframe\) \{\s*finishFail[\s\S]*?\} else \{\s*finishOk/,
+  );
+  assert.match(script, /isGhostFrameMessage/);
+  assert.match(script, /settleFullscreenCall/);
   assert.match(route, /canonicalPath="\/peppers-ghost\.html"/);
+  assert.match(route, /viewportFitCover=\{true\}/);
+  assert.match(editorialLayout, /viewportFitCover/);
+  assert.match(baseLayout, /viewport-fit=cover/);
+  assert.match(baseLayout, /viewportFitCover/);
   assert.match(page, /SiteNav|EditorialLayout|peppers-ghost/);
   assert.match(page, /data-peppers-ghost/);
 });

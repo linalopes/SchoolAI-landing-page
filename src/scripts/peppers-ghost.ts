@@ -235,6 +235,27 @@ function syntaxCheck(code: string): Error | null {
   }
 }
 
+type GhostFrameMessage = {
+  type: string;
+  message?: unknown;
+  line?: unknown;
+  config?: unknown;
+};
+
+function isGhostFrameMessage(data: unknown): data is GhostFrameMessage {
+  return (
+    !!data &&
+    typeof data === 'object' &&
+    typeof (data as GhostFrameMessage).type === 'string'
+  );
+}
+
+function settleFullscreenCall(result: unknown): void {
+  Promise.resolve(result).catch(() => {
+    /* Rejection is expected on many mobile browsers; CSS Ghost Mode remains. */
+  });
+}
+
 export function startPeppersGhost(): void {
   const root = document.querySelector<HTMLElement>('[data-peppers-ghost]');
   if (!root || root.dataset.pgBooted === '1') return;
@@ -255,6 +276,8 @@ export function startPeppersGhost(): void {
   let ghostMode = false;
   let exitTimer: ReturnType<typeof setTimeout> | null = null;
   let paused = false;
+  let runGeneration = 0;
+  let abortActiveRun: (() => void) | null = null;
 
   const fallback = document.getElementById('code-fallback') as HTMLTextAreaElement | null;
   const previewWrap = document.getElementById('preview-wrap');
@@ -337,12 +360,21 @@ export function startPeppersGhost(): void {
     return frame;
   }
 
+  function cancelActiveRun(): void {
+    if (abortActiveRun) {
+      abortActiveRun();
+      abortActiveRun = null;
+    }
+  }
+
   function runSketch(
     code: string,
     options: { keepPreviousOnError?: boolean; silent?: boolean } = {},
   ): void {
     const keepPreviousOnError = options.keepPreviousOnError !== false;
     const silent = options.silent === true;
+
+    cancelActiveRun();
 
     const syntaxError = syntaxCheck(code);
     if (syntaxError) {
@@ -353,14 +385,25 @@ export function startPeppersGhost(): void {
       return;
     }
 
+    const generation = ++runGeneration;
     const srcdoc = buildSrcdoc(code, config);
     const pending = attachIframe(srcdoc, { provisional: keepPreviousOnError && !!currentIframe });
     let settled = false;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+    const releaseRun = () => {
+      if (abortActiveRun && runGeneration === generation) abortActiveRun = null;
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+      window.removeEventListener('message', onMsg);
+    };
 
     const finishOk = () => {
-      if (settled) return;
+      if (settled || generation !== runGeneration) return;
       settled = true;
-      window.removeEventListener('message', onMsg);
+      releaseRun();
       if (!silent) clearError();
       if (currentIframe && currentIframe !== pending) currentIframe.remove();
       pending.style.position = '';
@@ -374,36 +417,46 @@ export function startPeppersGhost(): void {
     };
 
     const finishFail = (payload: { message?: string; line?: number }) => {
-      if (settled) return;
+      if (settled || generation !== runGeneration) return;
       settled = true;
-      window.removeEventListener('message', onMsg);
+      releaseRun();
       pending.remove();
       const raw = payload && payload.message ? payload.message : 'The sketch could not run.';
-      const cleaned = raw.replace('Uncaught ', '').replace('ReferenceError: ', '');
-      showError(payload && payload.line, cleaned);
+      const cleaned = String(raw).replace('Uncaught ', '').replace('ReferenceError: ', '');
+      if (!silent) showError(payload && payload.line, cleaned);
       if (!currentIframe) {
         currentIframe = attachIframe(buildSrcdoc(EXAMPLES.orb, config), { provisional: false });
+        lastGoodSrcdoc = buildSrcdoc(EXAMPLES.orb, config);
       }
     };
 
     const onMsg = (event: MessageEvent) => {
+      if (generation !== runGeneration) return;
       if (event.source !== pending.contentWindow) return;
-      if (event.data && event.data.type === 'ghost-ready') {
+      if (!isGhostFrameMessage(event.data)) return;
+      if (event.data.type === 'ghost-ready') {
         finishOk();
+        return;
       }
-      if (event.data && event.data.type === 'ghost-error') {
-        finishFail(event.data);
+      if (event.data.type === 'ghost-error') {
+        const line = typeof event.data.line === 'number' ? event.data.line : 0;
+        const message =
+          typeof event.data.message === 'string' ? event.data.message : 'The sketch could not run.';
+        finishFail({ message, line });
       }
     };
+
+    abortActiveRun = () => {
+      if (settled) return;
+      settled = true;
+      releaseRun();
+      if (pending !== currentIframe) pending.remove();
+    };
+
     window.addEventListener('message', onMsg);
-    setTimeout(() => {
-      if (!settled) {
-        if (keepPreviousOnError && currentIframe) {
-          finishFail({ message: 'The sketch took too long to start.' });
-        } else {
-          finishOk();
-        }
-      }
+    timeoutId = setTimeout(() => {
+      // Never treat a silent timeout as a successful render without ghost-ready.
+      finishFail({ message: 'The sketch took too long to start.' });
     }, 8000);
   }
 
@@ -521,9 +574,9 @@ export function startPeppersGhost(): void {
       (node as HTMLElement & { webkitRequestFullscreen?: () => void }).webkitRequestFullscreen;
     if (req) {
       try {
-        req.call(node);
+        settleFullscreenCall(req.call(node));
       } catch {
-        /* iOS often rejects; CSS fallback remains */
+        /* Sync throws also fall back to CSS Ghost Mode. */
       }
     }
     setTimeout(() => {
@@ -547,9 +600,9 @@ export function startPeppersGhost(): void {
     const exitFs = doc.exitFullscreen || doc.webkitExitFullscreen;
     if (exitFs && (document.fullscreenElement || doc.webkitFullscreenElement)) {
       try {
-        exitFs.call(document);
+        settleFullscreenCall(exitFs.call(document));
       } catch {
-        /* ignore */
+        /* CSS layout already restored */
       }
     }
     if (updateHistory !== false && location.hash === '#ghost') {
@@ -684,9 +737,10 @@ export function startPeppersGhost(): void {
 
   window.addEventListener('message', (event) => {
     if (!currentIframe || event.source !== currentIframe.contentWindow) return;
-    if (event.data && event.data.type === 'ghost-error') {
-      const raw = event.data.message || 'The sketch could not run.';
-      showError(event.data.line, String(raw).replace('Uncaught ', '').replace('ReferenceError: ', ''));
-    }
+    if (!isGhostFrameMessage(event.data) || event.data.type !== 'ghost-error') return;
+    const raw =
+      typeof event.data.message === 'string' ? event.data.message : 'The sketch could not run.';
+    const line = typeof event.data.line === 'number' ? event.data.line : undefined;
+    showError(line, String(raw).replace('Uncaught ', '').replace('ReferenceError: ', ''));
   });
 }

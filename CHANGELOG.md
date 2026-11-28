@@ -12,7 +12,8 @@ Git release tags (`v2.0.0`, `v2.1.0`) are distinct from the npm package version 
 - Preserved the public URL via `scripts/flatten-html-routes.mjs`.  
 - Keeps CodeMirror / textarea editor, four example sketches, sandboxed p5.js iframe execution, Ghost Mode, calibration ranges and original `localStorage` keys.  
 - Fabrication template remains at `/imgs/pepper_ghost_pyramid_template_6cm.svg`. Fragment anchors `#studio`, `#use`, `#template`, `#calibrate`, `#how`, `#history` preserved.  
-- No new navigation entry or Programme discovery link (owner decides placement separately).
+- No new navigation entry or Programme discovery link (owner decides placement separately).  
+- Follow-up: isolate page sections from global `section` padding; page-only `viewport-fit=cover`; cancel superseded provisional iframe runs; never treat startup timeout as success; harden fullscreen promise handling and message validation.
 
 ### Programme integration — Current and Past Programmes
 
