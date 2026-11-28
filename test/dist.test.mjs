@@ -199,6 +199,7 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   }
   assert.equal(existsSync(dist('arduino-day-2026/index.html')), false);
   assert.equal(existsSync(dist('room-for-interaction/index.html')), false);
+  assert.equal(existsSync(dist('peppers-ghost/index.html')), false);
   const arduinoDay = readFileSync(dist('arduino-day-2026.html'), 'utf8');
   assert.match(arduinoDay, /Paper as/);
   assert.match(arduinoDay, /Interface/);
@@ -214,6 +215,36 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   assert.match(arduinoDay, /footer-main|footer-col/);
   assert.match(readFileSync(dist('sitemap.xml'), 'utf8'), /arduino-day-2026\.html/);
   assert.match(readFileSync(dist('sitemap.xml'), 'utf8'), /room-for-interaction\.html/);
+  assert.match(readFileSync(dist('sitemap.xml'), 'utf8'), /peppers-ghost\.html/);
+
+  const peppers = readFileSync(dist('peppers-ghost.html'), 'utf8');
+  assert.match(peppers, /canonical[^>]+peppers-ghost\.html/);
+  assert.match(peppers, /Open studio experiment/);
+  assert.match(peppers, /Make your own ghost/);
+  assert.match(peppers, /id="studio"/);
+  assert.match(peppers, /id="use"/);
+  assert.match(peppers, /id="template"/);
+  assert.match(peppers, /id="calibrate"/);
+  assert.match(peppers, /id="how"/);
+  assert.match(peppers, /id="history"/);
+  assert.match(peppers, /data-example="orb"/);
+  assert.match(peppers, /data-example="creature"/);
+  assert.match(peppers, /data-example="particles"/);
+  assert.match(peppers, /data-example="text"/);
+  assert.match(peppers, /pepper_ghost_pyramid_template_6cm\.svg/);
+  assert.match(peppers, /id="nav"|School of Tomorrow/);
+  assert.match(peppers, /footer-main|footer-col/);
+  assert.match(peppers, /id="ghost-stage"/);
+  assert.equal(statSync(dist('imgs/pepper_ghost_pyramid_template_6cm.svg')).isFile(), true);
+  const peppersScriptMatch = peppers.match(/src="(\/_astro\/[^"]*PeppersGhost[^"]+\.js)"/);
+  assert.ok(peppersScriptMatch, 'Pepper’s Ghost client script should be bundled');
+  const peppersScript = readFileSync(dist(peppersScriptMatch[1].replace(/^\//, '')), 'utf8');
+  assert.match(peppersScript, /allow-scripts/);
+  assert.doesNotMatch(peppersScript, /allow-same-origin/);
+  assert.match(peppersScript, /peppers-ghost-code/);
+  assert.match(peppersScript, /peppers-ghost-scale-v2/);
+  assert.match(peppersScript, /peppers-ghost-distance-v2/);
+  assert.match(peppersScript, /p5@1\.11\.3/);
 
   const room = readFileSync(dist('room-for-interaction.html'), 'utf8');
   assert.match(room, /Room for/);

@@ -12,7 +12,7 @@ const root = join(fileURLToPath(new URL('.', import.meta.url)), '..');
 const dist = join(root, 'dist');
 
 /** @type {readonly string[]} */
-const flatHtmlRoutes = ['arduino-day-2026', 'room-for-interaction'];
+const flatHtmlRoutes = ['arduino-day-2026', 'room-for-interaction', 'peppers-ghost'];
 
 async function exists(path) {
   try {

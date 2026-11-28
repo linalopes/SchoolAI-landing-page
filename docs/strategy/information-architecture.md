@@ -106,7 +106,7 @@ Preserve functioning public URLs:
 - `space3d.html` (standalone under `public/`)  
 - `room-for-interaction.html` (+ JSON compatibility endpoint; Astro-generated from Markdown)  
 - `arduino-day-2026.html` (Astro-generated from Markdown; legacy URL preserved)  
-- `peppers-ghost.html` (standalone under `public/`)  
+- `peppers-ghost.html` (Astro-generated from Markdown + client experiment script; legacy URL preserved)  
 - `/history/` where present  
 
 Existing domain and HTTPS remain. Do not delete legacy content without review.

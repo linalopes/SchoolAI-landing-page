@@ -1,0 +1,767 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'pages'>;
+}
+
+const { entry } = Astro.props;
+const pg = entry.data.peppers_ghost;
+if (!pg) {
+  throw new Error('peppers-ghost.md is missing the peppers_ghost frontmatter section.');
+}
+---
+
+<article
+  class="peppers-ghost"
+  data-peppers-ghost
+  data-replace-confirm={pg.studio.replace_confirm}
+  data-error-hint={pg.studio.error_hint}
+  data-copy-label={pg.studio.copy_label}
+  data-copy-done-label={pg.studio.copy_done_label}
+>
+  <div class="pg-container">
+    <section class="pg-hero">
+      <p class="pg-hero-kicker">{pg.hero.kicker}</p>
+      <h1>{pg.hero.title}</h1>
+      <p class="pg-hero-sub">{pg.hero.subtitle}</p>
+      {pg.hero.paragraphs.map((paragraph) => <p class="pg-hero-copy">{paragraph}</p>)}
+    </section>
+
+    <div class="pg-steps" aria-label={pg.steps_aria}>
+      {
+        pg.steps.map((step) => (
+          <div>
+            <span class="pg-step-n">{step.number}</span>
+            <span class="pg-step-t">{step.text}</span>
+          </div>
+        ))
+      }
+    </div>
+
+    <section class="pg-studio" id="studio">
+      <div class="pg-studio-grid">
+        <div class="pg-editor-col">
+          <h2>{pg.studio.title}</h2>
+          <p class="pg-lede">{pg.studio.lede}</p>
+          <div class="pg-examples" role="group" aria-label={pg.studio.examples_aria}>
+            {
+              pg.studio.examples.map((example, index) => (
+                <button
+                  type="button"
+                  class="example-btn"
+                  data-example={example.id}
+                  aria-pressed={index === 0 ? 'true' : 'false'}
+                >
+                  {example.label}
+                </button>
+              ))
+            }
+          </div>
+          <div class="editor-shell" id="editor-shell">
+            <textarea
+              id="code-fallback"
+              spellcheck="false"
+              autocapitalize="off"
+              autocomplete="off"
+              aria-label={pg.studio.editor_aria_label}></textarea>
+          </div>
+          <div class="error-box" id="error-box" role="alert">
+            <strong>{pg.studio.error_title}</strong>
+            <div id="error-detail"></div>
+          </div>
+          <div class="pg-controls">
+            <button type="button" class="pg-button pg-button--accent" id="btn-run">{pg.studio.run_label}</button>
+            <button type="button" class="pg-button" id="btn-reset">{pg.studio.reset_label}</button>
+            <button type="button" class="pg-button-quiet" id="btn-copy">{pg.studio.copy_label}</button>
+          </div>
+        </div>
+        <div class="pg-preview-col">
+          <div class="preview-wrap" id="preview-wrap"></div>
+          <p class="pg-preview-hint">{pg.studio.preview_hint}</p>
+          <div class="pg-studio-actions">
+            <button type="button" class="pg-button pg-button--ghost" id="btn-ghost">{pg.studio.ghost_button}</button>
+            <p class="orient-hint" id="orient-hint">{pg.studio.orient_hint}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pg-pyramid" id="use">
+      <h2>{pg.use.title}</h2>
+      <ol>
+        {
+          pg.use.steps.map((step) => {
+            const ghostLabel = pg.studio.ghost_button;
+            if (step.includes(ghostLabel)) {
+              const [before, after] = step.split(ghostLabel);
+              return (
+                <li>
+                  {before}
+                  <strong>{ghostLabel}</strong>
+                  {after}
+                </li>
+              );
+            }
+            return <li>{step}</li>;
+          })
+        }
+      </ol>
+      <p class="pg-note-callout">{pg.use.note}</p>
+    </section>
+
+    <section class="pg-template" id="template">
+      <h2>{pg.template.title}</h2>
+      <p class="pg-lede">{pg.template.lede}</p>
+      <div class="pg-template-actions">
+        <a
+          class="pg-button"
+          href={pg.template.download_href}
+          download={pg.template.download_filename}
+        >
+          {pg.template.download_label}
+        </a>
+        <p class="pg-template-meta">{pg.template.meta}</p>
+      </div>
+    </section>
+
+    <section class="pg-calibrate" id="calibrate">
+      <h2>{pg.calibrate.title}</h2>
+      <p class="pg-lede">{pg.calibrate.lede}</p>
+      <div class="pg-cal-row">
+        <label for="cal-size">
+          {pg.calibrate.size_label} <span id="cal-size-val">0.85</span>
+        </label>
+        <input id="cal-size" type="range" min="0.55" max="1.55" step="0.01" value="0.85" />
+      </div>
+      <div class="pg-cal-row">
+        <label for="cal-dist">
+          {pg.calibrate.distance_label} <span id="cal-dist-val">0.35</span>
+        </label>
+        <input id="cal-dist" type="range" min="0.22" max="0.42" step="0.01" value="0.35" />
+      </div>
+      <button type="button" class="pg-button" id="btn-cal-reset">{pg.calibrate.reset_label}</button>
+    </section>
+
+    <section class="pg-howto" id="how">
+      <h2>{pg.how.title}</h2>
+      <p class="pg-lede">{pg.how.lede}</p>
+      <svg class="pg-diagram" viewBox="0 0 120 120" aria-hidden="true">
+        <rect x="1" y="1" width="118" height="118" fill="none" stroke="#22113E" stroke-width="1"></rect>
+        <rect x="48" y="48" width="24" height="24" fill="#22113E"></rect>
+        <path d="M60 18 L60 44" stroke="#EA7DFF" stroke-width="1.5"></path>
+        <path d="M60 102 L60 76" stroke="#EA7DFF" stroke-width="1.5"></path>
+        <path d="M18 60 L44 60" stroke="#EA7DFF" stroke-width="1.5"></path>
+        <path d="M102 60 L76 60" stroke="#EA7DFF" stroke-width="1.5"></path>
+        <circle cx="60" cy="28" r="7" fill="none" stroke="#22113E" stroke-width="1.5"></circle>
+        <circle cx="60" cy="92" r="7" fill="none" stroke="#22113E" stroke-width="1.5"></circle>
+        <circle cx="28" cy="60" r="7" fill="none" stroke="#22113E" stroke-width="1.5"></circle>
+        <circle cx="92" cy="60" r="7" fill="none" stroke="#22113E" stroke-width="1.5"></circle>
+      </svg>
+    </section>
+
+    <section id="history">
+      <h2>{pg.history.title}</h2>
+      {pg.history.paragraphs.map((paragraph) => <p class="pg-lede">{paragraph}</p>)}
+    </section>
+
+    <section class="pg-school-note">
+      <p>
+        <strong>
+          {pg.credits.built_prefix}{' '}
+          <a href={pg.credits.school_href}>{pg.credits.school_name}</a>
+        </strong>
+      </p>
+      <p class="pg-lede pg-school-note-body">{pg.credits.body}</p>
+    </section>
+  </div>
+
+  <div id="ghost-stage">
+    <button type="button" class="ghost-exit" id="ghost-exit" aria-label={pg.studio.exit_aria_label}>×</button>
+  </div>
+</article>
+
+<script>
+  import { startPeppersGhost } from '../../scripts/peppers-ghost';
+  startPeppersGhost();
+</script>
+
+<style is:global>
+  .peppers-ghost {
+    --pg-black: #000000;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    color: var(--deep-purple);
+  }
+
+  .peppers-ghost .pg-container {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 var(--space-4) calc(48px + var(--safe-bottom));
+  }
+
+  .peppers-ghost .pg-hero {
+    padding: 12px 0 28px;
+  }
+
+  .peppers-ghost .pg-hero-kicker {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--deep-purple);
+    margin-bottom: 12px;
+  }
+
+  .peppers-ghost .pg-hero-kicker::after {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--pink);
+    margin-top: 8px;
+  }
+
+  .peppers-ghost h1 {
+    font-family: var(--font-title);
+    font-weight: 300;
+    font-size: clamp(36px, 9.5vw, 64px);
+    line-height: 1.05;
+    overflow-wrap: break-word;
+    letter-spacing: -0.03em;
+    margin-bottom: 12px;
+  }
+
+  .peppers-ghost .pg-hero-sub {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    line-height: 1.5;
+    max-width: 28em;
+    margin-bottom: 18px;
+  }
+
+  .peppers-ghost .pg-hero-copy {
+    max-width: 38em;
+    opacity: 0.72;
+    margin-bottom: 12px;
+  }
+
+  .peppers-ghost .pg-steps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 16px;
+    margin: 28px 0 8px;
+    padding: 16px 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .peppers-ghost .pg-step-n {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brand-magenta);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .peppers-ghost .pg-step-n::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 2px;
+    background: var(--pink);
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  .peppers-ghost .pg-step-t {
+    font-family: var(--font-title);
+    font-weight: 300;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    overflow-wrap: break-word;
+  }
+
+  .peppers-ghost h2 {
+    font-family: var(--font-title);
+    font-weight: 300;
+    font-size: clamp(28px, 6vw, 40px);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 40px 0 12px;
+  }
+
+  .peppers-ghost h2::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 2px;
+    background: var(--pink);
+    margin-top: 10px;
+  }
+
+  .peppers-ghost .pg-lede {
+    opacity: 0.72;
+    max-width: 36em;
+    margin-bottom: 20px;
+  }
+
+  .peppers-ghost .preview-wrap {
+    background: var(--pg-black);
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 1;
+    max-height: min(72vw, 420px);
+    margin: 8px 0 12px;
+  }
+
+  .peppers-ghost .preview-wrap iframe,
+  .peppers-ghost #ghost-stage iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #000;
+    display: block;
+  }
+
+  .peppers-ghost .preview-wrap::before,
+  .peppers-ghost .preview-wrap::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background: rgba(255, 255, 255, 0.28);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .peppers-ghost .preview-wrap::before {
+    width: 12px;
+    height: 1px;
+    transform: translate(-50%, -50%);
+  }
+
+  .peppers-ghost .preview-wrap::after {
+    width: 1px;
+    height: 12px;
+    transform: translate(-50%, -50%);
+  }
+
+  .peppers-ghost .pg-preview-hint {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    opacity: 0.55;
+    margin-bottom: 20px;
+  }
+
+  .peppers-ghost .pg-studio {
+    margin-top: 8px;
+  }
+
+  .peppers-ghost .pg-editor-col > h2 {
+    margin-top: 12px;
+  }
+
+  .peppers-ghost .pg-examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 14px;
+  }
+
+  .peppers-ghost .example-btn {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    min-height: 44px;
+    border: 1px solid var(--color-border-strong);
+    background: transparent;
+    color: var(--deep-purple);
+    border-radius: var(--radius);
+    cursor: pointer;
+  }
+
+  .peppers-ghost .example-btn[aria-pressed='true'] {
+    background: var(--deep-purple);
+    color: var(--white);
+    border-color: var(--deep-purple);
+  }
+
+  .peppers-ghost .example-btn:focus-visible {
+    outline: 2px solid var(--pink);
+    outline-offset: 2px;
+  }
+
+  .peppers-ghost .editor-shell {
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--deep-purple);
+    min-height: 280px;
+    height: min(38vh, 400px);
+  }
+
+  .peppers-ghost .editor-shell .cm-editor,
+  .peppers-ghost .editor-shell textarea {
+    height: 100%;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .peppers-ghost .editor-shell textarea {
+    width: 100%;
+    border: 0;
+    resize: vertical;
+    padding: 12px;
+    background: var(--deep-purple);
+    color: var(--white);
+    font-family: var(--font-mono);
+  }
+
+  .peppers-ghost .cm-editor {
+    height: 100%;
+  }
+
+  .peppers-ghost .cm-scroller {
+    overflow: auto !important;
+    font-family: var(--font-mono) !important;
+  }
+
+  .peppers-ghost .pg-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 16px 0;
+  }
+
+  .peppers-ghost .pg-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 12px 18px;
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: 1px solid var(--deep-purple);
+    background: transparent;
+    color: var(--deep-purple);
+    touch-action: manipulation;
+    text-decoration: none;
+  }
+
+  .peppers-ghost .pg-button--accent {
+    background: var(--turquoise);
+    border-color: var(--turquoise);
+    color: var(--deep-purple);
+    font-weight: 700;
+  }
+
+  .peppers-ghost .pg-button--ghost {
+    background: var(--pink);
+    border-color: var(--pink);
+    color: var(--deep-purple);
+    width: 100%;
+    font-weight: 700;
+  }
+
+  .peppers-ghost .pg-button:focus-visible {
+    outline: 2px solid var(--pink);
+    outline-offset: 2px;
+  }
+
+  .peppers-ghost .pg-button-quiet {
+    background: none;
+    border: 0;
+    color: var(--deep-purple);
+    opacity: 0.55;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    min-height: 44px;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .peppers-ghost .error-box {
+    display: none;
+    margin: 12px 0;
+    padding: 14px 16px;
+    border-left: 2px solid var(--pink);
+    background: rgba(234, 125, 255, 0.08);
+  }
+
+  .peppers-ghost .error-box.visible {
+    display: block;
+  }
+
+  .peppers-ghost .error-box strong {
+    font-family: var(--font-title);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .peppers-ghost .error-box code {
+    font-family: var(--font-mono);
+    font-size: 14px;
+  }
+
+  .peppers-ghost .pg-howto ol,
+  .peppers-ghost .pg-pyramid ol {
+    padding-left: 1.2em;
+    max-width: 36em;
+  }
+
+  .peppers-ghost .pg-howto li,
+  .peppers-ghost .pg-pyramid li {
+    margin-bottom: 8px;
+    opacity: 0.8;
+  }
+
+  .peppers-ghost .pg-note-callout {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    max-width: 36em;
+    margin-top: 16px;
+    padding: 12px 14px;
+    background: var(--gray-green);
+    color: var(--deep-purple);
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .peppers-ghost .pg-note-callout::before {
+    content: '→';
+    color: var(--pink);
+    flex-shrink: 0;
+    line-height: 1.45;
+  }
+
+  .peppers-ghost .pg-template-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .peppers-ghost a.pg-button {
+    width: auto;
+    max-width: 100%;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .peppers-ghost a.pg-button:hover,
+  .peppers-ghost a.pg-button:focus-visible {
+    background: var(--pink);
+    border-color: var(--pink);
+    color: var(--deep-purple);
+  }
+
+  .peppers-ghost .pg-template-meta {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--deep-purple);
+    opacity: 0.65;
+    overflow-wrap: break-word;
+  }
+
+  .peppers-ghost .pg-calibrate {
+    margin: 28px 0 8px;
+  }
+
+  .peppers-ghost .pg-cal-row {
+    margin-bottom: 16px;
+  }
+
+  .peppers-ghost .pg-cal-row label {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .peppers-ghost input[type='range'] {
+    width: 100%;
+    accent-color: var(--pink);
+    min-height: 32px;
+  }
+
+  .peppers-ghost .pg-diagram {
+    width: 180px;
+    margin: 20px 0;
+    opacity: 0.85;
+  }
+
+  .peppers-ghost .pg-school-note {
+    margin-top: 48px;
+    padding-top: 28px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .peppers-ghost .pg-school-note a {
+    color: var(--brand-magenta);
+    border-bottom: 1px solid var(--pink);
+    text-decoration: none;
+  }
+
+  .peppers-ghost .pg-school-note a:hover,
+  .peppers-ghost .pg-school-note a:focus-visible {
+    color: var(--deep-purple);
+  }
+
+  .peppers-ghost .pg-school-note-body {
+    margin-top: 10px;
+  }
+
+  .peppers-ghost #ghost-stage {
+    display: none;
+    background: #000;
+  }
+
+  body.ghost-mode {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  body.ghost-mode #nav,
+  body.ghost-mode .footer-main,
+  body.ghost-mode .footer-pattern,
+  body.ghost-mode .footer-bar,
+  body.ghost-mode .peppers-ghost .pg-container {
+    visibility: hidden;
+  }
+
+  body.ghost-mode .peppers-ghost #ghost-stage {
+    display: block;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 10000;
+    background: #000;
+    margin: 0;
+    padding: 0;
+    visibility: visible;
+  }
+
+  body.ghost-mode .peppers-ghost #ghost-stage iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .peppers-ghost .ghost-exit {
+    position: absolute;
+    top: calc(10px + var(--safe-top));
+    right: calc(12px + env(safe-area-inset-right, 0px));
+    width: 44px;
+    height: 44px;
+    border: 0;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 28px;
+    line-height: 1;
+    z-index: 10001;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.6s ease;
+  }
+
+  .peppers-ghost .ghost-exit.dim {
+    opacity: 0.18;
+  }
+
+  .peppers-ghost .ghost-exit:focus-visible {
+    outline: 2px solid var(--pink);
+  }
+
+  .peppers-ghost .orient-hint {
+    display: none;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    opacity: 0.55;
+    margin-top: 8px;
+  }
+
+  .peppers-ghost .pg-studio-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .peppers-ghost .pg-preview-col {
+    order: -1;
+  }
+
+  .peppers-ghost .pg-studio-actions {
+    margin-top: 8px;
+  }
+
+  @media (max-width: 520px) {
+    .peppers-ghost .pg-steps {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .peppers-ghost .pg-container {
+      padding: 0 var(--space-6) 72px;
+    }
+
+    .peppers-ghost .pg-steps {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .peppers-ghost .pg-studio-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .peppers-ghost .pg-preview-col {
+      order: 0;
+    }
+
+    .peppers-ghost .preview-wrap {
+      max-height: 520px;
+    }
+
+    .peppers-ghost .pg-button--ghost {
+      width: auto;
+    }
+
+    .peppers-ghost .orient-hint {
+      display: none !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .peppers-ghost .ghost-exit {
+      transition: none;
+    }
+  }
+</style>
