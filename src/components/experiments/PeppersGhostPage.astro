@@ -199,6 +199,34 @@ if (!pg) {
     padding: 0;
   }
 
+  /*
+   * viewport-fit=cover is page-specific. Pad shared chrome with safe-area so
+   * the notch / home indicator do not overlap nav or footer. Do not pad
+   * #ghost-stage — optical centre must stay at true screen centre.
+   */
+  body:has(.peppers-ghost):not(.ghost-mode) #nav {
+    padding-top: calc(4px + env(safe-area-inset-top, 0px));
+    padding-left: calc(var(--space-6) + env(safe-area-inset-left, 0px));
+    padding-right: calc(var(--space-6) + env(safe-area-inset-right, 0px));
+  }
+
+  body:has(.peppers-ghost):not(.ghost-mode) .nav-mobile-menu {
+    padding-top: calc(var(--space-6) + env(safe-area-inset-top, 0px));
+    padding-right: calc(var(--space-6) + env(safe-area-inset-right, 0px));
+    padding-bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
+    padding-left: calc(var(--space-6) + env(safe-area-inset-left, 0px));
+  }
+
+  body:has(.peppers-ghost):not(.ghost-mode) footer {
+    padding-bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+    padding-left: calc(var(--space-6) + env(safe-area-inset-left, 0px));
+    padding-right: calc(var(--space-6) + env(safe-area-inset-right, 0px));
+  }
+
+  body:has(.peppers-ghost) .editorial-main {
+    padding-top: calc(120px + env(safe-area-inset-top, 0px));
+  }
+
   .peppers-ghost .pg-container {
     max-width: 1120px;
     margin: 0 auto;
@@ -734,6 +762,23 @@ if (!pg) {
   @media (max-width: 520px) {
     .peppers-ghost .pg-steps {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 900px) {
+    body:has(.peppers-ghost):not(.ghost-mode) #nav {
+      padding-top: calc(10px + env(safe-area-inset-top, 0px));
+      padding-left: calc(var(--space-4) + env(safe-area-inset-left, 0px));
+      padding-right: calc(var(--space-4) + env(safe-area-inset-right, 0px));
+    }
+
+    body:has(.peppers-ghost):not(.ghost-mode) footer {
+      padding-left: calc(var(--space-4) + env(safe-area-inset-left, 0px));
+      padding-right: calc(var(--space-4) + env(safe-area-inset-right, 0px));
+    }
+
+    body:has(.peppers-ghost) .editorial-main {
+      padding-top: calc(100px + env(safe-area-inset-top, 0px));
     }
   }
 

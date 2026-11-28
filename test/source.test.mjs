@@ -430,6 +430,19 @@ test("Pepper's Ghost is Markdown-backed with preserved experiment contracts", ()
   }
   assert.match(page, /sandbox|startPeppersGhost/);
   assert.match(page, /\.peppers-ghost section\s*\{[^}]*padding:\s*0/s);
+  assert.match(page, /body:has\(\.peppers-ghost\):not\(\.ghost-mode\) #nav/);
+  assert.match(page, /body:has\(\.peppers-ghost\):not\(\.ghost-mode\) footer/);
+  assert.match(page, /body:has\(\.peppers-ghost\) \.editorial-main/);
+  assert.match(page, /safe-area-inset-top/);
+  assert.match(page, /safe-area-inset-bottom/);
+  assert.match(
+    page,
+    /#ghost-stage\s*\{[^}]*padding:\s*0|body\.ghost-mode[\s\S]*?#ghost-stage\s*\{[^}]*padding:\s*0/s,
+  );
+  assert.doesNotMatch(
+    page,
+    /body\.ghost-mode[\s\S]*?#ghost-stage\s*\{[^}]*padding:[^;]*safe-area-inset/s,
+  );
   assert.match(script, /sandbox', 'allow-scripts'|sandbox", "allow-scripts"/);
   assert.doesNotMatch(script, /allow-same-origin/);
   assert.match(script, /peppers-ghost-code/);

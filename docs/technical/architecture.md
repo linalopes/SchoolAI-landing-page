@@ -88,7 +88,7 @@ docs/
 | Application logic | `src/scripts/peppers-ghost.ts` (p5.js iframe runner, CodeMirror editor, Ghost Mode, calibration) |
 | Fabrication asset | `public/imgs/pepper_ghost_pyramid_template_6cm.svg` (functional template; original URL preserved) |
 
-Sketches run inside a sandboxed iframe (`sandbox="allow-scripts"` only). Example sketch source and optical defaults live in the script module so visitor `localStorage` keys (`peppers-ghost-code`, `peppers-ghost-example`, `peppers-ghost-scale-v2`, `peppers-ghost-distance-v2`) stay compatible. External runtime dependencies: p5@1.11.3 (jsDelivr) and CodeMirror 6 (esm.sh), with a plain textarea fallback. The page opts into `viewport-fit=cover` via `EditorialLayout` / `BaseLayout` (`viewportFitCover`) for Ghost Mode on notched phones; other routes keep the default viewport meta. Page sections reset institutional `section` padding under `.peppers-ghost`.
+Sketches run inside a sandboxed iframe (`sandbox="allow-scripts"` only). Example sketch source and optical defaults live in the script module so visitor `localStorage` keys (`peppers-ghost-code`, `peppers-ghost-example`, `peppers-ghost-scale-v2`, `peppers-ghost-distance-v2`) stay compatible. External runtime dependencies: p5@1.11.3 (jsDelivr) and CodeMirror 6 (esm.sh), with a plain textarea fallback. The page opts into `viewport-fit=cover` via `EditorialLayout` / `BaseLayout` (`viewportFitCover`) for Ghost Mode on notched phones; other routes keep the default viewport meta. Page sections reset institutional `section` padding under `.peppers-ghost`. Shared nav/footer receive page-scoped `safe-area-inset` padding via `body:has(.peppers-ghost)`; the Ghost Mode stage stays unpadded so the four-view optical centre is unchanged.
 
 ## Feeds
 

@@ -234,9 +234,16 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   assert.match(peppers, /data-example="text"/);
   assert.match(peppers, /pepper_ghost_pyramid_template_6cm\.svg/);
   assert.match(peppers, /\.peppers-ghost section\{padding:0\}|\.peppers-ghost section\s*\{[^}]*padding:\s*0/s);
+  assert.match(peppers, /body:has\(\.peppers-ghost\):not\(\.ghost-mode\) #nav|body:has\(.peppers-ghost\):not\(.ghost-mode\) #nav/);
+  assert.match(peppers, /safe-area-inset-top/);
+  assert.match(peppers, /safe-area-inset-bottom/);
   assert.match(peppers, /id="nav"|School of Tomorrow/);
   assert.match(peppers, /footer-main|footer-col/);
   assert.match(peppers, /id="ghost-stage"/);
+  assert.doesNotMatch(
+    readFileSync(dist('index.html'), 'utf8'),
+    /body:has\(\.peppers-ghost\)|body:has\(.peppers-ghost\)/,
+  );
   assert.equal(statSync(dist('imgs/pepper_ghost_pyramid_template_6cm.svg')).isFile(), true);
   assert.doesNotMatch(readFileSync(dist('index.html'), 'utf8'), /viewport-fit=cover/);
   assert.doesNotMatch(arduinoDay, /viewport-fit=cover/);
