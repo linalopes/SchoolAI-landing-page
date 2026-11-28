@@ -118,6 +118,8 @@ You can edit files in the browser:
 | Research | [research.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/research.md) |
 | Atelier | [atelier.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/atelier.md) |
 | Programme (including Current / Past Programmes) | [programme.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/programme.md) |
+| Publications (page copy) | [publications.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/publications.md) |
+| Publication records | [`src/content/publications/`](https://github.com/linalopes/SchoolAI-landing-page/tree/main/src/content/publications) |
 | Inverted Gallery | [inverted-gallery.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/inverted-gallery.md) |
 | Collaborate | [collaborate.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/collaborate.md) |
 | Research Wishlist page copy | [wishlist.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/wishlist.md) |
@@ -128,6 +130,18 @@ You can edit files in the browser:
 | Financial support (TWINT / Stripe) | [financial-support.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/support/financial-support.md) |
 | Footer labels and links | [footer.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/site/footer.md) |
 | Physical address | [location.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/site/location.md) |
+
+### Add a publication
+
+1. Create a Markdown file under [`src/content/publications/`](https://github.com/linalopes/SchoolAI-landing-page/tree/main/src/content/publications) (for example `my-publication.md`).  
+2. Set `title`, `year`, `format`, `description`, `origin`, `primary_url`, `primary_cta`, `order` and `published: true`.  
+3. Add an authentic cover via optional public HTTPS `cover_url` + `cover_alt`. Leave `cover_url` empty for a typographic fallback — do not commit new editorial image binaries to Git.  
+4. Mark `primary_external: true` when the destination is outside this site.  
+5. Optionally add `github_url`, `related_activity_url` / `related_research_url` (and labels). Only set `license` when verified.  
+6. Keep page introduction copy in [publications.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/publications.md). Do not create a detail page when the destination already is the publication.  
+7. Commit to `main` and wait for Deploy production site. Set `published: false` to hide a draft.
+
+Distinguish publications from Research Archive entries, Programme activities and historical event pages.
 
 ### Replace the Current Programme or add a Past Programme
 

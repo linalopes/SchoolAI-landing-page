@@ -56,7 +56,7 @@ src/
   components/     # Presentation (home, editorial, wishlist, support, navigation)
   layouts/        # BaseLayout, EditorialLayout
   pages/          # File-based routes
-  content/        # Markdown collections (pages, gallery, support, site)
+  content/        # Markdown collections (pages, publications, gallery, support, site)
   content.config.ts
   lib/sheets/     # CSV parse, adapters, snapshots, HTML render helpers
   lib/content.ts  # Markdown loaders and CTA helpers
@@ -71,9 +71,21 @@ docs/
 
 ## Editorial separation
 
-- **Markdown** — institutional copy, CTAs, SEO, rental rates, payments, footer, location, wishlist labels, Programme current/past programme features, Arduino Day 2026 event page, Room for Interaction archive page, Pepper’s Ghost experiment labels and editorial sections.  
-- **Sheets** — hero, events, archive, workstations, contributors, wishlist **records**.  
+- **Markdown** — institutional copy, CTAs, SEO, rental rates, payments, footer, location, wishlist labels, publication records (`src/content/publications/`), Programme current/past programme features, Arduino Day 2026 event page, Room for Interaction archive page, Pepper’s Ghost experiment labels and editorial sections.  
+- **Sheets** — hero, events, archive, workstations, contributors, wishlist **records**. Publications do not use a Sheets feed.  
 - **Astro / TypeScript** — presentation and validation only. Do not hardcode editable copy.
+
+### Publications
+
+| Layer | Location |
+|---|---|
+| Page copy | `src/content/pages/publications.md` |
+| Publication records | `src/content/publications/*.md` |
+| Presentation | `src/pages/publications/index.astro` |
+| Homepage teaser | `src/components/home/Publications.astro` + `home.md` `publications` section |
+| Helpers | `getPublishedPublications()` / `publicationCoverUrl()` in `src/lib/content.ts` |
+
+Entries link to destinations (for example `/peppers-ghost.html` or an independent external app). Offline builds must not depend on external publication apps being online. Optional `cover_url` must be public HTTPS; otherwise the page uses a typographic fallback.
 
 ### Legacy `.html` Astro routes
 

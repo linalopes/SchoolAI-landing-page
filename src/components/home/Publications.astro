@@ -1,0 +1,21 @@
+---
+import { requirePage } from '../../lib/content';
+
+const home = await requirePage('home');
+const publications = home.data.publications;
+if (!publications) {
+  throw new Error('home.md is missing the publications frontmatter section.');
+}
+---
+<section id="publications">
+  <div class="section-header fade-up">
+    <span class="section-number t-label">{publications.number}</span>
+    <div>
+      <h2 class="section-title" set:html={publications.title_lines.join('<br>')} />
+      <p class="section-intro">{publications.intro}</p>
+      <div class="section-actions">
+        <a href={publications.cta.href} class="button button--primary">{publications.cta.label}</a>
+      </div>
+    </div>
+  </div>
+</section>

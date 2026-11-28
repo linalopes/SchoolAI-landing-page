@@ -8,6 +8,7 @@ export const navItems = [
   { href: '/research/', label: 'Research' },
   { href: '/atelier/', label: 'Atelier' },
   { href: '/programme/', label: 'Programme' },
+  { href: '/publications/', label: 'Publications' },
   { href: '/inverted-gallery/', label: 'Inverted Gallery' },
 ] as const;
 

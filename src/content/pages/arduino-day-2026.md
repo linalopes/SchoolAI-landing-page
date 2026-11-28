@@ -199,6 +199,20 @@ arduino_day:
         answer: "Yes. The event is designed to work both as an in-person micro-lab and as a live Twitch session for remote viewers."
       - question: "Will the prototype be finished?"
         answer: "Maybe, maybe not. The value of the session is precisely that it happens in public, with room for iteration, detours, and productive failure."
+  related_publication:
+    kicker: "Publication developed for this activity"
+    title: "Paper as Interface"
+    body: >-
+      An exploratory research board connecting paper electronics, expressive
+      interfaces, material investigation and speculative prototyping. The board
+      remains available as a publication beyond the Arduino Day encounter.
+    primary_cta:
+      label: "Explore the board"
+      href: "https://school-ai-paper-as-interface.vercel.app/"
+      external: true
+    secondary_cta:
+      label: "View in Publications"
+      href: "/publications/"
   closing:
     kicker: "Arduino Day 2026 · Open call to curious people"
     title_before: "Join the stream or step into the"

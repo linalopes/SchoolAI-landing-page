@@ -28,11 +28,22 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   assert.match(html, /href="\/atelier\/"/);
   assert.match(html, /id="programme"/);
   assert.match(html, /href="\/programme\/"/);
+  assert.match(html, /id="publications"/);
+  assert.match(html, /href="\/publications\/"/);
+  assert.match(html, /Knowledge in different forms/);
   assert.match(html, /id="gallery"/);
   assert.match(html, /Inverted Gallery/);
   assert.match(html, /href="\/inverted-gallery\/"/);
   assert.match(html, /id="collaborate"/);
   assert.match(html, /href="\/collaborate\/"/);
+  const homeSectionOrder = [
+    'id="programme"',
+    'id="publications"',
+    'id="gallery"',
+    'id="collaborate"',
+  ].map((token) => html.indexOf(token));
+  assert.ok(homeSectionOrder.every((idx) => idx > -1));
+  assert.deepEqual(homeSectionOrder, [...homeSectionOrder].sort((a, b) => a - b));
   assert.match(html, /No public events are scheduled right now/);
   assert.match(html, /https:\/\/formspree.io\/f\/mvgbznoe/);
   assert.match(html, /\/space3d\.html/);
@@ -181,6 +192,7 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   assert.equal(statSync(dist('robots.txt')).isFile(), true);
   assert.equal(statSync(dist('sitemap.xml')).isFile(), true);
   assert.match(readFileSync(dist('robots.txt'), 'utf8'), /Sitemap: https:\/\/schoolai\.linalopes\.info\/sitemap\.xml/);
+  assert.match(readFileSync(dist('sitemap.xml'), 'utf8'), /https:\/\/schoolai\.linalopes\.info\/publications\//);
   assert.match(readFileSync(dist('sitemap.xml'), 'utf8'), /https:\/\/schoolai\.linalopes\.info\/inverted-gallery\//);
   assert.match(readFileSync(dist('sitemap.xml'), 'utf8'), /https:\/\/schoolai\.linalopes\.info\/collaborate\/wishlist\//);
   assert.match(readFileSync(dist('404.html'), 'utf8'), /Page not found/);
@@ -207,15 +219,36 @@ test('production build keeps seven routes, Markdown-driven copy, payments and re
   assert.match(arduinoDay, /#hero:not\(\.ad-hero\):not\(\.rfi-hero\)|\.arduino-day #hero\.ad-hero/);
   assert.match(arduinoDay, /id="timeline"/);
   assert.match(arduinoDay, /id="details"/);
+  assert.match(arduinoDay, /id="related-publication"/);
   assert.match(arduinoDay, /id="faq"/);
+  assert.match(arduinoDay, /school-ai-paper-as-interface\.vercel\.app/);
+  assert.match(arduinoDay, /href="\/publications\/"/);
   assert.match(arduinoDay, /canonical[^>]+arduino-day-2026\.html/);
   assert.match(arduinoDay, /twitch\.tv\/lina_lopes/);
   assert.match(arduinoDay, /imgs\/lina\.jpg|\/imgs\/lina\.jpg/);
   assert.match(arduinoDay, /id="nav"|Site of Tomorrow|School of Tomorrow/);
   assert.match(arduinoDay, /footer-main|footer-col/);
+  assert.match(arduinoDay, /href="\/publications\/"/);
   assert.match(readFileSync(dist('sitemap.xml'), 'utf8'), /arduino-day-2026\.html/);
   assert.match(readFileSync(dist('sitemap.xml'), 'utf8'), /room-for-interaction\.html/);
   assert.match(readFileSync(dist('sitemap.xml'), 'utf8'), /peppers-ghost\.html/);
+  assert.match(readFileSync(dist('sitemap.xml'), 'utf8'), /\/publications\//);
+
+  const publications = readFileSync(dist('publications/index.html'), 'utf8');
+  assert.match(publications, /canonical[^>]+\/publications\/|rel="canonical"[^>]+publications/);
+  assert.match(publications, /Knowledge in different forms/);
+  assert.match(publications, /Pepper(?:'|&#39;|’)?s Ghost/);
+  assert.match(publications, /Paper as Interface/);
+  assert.match(publications, /href="\/peppers-ghost\.html"/);
+  assert.match(publications, /Explore the experiment/);
+  assert.match(publications, /school-ai-paper-as-interface\.vercel\.app/);
+  assert.match(publications, /Explore the board/);
+  assert.match(publications, /github\.com\/linalopes\/SchoolAI-paper-as-interface/);
+  assert.match(publications, /href="\/arduino-day-2026\.html"/);
+  assert.match(publications, /aria-current="page"/);
+  assert.match(publications, /href="\/publications\/"/);
+  assert.doesNotMatch(publications, /Draft Reserved/);
+  assert.doesNotMatch(publications, /ISBN|DOI|openly licensed|Creative Commons/i);
 
   const peppers = readFileSync(dist('peppers-ghost.html'), 'utf8');
   assert.match(peppers, /canonical[^>]+peppers-ghost\.html/);

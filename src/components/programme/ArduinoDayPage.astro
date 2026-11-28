@@ -20,6 +20,7 @@ const access = copy.access;
 const details = copy.details;
 const host = copy.host;
 const faq = copy.faq;
+const relatedPublication = copy.related_publication;
 const closing = copy.closing;
 const pageNav = copy.page_nav ?? [];
 const marqueeLoop = [...copy.marquee, ...copy.marquee];
@@ -262,6 +263,52 @@ const quoteHtml = emphasize(about.quote, about.quote_emphasis);
       </div>
     </div>
   </section>
+
+  {relatedPublication && (
+    <section
+      id="related-publication"
+      class="ad-section ad-section--soft"
+      aria-labelledby="ad-related-publication-title"
+    >
+      <div class="ad-container">
+        <header class="ad-section-header fade-up">
+          <span class="t-label ad-section-number">Publication</span>
+          <div>
+            <p class="ad-section-intro ad-section-intro--muted">{relatedPublication.kicker}</p>
+            <h2 id="ad-related-publication-title" class="ad-section-title">
+              {relatedPublication.title}
+            </h2>
+          </div>
+        </header>
+        <div class="ad-divider"></div>
+        <div class="ad-related-publication fade-up">
+          <p>{relatedPublication.body}</p>
+          <div class="ad-related-publication-actions">
+            <a
+              class="button button--primary"
+              href={resolveCtaHref(relatedPublication.primary_cta.href)}
+              target={relatedPublication.primary_cta.external ? '_blank' : undefined}
+              rel={relatedPublication.primary_cta.external ? 'noopener' : undefined}
+            >
+              {relatedPublication.primary_cta.label}
+              {relatedPublication.primary_cta.external ? ' \u2197\uFE0E' : ''}
+            </a>
+            {relatedPublication.secondary_cta && (
+              <a
+                class="ad-related-publication-secondary"
+                href={resolveCtaHref(relatedPublication.secondary_cta.href)}
+                target={relatedPublication.secondary_cta.external ? '_blank' : undefined}
+                rel={relatedPublication.secondary_cta.external ? 'noopener' : undefined}
+              >
+                {relatedPublication.secondary_cta.label}
+                {relatedPublication.secondary_cta.external ? ' \u2197\uFE0E' : ''}
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
 
   <section id="faq" class="ad-section ad-section--light" aria-labelledby="ad-faq-title">
     <div class="ad-container">
@@ -807,6 +854,30 @@ const quoteHtml = emphasize(about.quote, about.quote_emphasis);
     color: rgba(34, 17, 62, 0.82);
     max-width: 720px;
     margin: 0 0 20px;
+  }
+
+  .arduino-day .ad-related-publication {
+    max-width: 720px;
+  }
+  .arduino-day .ad-related-publication p {
+    font-size: 17px;
+    line-height: 1.85;
+    color: rgba(34, 17, 62, 0.82);
+    margin: 0 0 24px;
+  }
+  .arduino-day .ad-related-publication-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-4);
+  }
+  .arduino-day .ad-related-publication-secondary {
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    color: var(--deep-purple);
+    text-decoration: underline;
+    text-underline-offset: 4px;
   }
 
   .arduino-day .ad-closing {

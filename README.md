@@ -19,7 +19,7 @@ Astro 7 static output · TypeScript · native CSS (SchoolAI Brand Kit) · Markdo
 
 | Source | Controls |
 |---|---|
-| **Markdown** (`src/content/`) | Institutional pages, rates, payments, footer, address, wishlist labels |
+| **Markdown** (`src/content/`) | Institutional pages, publication records, rates, payments, footer, address, wishlist labels |
 | **Google Sheets** | Hero, events, research archive, workstations, contributors, wishlist records |
 
 Astro components present content; they are not the source of editorial wording.
@@ -72,4 +72,4 @@ No new editorial photographs or research binaries in Git. Use public HTTPS URLs.
 
 ## Routes
 
-`/` · `/about/` · `/research/` · `/atelier/` · `/programme/` · `/inverted-gallery/` · `/collaborate/` · `/collaborate/wishlist/` · flattened legacy `.html` routes (Arduino Day, Room for Interaction, Pepper’s Ghost) · 3D tour under `public/`
+`/` · `/about/` · `/research/` · `/atelier/` · `/programme/` · `/publications/` · `/inverted-gallery/` · `/collaborate/` · `/collaborate/wishlist/` · flattened legacy `.html` routes (Arduino Day, Room for Interaction, Pepper’s Ghost) · 3D tour under `public/`

@@ -27,6 +27,8 @@ const pages = defineCollection({
     eyebrow: z.string().optional(),
     lede: z.string().optional(),
     intro: z.string().optional(),
+    body: z.array(z.string()).optional(),
+    collection_label: z.string().optional(),
     meta: z.string().optional(),
     aside_note: z.string().optional(),
     portrait_src: z.string().optional(),
@@ -139,6 +141,15 @@ const pages = defineCollection({
         past_title: z.string().optional(),
         past_intro: z.string().optional(),
         past_more_label: z.string().optional(),
+      })
+      .optional(),
+
+    publications: z
+      .object({
+        number: z.string(),
+        title_lines: titleLinesSchema,
+        intro: z.string(),
+        cta: ctaSchema,
       })
       .optional(),
 
@@ -441,6 +452,15 @@ const pages = defineCollection({
             }),
           ),
         }),
+        related_publication: z
+          .object({
+            kicker: z.string(),
+            title: z.string(),
+            body: z.string(),
+            primary_cta: ctaSchema,
+            secondary_cta: ctaSchema.optional(),
+          })
+          .optional(),
         closing: z.object({
           kicker: z.string(),
           title_before: z.string(),
@@ -704,6 +724,37 @@ const support = defineCollection({
   }),
 });
 
+const publications = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/publications' }),
+  schema: z.object({
+    title: z.string(),
+    year: z.number().int(),
+    format: z.string(),
+    description: z.string(),
+    origin: z.string(),
+    /** Optional public HTTPS cover. Empty or omitted → typographic fallback. */
+    cover_url: z
+      .string()
+      .refine((value) => value === '' || value.startsWith('https://'), {
+        message: 'cover_url must be empty or a public HTTPS URL',
+      })
+      .optional(),
+    cover_alt: z.string().optional(),
+    primary_url: z.string(),
+    primary_cta: z.string(),
+    primary_external: z.boolean().optional(),
+    github_url: z.string().startsWith('https://').optional(),
+    github_label: z.string().optional(),
+    related_activity_url: z.string().optional(),
+    related_activity_label: z.string().optional(),
+    related_research_url: z.string().optional(),
+    related_research_label: z.string().optional(),
+    license: z.string().optional(),
+    published: z.boolean().default(true),
+    order: z.number().int(),
+  }),
+});
+
 const siteContent = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/site' }),
   schema: z.discriminatedUnion('doc', [
@@ -740,4 +791,4 @@ const siteContent = defineCollection({
   ]),
 });
 
-export const collections = { pages, gallery, support, site: siteContent };
+export const collections = { pages, gallery, support, publications, site: siteContent };

@@ -6,16 +6,26 @@ Git release tags (`v2.0.0`, `v2.1.0`) are distinct from the npm package version 
 
 ## Unreleased maintenance
 
+### Publications — institutional dimension
+
+- Added `/publications/` as a Markdown-driven institutional route with a `publications` content collection.  
+- Launch entries: Pepper’s Ghost (internal `/peppers-ghost.html`) and Paper as Interface (independent board + GitHub).  
+- Primary navigation order: About · Research · Atelier · Programme · Publications · Inverted Gallery (+ Collaborate CTA).  
+- Homepage Publications teaser after Programme / before Inverted Gallery (section numbers 06–08).  
+- Arduino Day 2026 gains an optional contextual related-publication link to Paper as Interface.  
+- Covers use optional public HTTPS URLs; typographic fallback when no cover is hosted (media policy).  
+- Unpublished publication entries remain hidden; offline builds do not depend on external apps.
+
 ### Pepper’s Ghost — Astro migration
 
 - Migrated `/peppers-ghost.html` from standalone `public/` HTML to Markdown (`src/content/pages/peppers-ghost.md`) + Astro presentation + `src/scripts/peppers-ghost.ts`.  
 - Preserved the public URL via `scripts/flatten-html-routes.mjs`.  
 - Keeps CodeMirror / textarea editor, four example sketches, sandboxed p5.js iframe execution, Ghost Mode, calibration ranges and original `localStorage` keys.  
 - Fabrication template remains at `/imgs/pepper_ghost_pyramid_template_6cm.svg`. Fragment anchors `#studio`, `#use`, `#template`, `#calibrate`, `#how`, `#history` preserved.  
-- No new navigation entry or Programme discovery link (owner decides placement separately).  
+- Primary discovery is now via Publications (`/publications/`); no separate Pepper’s Ghost nav item.  
 - Follow-up: isolate page sections from global `section` padding; page-only `viewport-fit=cover`; cancel superseded provisional iframe runs; never treat startup timeout as success; harden fullscreen promise handling and message validation.  
 - Follow-up: page-scoped safe-area padding for SiteNav / footer / editorial clearance under `viewport-fit=cover` (Ghost Mode canvas remains unpadded).  
-- Owner approved after physical mobile-device testing (2026-11-28); discovery link deferred.
+- Owner approved after physical mobile-device testing (2026-11-28).
 
 ### Programme integration — Current and Past Programmes
 

@@ -45,7 +45,8 @@
   .nav-links {
     display: flex;
     justify-content: center;
-    gap: clamp(24px, 1.8vw, 32px);
+    /* Slightly tighter gap so six institutional labels fit without shrinking type. */
+    gap: clamp(16px, 1.4vw, 28px);
     list-style: none;
     flex-wrap: nowrap;
   }
@@ -78,8 +79,8 @@
     padding: 4px;
     z-index: 101;
   }
-  /* Switch to hamburger before five labels + CTA crowd the bar (≈1200px). */
-  @media (max-width: 1199px) {
+  /* Switch to hamburger before six labels + CTA crowd the bar. */
+  @media (max-width: 1279px) {
     .nav-links { display: none; }
     .nav-hamburger { display: flex; }
     /* Beat .button { display: inline-flex } later in the cascade. */
@@ -1143,11 +1144,16 @@
     .location-features { grid-template-columns: 1fr; gap: var(--space-4); }
   }
 
-  /* ── SELECTED RESEARCH & GALLERY ── */
+  /* ── SELECTED RESEARCH, PUBLICATIONS & GALLERY ── */
   #selected-research,
   .research-archive-section,
   #gallery {
     background: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  #publications {
+    background: var(--gray-green);
     position: relative;
     overflow: hidden;
   }
@@ -2567,4 +2573,121 @@
     .support-methods,
     .rental-category-grid,
     .gallery-photos-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── PUBLICATIONS ──
+     Base two-column grid must precede the mobile override so ≤900px stays single-column. */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .publications-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(32px, 4vw, 56px);
+    margin-top: var(--space-5);
+  }
+  .publication-entry {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    min-width: 0;
+  }
+  .publication-cover {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--deep-purple);
+    border: 1px solid rgba(34, 17, 62, 0.12);
+  }
+  .publication-cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .publication-cover-fallback {
+    height: 100%;
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: var(--space-2);
+    background: var(--deep-purple);
+    color: var(--white);
+  }
+  .publication-cover-format {
+    color: var(--turquoise);
+  }
+  .publication-cover-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: clamp(28px, 3vw, 40px);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+  .publication-cover-year {
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.78);
+    margin: 0;
+  }
+  .publication-meta {
+    /* Magenta link token (~6.3:1 on white); brand pink fails AA on light grounds. */
+    color: var(--color-link);
+    margin-bottom: var(--space-2);
+  }
+  .publication-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: clamp(28px, 3vw, 36px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--space-3);
+    color: var(--deep-purple);
+  }
+  .publication-description,
+  .publication-origin {
+    font-size: 17px;
+    line-height: 1.75;
+    color: rgba(34, 17, 62, 0.82);
+    margin: 0 0 var(--space-3);
+  }
+  .publication-origin {
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    color: rgba(34, 17, 62, 0.72);
+  }
+  .publication-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+  .publication-secondary-link {
+    font-family: 'Courier Prime', monospace;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    color: var(--color-link);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--color-link-underline);
+  }
+  .publication-secondary-link:hover {
+    color: var(--color-link-hover);
+    text-decoration-color: var(--color-link-hover);
+  }
+  @media (max-width: 900px) {
+    .publications-grid {
+      grid-template-columns: 1fr;
+    }
   }

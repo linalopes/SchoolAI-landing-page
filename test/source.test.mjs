@@ -94,7 +94,13 @@ test('homepage keeps the split hero, sheet carousel, atelier, and Formspree', ()
   assert.match(indexPage, /ArtificialEmotion/);
   assert.match(indexPage, /SelectedResearch/);
   assert.match(indexPage, /Programme/);
+  assert.match(indexPage, /Publications/);
   assert.match(indexPage, /Gallery/);
+  const homeOrder = ['Programme', 'Publications', 'Gallery', 'Collaborate'].map((token) =>
+    indexPage.indexOf(token),
+  );
+  assert.ok(homeOrder.every((idx) => idx > -1));
+  assert.deepEqual(homeOrder, [...homeOrder].sort((a, b) => a - b));
 });
 
 test('Selected Research uses the archive feed without hardcoded project cards', () => {
@@ -110,7 +116,7 @@ test('Selected Research uses the archive feed without hardcoded project cards', 
   assert.match(read('src/data/feeds/archive.json'), /affective-atmosphere-2046/);
 });
 
-test('navigation promotes all seven institutional routes while keeping homepage anchors', () => {
+test('navigation promotes institutional routes while keeping homepage anchors', () => {
   const nav = read('src/data/navigation.ts');
   const view = read('src/components/navigation/SiteNav.astro');
   const footer = read('src/components/navigation/SiteFooter.astro');
@@ -118,9 +124,17 @@ test('navigation promotes all seven institutional routes while keeping homepage 
   const researchHome = read('src/components/home/ArtificialEmotion.astro');
   const atelierHome = read('src/components/home/Atelier.astro');
   const programmeHome = read('src/components/home/Programme.astro');
+  const publicationsHome = read('src/components/home/Publications.astro');
   const galleryHome = read('src/components/home/Gallery.astro');
   const collaborateHome = read('src/components/home/Collaborate.astro');
-  for (const label of ['About', 'Research', 'Atelier', 'Programme', 'Inverted Gallery']) {
+  for (const label of [
+    'About',
+    'Research',
+    'Atelier',
+    'Programme',
+    'Publications',
+    'Inverted Gallery',
+  ]) {
     assert.match(nav, new RegExp(`label: '${label}'`));
   }
   assert.match(nav, /collaborateHref = '\/collaborate\/'/);
@@ -131,11 +145,23 @@ test('navigation promotes all seven institutional routes while keeping homepage 
   assert.match(nav, /href: '\/research\/'/);
   assert.match(nav, /href: '\/atelier\/'/);
   assert.match(nav, /href: '\/programme\/'/);
+  assert.match(nav, /href: '\/publications\/'/);
   assert.match(nav, /href: '\/inverted-gallery\/'/);
   assert.match(nav, /wishlistHref = '\/collaborate\/wishlist\/'/);
   const navItemsBlock = nav.slice(nav.indexOf('export const navItems'), nav.indexOf('export const homeHref'));
   assert.doesNotMatch(navItemsBlock, /wishlist/i);
+  assert.doesNotMatch(navItemsBlock, /peppers-ghost/i);
   assert.doesNotMatch(nav, /\/collaborate\/contributors\//);
+  const navOrder = [
+    "href: '/about/'",
+    "href: '/research/'",
+    "href: '/atelier/'",
+    "href: '/programme/'",
+    "href: '/publications/'",
+    "href: '/inverted-gallery/'",
+  ].map((token) => navItemsBlock.indexOf(token));
+  assert.ok(navOrder.every((idx) => idx > -1));
+  assert.deepEqual(navOrder, [...navOrder].sort((a, b) => a - b));
   assert.match(read('src/content/pages/collaborate.md'), /Made possible by/);
   assert.match(read('src/content/pages/collaborate.md'), /Research Wishlist/);
   assert.match(read('src/content/pages/wishlist.md'), /Help make things possible/);
@@ -145,12 +171,17 @@ test('navigation promotes all seven institutional routes while keeping homepage 
   assert.match(researchHome, /id="research"/);
   assert.match(atelierHome, /id="atelier"/);
   assert.match(programmeHome, /id="programme"/);
+  assert.match(publicationsHome, /id="publications"/);
   assert.match(galleryHome, /id="gallery"/);
   assert.match(collaborateHome, /id="collaborate"/);
   assert.match(homeMd, /href: \/programme\//);
+  assert.match(homeMd, /href: \/publications\//);
   assert.match(homeMd, /href: \/inverted-gallery\//);
   assert.match(homeMd, /href: \/collaborate\//);
   assert.match(homeMd, /href: \/research\//);
+  assert.match(homeMd, /number: "06"/);
+  assert.match(homeMd, /number: "07"/);
+  assert.match(homeMd, /number: "08"/);
   assert.match(footer, /footerNavItems/);
   assert.match(view, /navItems/);
   assert.match(view, /nav-cta/);
@@ -167,11 +198,15 @@ test('institutional editorial content is sourced from Markdown', () => {
     'research.md',
     'atelier.md',
     'programme.md',
+    'publications.md',
     'inverted-gallery.md',
     'collaborate.md',
   ]) {
     assert.equal(statSync(join(root, 'src/content/pages', name)).isFile(), true, name);
   }
+  assert.equal(statSync(join(root, 'src/content/publications/peppers-ghost.md')).isFile(), true);
+  assert.equal(statSync(join(root, 'src/content/publications/paper-as-interface.md')).isFile(), true);
+  assert.equal(statSync(join(root, 'src/content/publications/draft-reserved.md')).isFile(), true);
   assert.equal(statSync(join(root, 'src/content/gallery/rental-rates.md')).isFile(), true);
   assert.equal(statSync(join(root, 'src/content/support/financial-support.md')).isFile(), true);
   assert.equal(statSync(join(root, 'src/content/site/footer.md')).isFile(), true);
@@ -383,10 +418,50 @@ test('legacy public paths remain', () => {
   assert.match(read('package.json'), /flatten-html-routes/);
 });
 
+test('publications collection is Markdown-driven without a Sheets feed', () => {
+  const pageMd = read('src/content/pages/publications.md');
+  const page = read('src/pages/publications/index.astro');
+  const helpers = read('src/lib/content.ts');
+  const config = read('src/content.config.ts');
+  const css = read('src/styles/global.css');
+  const peppers = read('src/content/publications/peppers-ghost.md');
+  const paper = read('src/content/publications/paper-as-interface.md');
+  const draft = read('src/content/publications/draft-reserved.md');
+  assert.match(pageMd, /Knowledge in different forms/);
+  assert.match(pageMd, /Knowledge does not always take the form of a text/);
+  assert.match(page, /getPublishedPublications/);
+  assert.match(page, /canonicalPath="\/publications\/"/);
+  assert.match(helpers, /getPublishedPublications/);
+  assert.match(helpers, /publicationCoverUrl/);
+  assert.match(config, /publications/);
+  assert.match(peppers, /primary_url: \/peppers-ghost\.html/);
+  assert.match(peppers, /Explore the experiment/);
+  assert.match(peppers, /published: true/);
+  assert.match(paper, /school-ai-paper-as-interface\.vercel\.app/);
+  assert.match(paper, /github\.com\/linalopes\/SchoolAI-paper-as-interface/);
+  assert.match(paper, /related_activity_url: \/arduino-day-2026\.html/);
+  assert.match(paper, /Explore the board/);
+  assert.match(draft, /published: false/);
+  assert.doesNotMatch(config, /gid=.*publications/i);
+  assert.doesNotMatch(page, /loadEventsSnapshot|refresh-feeds|sheets/i);
+  const twoCol = css.indexOf('.publications-grid {\n    display: grid;\n    grid-template-columns: repeat(2');
+  const oneColOverride = css.indexOf(
+    '@media (max-width: 900px) {\n    .publications-grid {\n      grid-template-columns: 1fr;',
+  );
+  assert.ok(twoCol > -1, 'base two-column publications grid');
+  assert.ok(oneColOverride > twoCol, 'mobile single-column override must follow the base grid');
+  assert.match(css, /\.publication-meta\s*\{[^}]*color:\s*var\(--color-link\)/s);
+  assert.doesNotMatch(css, /\.publication-cover-fallback\s*\{[^}]*linear-gradient/s);
+  assert.match(css, /@media \(max-width: 1279px\)/);
+});
+
 test('Arduino Day 2026 editorial content is Markdown-backed', () => {
   const md = read('src/content/pages/arduino-day-2026.md');
   assert.match(md, /Paper as Interface/);
   assert.match(md, /arduino_day:/);
+  assert.match(md, /related_publication:/);
+  assert.match(md, /school-ai-paper-as-interface\.vercel\.app/);
+  assert.match(md, /href: "\/publications\/"/);
   assert.match(md, /28 March 2026/);
   assert.match(md, /twitch\.tv\/lina_lopes/);
   assert.match(md, /#timeline/);
@@ -394,6 +469,7 @@ test('Arduino Day 2026 editorial content is Markdown-backed', () => {
   assert.match(md, /#faq/);
   assert.doesNotMatch(md, /retrospective|documentation of the outcome/i);
   assert.match(read('src/components/programme/ArduinoDayPage.astro'), /arduino-day/);
+  assert.match(read('src/components/programme/ArduinoDayPage.astro'), /related-publication/);
 });
 
 test('Arduino Day hero keeps #hero fragment while isolating homepage #hero CSS', () => {

@@ -6,11 +6,12 @@ Production institutional website for School of Tomorrow’s AI. Routes and navig
 
 | Route | Purpose |
 |---|---|
-| `/` | Positioning, live hero carousel, selected research, atelier, programme, gallery and collaboration |
+| `/` | Positioning, live hero carousel, selected research, atelier, programme, publications teaser, gallery and collaboration |
 | `/about/` | The School — origin, philosophy, open research and founder |
 | `/research/` | Artificial Emotion flagship and curated Research Archive |
 | `/atelier/` | Eight research workstations and existing 3D tour |
 | `/programme/` | Current programme, upcoming events, activity formats, past programmes, past events |
+| `/publications/` | Curated authored publications — knowledge and artefacts beyond their original context |
 | `/inverted-gallery/` | Gallery concept, cultural programme, space rental and inquiry |
 | `/collaborate/` | Collaboration pathways, Research Wishlist teaser, financial support, Made possible by, contact |
 | `/collaborate/wishlist/` | Research Wishlist — current needs and fulfilled contributions |
@@ -27,14 +28,15 @@ Live destinations in the header:
 - Research → `/research/`
 - Atelier → `/atelier/`
 - Programme → `/programme/`
+- Publications → `/publications/`
 - Inverted Gallery → `/inverted-gallery/`
 - **Collaborate** → `/collaborate/` (highlighted CTA, not a plain text nav item)
 
-Research Wishlist is linked from Collaborate (`/collaborate/wishlist/`), not from primary navigation.
+Research Wishlist is linked from Collaborate (`/collaborate/wishlist/`), not from primary navigation. Pepper’s Ghost is discovered through Publications, not as a separate primary nav item.
 
 **Made possible by** is a section inside Collaborate. There is no standalone `/collaborate/contributors/` route.
 
-Homepage keeps compatibility anchors `#research`, `#atelier`, `#programme`, `#gallery` and `#collaborate`. The logo returns `/`.
+Homepage keeps compatibility anchors `#research`, `#atelier`, `#programme`, `#publications`, `#gallery` and `#collaborate`. The logo returns `/`.
 
 ## Homepage sections
 
@@ -45,11 +47,16 @@ Preserve the split hero and spreadsheet-driven carousel. Below the hero, in edit
 3. Selected research (archive feed)  
 4. Atelier preview and maps link  
 5. Programme preview  
-6. Inverted Gallery introduction  
-7. Collaborate pathways teaser  
-8. Newsletter  
+6. Publications teaser  
+7. Inverted Gallery introduction  
+8. Collaborate pathways teaser  
+9. Newsletter  
 
 Dedicated pages hold full detail; homepage sections stay concise.
+
+## Publications
+
+`/publications/` presents selected authored outputs. Each Markdown entry in `src/content/publications/` links to its destination (internal experiment route or independent external application). There are no individual publication detail pages when the destination already is the publication. Covers use optional public HTTPS URLs; typographic fallbacks are used when no cover is hosted. Unpublished entries (`published: false`) stay hidden.
 
 ## Programme
 
@@ -94,6 +101,7 @@ Six pathways (research, students, technology partnerships, commissions, hands-on
 | Kind | Location |
 |---|---|
 | Page copy | `src/content/pages/` |
+| Publication records | `src/content/publications/` |
 | Gallery rates | `src/content/gallery/rental-rates.md` |
 | Financial support | `src/content/support/financial-support.md` |
 | Footer / location | `src/content/site/` |
