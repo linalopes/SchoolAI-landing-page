@@ -63,4 +63,4 @@ The owner completed the final visual review of the institutional website (includ
 
 ### Pepper’s Ghost (2026-11-28)
 
-Owner approved PR #3 after successful testing on a **physical mobile device** (application UI, Ghost Mode chrome, and interactive editor behaviour). That confirmation does **not** certify the physical optical illusion with a transparent pyramid unless separately stated by the owner. Discovery / navigation placement remains a separate owner decision.
+Owner approved PR #3 after successful testing on a **physical mobile device** (application UI, Ghost Mode chrome, and interactive editor behaviour). That confirmation does **not** certify the physical optical illusion with a transparent pyramid unless separately stated by the owner. Primary discovery is via Publications (`/publications/`).
