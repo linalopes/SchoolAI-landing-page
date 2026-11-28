@@ -14,7 +14,8 @@ Git release tags (`v2.0.0`, `v2.1.0`) are distinct from the npm package version 
 - Fabrication template remains at `/imgs/pepper_ghost_pyramid_template_6cm.svg`. Fragment anchors `#studio`, `#use`, `#template`, `#calibrate`, `#how`, `#history` preserved.  
 - No new navigation entry or Programme discovery link (owner decides placement separately).  
 - Follow-up: isolate page sections from global `section` padding; page-only `viewport-fit=cover`; cancel superseded provisional iframe runs; never treat startup timeout as success; harden fullscreen promise handling and message validation.  
-- Follow-up: page-scoped safe-area padding for SiteNav / footer / editorial clearance under `viewport-fit=cover` (Ghost Mode canvas remains unpadded).
+- Follow-up: page-scoped safe-area padding for SiteNav / footer / editorial clearance under `viewport-fit=cover` (Ghost Mode canvas remains unpadded).  
+- Owner approved after physical mobile-device testing (2026-11-28); discovery link deferred.
 
 ### Programme integration — Current and Past Programmes
 
