@@ -64,3 +64,7 @@ The owner completed the final visual review of the institutional website (includ
 ### Pepper’s Ghost (2026-11-28)
 
 Owner approved PR #3 after successful testing on a **physical mobile device** (application UI, Ghost Mode chrome, and interactive editor behaviour). That confirmation does **not** certify the physical optical illusion with a transparent pyramid unless separately stated by the owner. Primary discovery is via Publications (`/publications/`).
+
+### Publications (2026-11-28)
+
+Owner approved PR #4 after visual review. Typographic publication covers remain until the owner provides public HTTPS cover images (media policy unchanged). Cursor Bugbot was unavailable for this PR because of the Cursor usage limit; a focused manual code review was completed instead. Automated `Check, test, and build` passed before merge.

@@ -14,7 +14,9 @@ Git release tags (`v2.0.0`, `v2.1.0`) are distinct from the npm package version 
 - Homepage Publications teaser after Programme / before Inverted Gallery (section numbers 06–08).  
 - Arduino Day 2026 gains an optional contextual related-publication link to Paper as Interface.  
 - Covers use optional public HTTPS URLs; typographic fallback when no cover is hosted (media policy).  
-- Unpublished publication entries remain hidden; offline builds do not depend on external apps.
+- Unpublished publication entries remain hidden; offline builds do not depend on external apps.  
+- Owner visual review approved PR #4 (2026-11-28); typographic covers retained until owner supplies public HTTPS images.  
+- Cursor Bugbot was unavailable for PR #4 because of the Cursor usage limit; a focused manual code review was completed instead. CI Check/test/build passed.
 
 ### Pepper’s Ghost — Astro migration
 
