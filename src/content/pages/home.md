@@ -105,8 +105,18 @@ programme:
   upcoming_title: Upcoming dates
   upcoming_intro: Public dates appear here when there is something to attend. The research continues between them.
 
-gallery:
+publications:
   number: "06"
+  title_lines:
+    - Publications
+  intro: >-
+    Knowledge in different forms — interactive experiments, research boards, tools, essays and material artefacts made available beyond their original research or activity context.
+  cta:
+    label: Explore Publications
+    href: /publications/
+
+gallery:
+  number: "07"
   title_lines:
     - Inverted
     - Gallery
@@ -121,7 +131,7 @@ gallery:
       subject: Inverted Gallery inquiry
 
 collaborate:
-  number: "07"
+  number: "08"
   title_lines:
     - Collaborate
   intro: >-

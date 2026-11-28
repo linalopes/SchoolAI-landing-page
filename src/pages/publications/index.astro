@@ -1,0 +1,112 @@
+---
+import EditorialLayout from '../../layouts/EditorialLayout.astro';
+import { getPublishedPublications, publicationCoverUrl, requirePage } from '../../lib/content';
+import { site } from '../../data/site';
+
+const entry = await requirePage('publications');
+const publications = await getPublishedPublications();
+const pageTitle = `${entry.data.title} · ${site.title}`;
+const body = entry.data.body ?? [];
+const collectionLabel = entry.data.collection_label ?? 'Selected publications';
+---
+<EditorialLayout
+  title={pageTitle}
+  description={entry.data.description}
+  canonicalPath="/publications/"
+>
+  <article class="editorial editorial--wide">
+    <header class="editorial-header fade-up">
+      {entry.data.eyebrow && <p class="t-label editorial-eyebrow">{entry.data.eyebrow}</p>}
+      <h1 class="editorial-title">{entry.data.title}</h1>
+      {entry.data.lede && <p class="editorial-lede">{entry.data.lede}</p>}
+    </header>
+
+    <section class="editorial-panel fade-up" aria-labelledby="publications-intro-heading">
+      <h2 id="publications-intro-heading" class="visually-hidden">Introduction</h2>
+      {entry.data.intro && <p class="prose-p">{entry.data.intro}</p>}
+      {body.map((paragraph) => (
+        <p class="prose-p">{paragraph}</p>
+      ))}
+    </section>
+
+    <section
+      id="selected-publications"
+      class="editorial-panel fade-up"
+      aria-labelledby="selected-publications-heading"
+    >
+      <h2 id="selected-publications-heading" class="editorial-subtitle">{collectionLabel}</h2>
+      <div class="publications-grid">
+        {publications.map((publication) => {
+          const cover = publicationCoverUrl(publication);
+          const external = publication.data.primary_external === true;
+          const meta = `${publication.data.format} · ${publication.data.year}`;
+          return (
+            <article class="publication-entry">
+              <div class="publication-cover" aria-hidden={cover ? undefined : true}>
+                {cover ? (
+                  <img
+                    src={cover}
+                    alt={publication.data.cover_alt || publication.data.title}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <div class="publication-cover-fallback">
+                    <p class="publication-cover-format t-label">{publication.data.format}</p>
+                    <p class="publication-cover-title">{publication.data.title}</p>
+                    <p class="publication-cover-year">{publication.data.year}</p>
+                  </div>
+                )}
+              </div>
+              <div class="publication-body">
+                <p class="publication-meta t-label">{meta}</p>
+                <h3 class="publication-title">{publication.data.title}</h3>
+                <p class="publication-description">{publication.data.description}</p>
+                <p class="publication-origin">{publication.data.origin}</p>
+                <div class="publication-actions">
+                  <a
+                    href={publication.data.primary_url}
+                    class="button button--primary"
+                    target={external ? '_blank' : undefined}
+                    rel={external ? 'noopener' : undefined}
+                  >
+                    {publication.data.primary_cta}{external ? ' \u2197\uFE0E' : ''}
+                  </a>
+                  {publication.data.github_url && (
+                    <a
+                      href={publication.data.github_url}
+                      class="publication-secondary-link"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      {publication.data.github_label ?? 'View source on GitHub'}{' \u2197\uFE0E'}
+                    </a>
+                  )}
+                  {publication.data.related_activity_url && (
+                    <a
+                      href={publication.data.related_activity_url}
+                      class="publication-secondary-link"
+                    >
+                      {publication.data.related_activity_label ?? 'Related activity'}
+                    </a>
+                  )}
+                  {publication.data.related_research_url && (
+                    <a
+                      href={publication.data.related_research_url}
+                      class="publication-secondary-link"
+                      target={publication.data.related_research_url.startsWith('http') ? '_blank' : undefined}
+                      rel={publication.data.related_research_url.startsWith('http') ? 'noopener' : undefined}
+                    >
+                      {publication.data.related_research_label ?? 'Related research'}
+                      {publication.data.related_research_url.startsWith('http') ? ' \u2197\uFE0E' : ''}
+                    </a>
+                  )}
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  </article>
+</EditorialLayout>

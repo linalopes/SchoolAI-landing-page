@@ -14,7 +14,9 @@ Node **≥ 22.23.4**. Prefer `npm ci` for a clean install.
 ## Automated coverage (representative)
 
 - Navigation labels and Collaborate CTA  
-- Eight institutional routes including `/collaborate/wishlist/`  
+- Institutional routes including `/publications/` and `/collaborate/wishlist/`  
+- Publications Markdown collection, published filtering, primary/secondary links  
+- Homepage Publications teaser placement (after Programme, before Gallery)  
 - Six feed snapshots load offline  
 - CSV validation, enums, empty rows, duplicate IDs, unsafe URLs  
 - Published filtering and editorial ordering  
@@ -39,8 +41,9 @@ Automated tests do **not** certify full WCAG compliance.
 
 Use after substantive UI or feed changes:
 
-- [ ] Primary navigation and Collaborate CTA  
-- [ ] Desktop and mobile layouts  
+- [ ] Primary navigation (including Publications) and Collaborate CTA  
+- [ ] Desktop and mobile layouts; nav does not overflow at intermediate widths  
+- [ ] Publications covers, typography and external destinations  
 - [ ] Text contrast on light and dark bands  
 - [ ] Keyboard access (nav, carousel pause, links, forms)  
 - [ ] Optional images absent without empty placeholders  

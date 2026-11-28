@@ -1,4 +1,4 @@
-import { getEntry } from 'astro:content';
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 
 export async function requirePage(id: string) {
   const entry = await getEntry('pages', id);
@@ -6,6 +6,23 @@ export async function requirePage(id: string) {
     throw new Error(`Missing Markdown source: src/content/pages/${id}.md`);
   }
   return entry;
+}
+
+export type PublicationEntry = CollectionEntry<'publications'>;
+
+/** Published publications sorted by `order`, then title. */
+export async function getPublishedPublications(): Promise<PublicationEntry[]> {
+  const entries = await getCollection('publications', ({ data }) => data.published !== false);
+  return entries.sort((a, b) => {
+    if (a.data.order !== b.data.order) return a.data.order - b.data.order;
+    return a.data.title.localeCompare(b.data.title);
+  });
+}
+
+export function publicationCoverUrl(entry: PublicationEntry): string | null {
+  const url = entry.data.cover_url?.trim();
+  if (!url || !url.startsWith('https://')) return null;
+  return url;
 }
 
 export async function requireGalleryDoc(id: string) {
