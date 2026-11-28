@@ -3,13 +3,14 @@
 Independent research atelier website for **School of Tomorrow’s AI** (Wetzikon-Zürich).
 
 **Production:** [schoolai.linalopes.info](https://schoolai.linalopes.info/)  
-**Repository purpose:** Institutional static website — editorial content, programme feeds and collaboration pathways.  
+**Repository purpose:** Institutional static website — editorial content, programme feeds, publications and collaboration pathways.  
 **Production branch:** `main`  
-**Current release:** [`v2.1.0`](https://github.com/linalopes/SchoolAI-landing-page/releases/tag/v2.1.0) — School of Tomorrow’s AI — Website 2027  
+**Current tagged release:** [`v2.1.0`](https://github.com/linalopes/SchoolAI-landing-page/releases/tag/v2.1.0) — School of Tomorrow’s AI — Website 2027  
+**Current release:** `v2.2.0` — Publications & Legacy Consolidation (see [CHANGELOG](CHANGELOG.md))  
 **Original Astro cutover:** [`v2.0.0`](https://github.com/linalopes/SchoolAI-landing-page/releases/tag/v2.0.0) (`035d60a`)  
-**Legacy HTML:** branch `legacy-html-2026` / tag `v1.0.0-legacy` (`0a84b8c`)
+**Legacy HTML archive:** branch `legacy-html-2026` / tag `v1.0.0-legacy` (`0a84b8c`)
 
-The Website 2027 migration is **complete**. Continuous maintenance continues on `main`; no further migration phase is required.
+Website 2027 structural development is **complete**. Continuous maintenance continues on `main`. Do not restart migration phases. Historical planning lives under [`docs/archive/`](docs/archive/) for context only.
 
 ## Stack
 
@@ -19,10 +20,10 @@ Astro 7 static output · TypeScript · native CSS (SchoolAI Brand Kit) · Markdo
 
 | Source | Controls |
 |---|---|
-| **Markdown** (`src/content/`) | Institutional pages, publication records, rates, payments, footer, address, wishlist labels |
+| **Markdown** (`src/content/`) | Institutional pages, publication records, programme features, historical/experiment pages, rates, payments, footer, address, wishlist labels |
 | **Google Sheets** | Hero, events, research archive, workstations, contributors, wishlist records |
 
-Astro components present content; they are not the source of editorial wording.
+Astro components present content; they are not the source of editorial wording. Publications do not use a Sheets feed. Independent destination apps are hyperlinked, not imported.
 
 ## Maintain the website
 
@@ -63,13 +64,13 @@ npm run test:dist
 
 - Push / merge to `main` → Validate + Deploy.  
 - Daily snapshot refresh at 06:00 UTC; meaningful changes commit and dispatch Deploy.  
-- Offline builds never call Google Sheets.  
+- Offline builds never call Google Sheets or external publication apps.  
 - Details: [deployment.md](docs/technical/deployment.md)
 
 ## Media summary
 
-No new editorial photographs or research binaries in Git. Use public HTTPS URLs. Authorised QR exceptions: `public/imgs/contact-twint.png`, `public/imgs/stripe.png`.
+No new editorial photographs, research binaries or QA screenshots in Git. Use public HTTPS URLs (including publication covers). Typographic cover fallback when no cover URL is set. Authorised QR exceptions: `public/imgs/contact-twint.png`, `public/imgs/stripe.png`.
 
 ## Routes
 
-`/` · `/about/` · `/research/` · `/atelier/` · `/programme/` · `/publications/` · `/inverted-gallery/` · `/collaborate/` · `/collaborate/wishlist/` · flattened legacy `.html` routes (Arduino Day, Room for Interaction, Pepper’s Ghost) · 3D tour under `public/`
+`/` · `/about/` · `/research/` · `/atelier/` · `/programme/` · `/publications/` · `/inverted-gallery/` · `/collaborate/` · `/collaborate/wishlist/` · flattened legacy `.html` routes (Arduino Day, Room for Interaction, Pepper’s Ghost) · intentional standalone `/space3d.html` and `/history/` under `public/`

@@ -27,11 +27,10 @@ Node **≥ 22.23.4**. Prefer `npm ci` for a clean install.
 - Legacy public HTML paths (3D tour) and functional fabrication SVG  
 - Astro-generated `/arduino-day-2026.html`, `/room-for-interaction.html` and `/peppers-ghost.html` (flattened routes; Markdown-backed)  
 - Pepper’s Ghost section anchors, iframe sandbox, localStorage key names, example sketch ids, `viewport-fit=cover`, page-scoped safe-area chrome  
-
-
 - Room for Interaction JSON compatibility endpoint and archived workshop statuses  
 - Homepage `#hero` isolation from Arduino Day / Room for Interaction heroes  
 - Programme section order and Markdown-driven Current / Past Programme CTAs  
+- Responsive navigation breakpoint (hamburger at max-width 1279px)  
 - Sitemap and robots  
 - Canonical / Open Graph metadata  
 
@@ -67,4 +66,4 @@ Owner approved PR #3 after successful testing on a **physical mobile device** (a
 
 ### Publications (2026-11-28)
 
-Owner approved PR #4 after visual review. Typographic publication covers remain until the owner provides public HTTPS cover images (media policy unchanged). Cursor Bugbot was unavailable for this PR because of the Cursor usage limit; a focused manual code review was completed instead. Automated `Check, test, and build` passed before merge.
+Owner approved PR #4 after visual review and production smoke tests on merge. Typographic publication covers remain until the owner provides public HTTPS cover images (media policy unchanged; fallback is intentional). Cursor Bugbot was unavailable for this PR because of the Cursor usage limit; a focused manual code review was completed instead. Automated `Check, test, and build` passed before merge.

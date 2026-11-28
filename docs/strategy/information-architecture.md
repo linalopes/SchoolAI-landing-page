@@ -1,6 +1,20 @@
 # Information architecture
 
-Production institutional website for School of Tomorrow’s AI. Routes and navigation below match the implementation on `main` (reference: `c523a15`).
+Production institutional website for School of Tomorrow’s AI. Routes and navigation below match the implementation on `main`.
+
+## Institutional dimensions
+
+| Dimension | Route | Purpose |
+|---|---|---|
+| About | `/about/` | Institutional identity and philosophy |
+| Research | `/research/` | Ongoing investigations (Artificial Emotion + Research Archive) |
+| Atelier | `/atelier/` | Physical infrastructure and experimental making |
+| Programme | `/programme/` | Thematic public programmes and encounters |
+| Publications | `/publications/` | Selected authored knowledge and artefacts beyond their original context |
+| Inverted Gallery | `/inverted-gallery/` | Cultural exchange and space rental |
+| Collaborate | `/collaborate/` | Collaboration and contribution pathways |
+
+Homepage `/` introduces each dimension; dedicated pages hold full detail. Research Wishlist lives under Collaborate (`/collaborate/wishlist/`), not as a primary nav item.
 
 ## Institutional routes
 
@@ -11,7 +25,7 @@ Production institutional website for School of Tomorrow’s AI. Routes and navig
 | `/research/` | Artificial Emotion flagship and curated Research Archive |
 | `/atelier/` | Eight research workstations and existing 3D tour |
 | `/programme/` | Current programme, upcoming events, activity formats, past programmes, past events |
-| `/publications/` | Curated authored publications — knowledge and artefacts beyond their original context |
+| `/publications/` | Curated authored publications |
 | `/inverted-gallery/` | Gallery concept, cultural programme, space rental and inquiry |
 | `/collaborate/` | Collaboration pathways, Research Wishlist teaser, financial support, Made possible by, contact |
 | `/collaborate/wishlist/` | Research Wishlist — current needs and fulfilled contributions |
@@ -32,7 +46,9 @@ Live destinations in the header:
 - Inverted Gallery → `/inverted-gallery/`
 - **Collaborate** → `/collaborate/` (highlighted CTA, not a plain text nav item)
 
-Research Wishlist is linked from Collaborate (`/collaborate/wishlist/`), not from primary navigation. Pepper’s Ghost is discovered through Publications, not as a separate primary nav item.
+Desktop text links switch to the hamburger menu at **max-width 1279px**. Footer Explore lists the same destinations plus Collaborate.
+
+Pepper’s Ghost is discovered through Publications, not as a separate primary nav item.
 
 **Made possible by** is a section inside Collaborate. There is no standalone `/collaborate/contributors/` route.
 
@@ -52,11 +68,16 @@ Preserve the split hero and spreadsheet-driven carousel. Below the hero, in edit
 8. Collaborate pathways teaser  
 9. Newsletter  
 
-Dedicated pages hold full detail; homepage sections stay concise.
-
 ## Publications
 
-`/publications/` presents selected authored outputs. Each Markdown entry in `src/content/publications/` links to its destination (internal experiment route or independent external application). There are no individual publication detail pages when the destination already is the publication. Covers use optional public HTTPS URLs; typographic fallbacks are used when no cover is hosted. Unpublished entries (`published: false`) stay hidden.
+`/publications/` presents selected authored outputs. Each Markdown entry in `src/content/publications/` links to its destination (internal experiment route or independent external application). There are no individual publication detail pages when the destination already is the publication.
+
+| Launch publication | Format | Destination |
+|---|---|---|
+| Pepper’s Ghost | Interactive Publication | `/peppers-ghost.html` (institutional site) |
+| Paper as Interface | Research Board | Independently hosted app + optional GitHub; Arduino Day contextual link |
+
+Covers use optional public HTTPS URLs; typographic fallbacks when no cover is hosted are intentional. Unpublished entries (`published: false`) stay hidden. Offline builds do not depend on external publication apps.
 
 ## Programme
 
@@ -105,16 +126,17 @@ Six pathways (research, students, technology partnerships, commissions, hands-on
 | Gallery rates | `src/content/gallery/rental-rates.md` |
 | Financial support | `src/content/support/financial-support.md` |
 | Footer / location | `src/content/site/` |
-| Live feeds | Google Sheets → `src/data/feeds/*.json` |
+| Live feeds | Google Sheets → `src/data/feeds/*.json` (six feeds; no Publications feed) |
 
 ## Legacy compatibility
 
-Preserve functioning public URLs:
+| Route or asset | Status |
+|---|---|
+| `/arduino-day-2026.html` | Migrated to Markdown + Astro; flattened public URL |
+| `/room-for-interaction.html` | Migrated to Markdown + Astro; flattened public URL |
+| `/room-for-interaction.json` | Compatibility endpoint from the same Markdown source |
+| `/peppers-ghost.html` | Migrated to Markdown + Astro + `src/scripts/peppers-ghost.ts` |
+| `/space3d.html` | Intentionally preserved standalone application under `public/` |
+| `/history/` | Intentionally preserved historical assets |
 
-- `space3d.html` (standalone under `public/`)  
-- `room-for-interaction.html` (+ JSON compatibility endpoint; Astro-generated from Markdown)  
-- `arduino-day-2026.html` (Astro-generated from Markdown; legacy URL preserved)  
-- `peppers-ghost.html` (Astro-generated from Markdown + client experiment script; legacy URL preserved)  
-- `/history/` where present  
-
-Existing domain and HTTPS remain. Do not delete legacy content without review.
+`scripts/flatten-html-routes.mjs` runs after the Astro build so selected routes remain root-level `.html` files. Existing domain and HTTPS remain. Do not delete or migrate intentional standalone/history assets without owner approval.

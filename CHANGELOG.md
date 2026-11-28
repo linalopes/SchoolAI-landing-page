@@ -2,52 +2,45 @@
 
 Verified against Git history and release tags. Intermediate commits that were never tagged are summarised without inventing version numbers.
 
-Git release tags (`v2.0.0`, `v2.1.0`) are distinct from the npm package version (`2027.1.0`), which tracks the Website 2027 product line.
+Git release tags (`v2.0.0`, `v2.1.0`, `v2.2.0`) are distinct from the npm package version (`2027.1.0`), which tracks the Website 2027 product line.
 
-## Unreleased maintenance
+## [v2.2.0] — 2026-11-28 — School of Tomorrow’s AI — Website 2027: Publications & Legacy Consolidation
 
-### Publications — institutional dimension
+**Status:** Published. Closes the Website 2027 structural development cycle after PRs #1–#5.
 
-- Added `/publications/` as a Markdown-driven institutional route with a `publications` content collection.  
-- Launch entries: Pepper’s Ghost (internal `/peppers-ghost.html`) and Paper as Interface (independent board + GitHub).  
-- Primary navigation order: About · Research · Atelier · Programme · Publications · Inverted Gallery (+ Collaborate CTA).  
-- Homepage Publications teaser after Programme / before Inverted Gallery (section numbers 06–08).  
-- Arduino Day 2026 gains an optional contextual related-publication link to Paper as Interface.  
-- Covers use optional public HTTPS URLs; typographic fallback when no cover is hosted (media policy).  
-- Unpublished publication entries remain hidden; offline builds do not depend on external apps.  
-- Owner visual review approved PR #4 (2026-11-28); typographic covers retained until owner supplies public HTTPS images.  
-- Cursor Bugbot was unavailable for PR #4 because of the Cursor usage limit; a focused manual code review was completed instead. CI Check/test/build passed.
+### Summary
 
-### Pepper’s Ghost — Astro migration
+Closes the Website 2027 structural development cycle after the `v2.1.0` institutional baseline by consolidating legacy public pages into Astro, introducing Publications as a permanent institutional dimension, and aligning active documentation for ongoing maintenance.
 
-- Migrated `/peppers-ghost.html` from standalone `public/` HTML to Markdown (`src/content/pages/peppers-ghost.md`) + Astro presentation + `src/scripts/peppers-ghost.ts`.  
-- Preserved the public URL via `scripts/flatten-html-routes.mjs`.  
-- Keeps CodeMirror / textarea editor, four example sketches, sandboxed p5.js iframe execution, Ghost Mode, calibration ranges and original `localStorage` keys.  
-- Fabrication template remains at `/imgs/pepper_ghost_pyramid_template_6cm.svg`. Fragment anchors `#studio`, `#use`, `#template`, `#calibrate`, `#how`, `#history` preserved.  
-- Primary discovery is now via Publications (`/publications/`); no separate Pepper’s Ghost nav item.  
-- Follow-up: isolate page sections from global `section` padding; page-only `viewport-fit=cover`; cancel superseded provisional iframe runs; never treat startup timeout as success; harden fullscreen promise handling and message validation.  
-- Follow-up: page-scoped safe-area padding for SiteNav / footer / editorial clearance under `viewport-fit=cover` (Ghost Mode canvas remains unpadded).  
-- Owner approved after physical mobile-device testing (2026-11-28).
+### Included work
 
-### Programme integration — Current and Past Programmes
+- **Arduino Day 2026** — migrated `/arduino-day-2026.html` to Markdown + Astro; public URL preserved via flatten script (PR #1).  
+- **Room for Interaction** — migrated `/room-for-interaction.html` (+ JSON compatibility endpoint) to Markdown + Astro; archived programme presentation (PR #2).  
+- **Programme** — Markdown-driven Current Programme (Artificial Emotion, January–June 2027) and Past Programmes; section order preserved (PR #2).  
+- **Pepper’s Ghost** — migrated to Markdown + Astro + dedicated TypeScript logic; Ghost Mode reliability and safe-area chrome; owner mobile-device UI approval (PR #3). Physical optical pyramid validation was not claimed beyond owner confirmation scope.  
+- **Publications** — `/publications/` Markdown collection; Pepper’s Ghost and Paper as Interface launch entries; nav/footer/sitemap; homepage teaser; Arduino Day contextual publication link (PR #4).  
+- **Paper as Interface** — remains an independently hosted research board; linked, not migrated into Astro.  
+- **Navigation / homepage** — About · Research · Atelier · Programme · Publications · Inverted Gallery (+ Collaborate CTA); homepage sections 06–08 renumbered for Publications.  
+- **Documentation consolidation** — strategy, IA, editorial, architecture, testing, AGENTS and README updated to match production; stale implementation-reference hashes removed.
 
-- Extended `/programme/` with Markdown-driven Current Programme (Artificial Emotion, January–June 2027) and Past Programmes (Room for Interaction, 2026).  
-- Section order: Current Programme → Upcoming Events → Activity Formats → Past Programmes → Past Events → newsletter.  
-- Programme periods describe public programme framing; Artificial Emotion research remains on `/research/`.
+### Intentional limitations / future editorial work
 
-### Room for Interaction — Astro migration
+- Typographic publication covers until the owner supplies public HTTPS cover images (media policy).  
+- No Publications Google Sheets feed.  
+- `/space3d.html` and `/history/` remain intentional standalone/historical exceptions.  
+- Six Sheets feed contracts unchanged.  
+- Cursor Bugbot unavailable for PR #4 (usage limit); focused manual review recorded.
 
-- Migrated `/room-for-interaction.html` from standalone `public/` HTML to Markdown (`src/content/pages/room-for-interaction.md`) + Astro presentation.  
-- Preserved the public URL via `scripts/flatten-html-routes.mjs`; JSON compatibility endpoint is generated from the same Markdown source.  
-- Archived programme presentation: no active “Next workshop” or registration CTAs; Maze Circuit held 28–29 August 2026; other proposals documented without claiming delivery.  
-- Hero uses `id="hero"` with `.rfi-hero` isolation from homepage `#hero` styles; workshop anchors keep `#workshop-*` fragments; closing block uses `id="cta"` to avoid colliding with the shared newsletter `#contact`.
+### Pepper’s Ghost — technical notes
 
-### Arduino Day 2026 — Astro migration
+- Preserved CodeMirror / textarea editor, four examples, sandboxed p5.js iframe, Ghost Mode, calibration, original `localStorage` keys, fabrication SVG URL and fragment anchors.  
+- Follow-ups shipped with the migration: section padding isolation, `viewport-fit=cover`, race/timeout hardening, page-scoped safe-area chrome (Ghost Mode canvas unpadded).  
+- Discovery via Publications only.
 
-- Migrated `/arduino-day-2026.html` from standalone `public/` HTML to Markdown (`src/content/pages/arduino-day-2026.md`) + Astro presentation.  
-- Preserved the public URL via `scripts/flatten-html-routes.mjs` after the static build.  
-- Reuses shared navigation, footer, Brand Kit tokens and button styles; page-specific styles remain scoped under `.arduino-day`.  
-- Programme past-event sheet link and sitemap entry remain `/arduino-day-2026.html`.
+### Programme / Room for Interaction — technical notes
+
+- Programme periods frame the public semester; Artificial Emotion research remains on `/research/`.  
+- Room for Interaction: no active registration CTAs; Maze Circuit completed dates from Events snapshot; other proposals documented without claiming delivery.
 
 ## [v2.1.0] — 2026-11-26 — School of Tomorrow’s AI — Website 2027
 
