@@ -423,6 +423,7 @@ test('publications collection is Markdown-driven without a Sheets feed', () => {
   const page = read('src/pages/publications/index.astro');
   const helpers = read('src/lib/content.ts');
   const config = read('src/content.config.ts');
+  const css = read('src/styles/global.css');
   const peppers = read('src/content/publications/peppers-ghost.md');
   const paper = read('src/content/publications/paper-as-interface.md');
   const draft = read('src/content/publications/draft-reserved.md');
@@ -443,6 +444,15 @@ test('publications collection is Markdown-driven without a Sheets feed', () => {
   assert.match(draft, /published: false/);
   assert.doesNotMatch(config, /gid=.*publications/i);
   assert.doesNotMatch(page, /loadEventsSnapshot|refresh-feeds|sheets/i);
+  const twoCol = css.indexOf('.publications-grid {\n    display: grid;\n    grid-template-columns: repeat(2');
+  const oneColOverride = css.indexOf(
+    '@media (max-width: 900px) {\n    .publications-grid {\n      grid-template-columns: 1fr;',
+  );
+  assert.ok(twoCol > -1, 'base two-column publications grid');
+  assert.ok(oneColOverride > twoCol, 'mobile single-column override must follow the base grid');
+  assert.match(css, /\.publication-meta\s*\{[^}]*color:\s*var\(--color-link\)/s);
+  assert.doesNotMatch(css, /\.publication-cover-fallback\s*\{[^}]*linear-gradient/s);
+  assert.match(css, /@media \(max-width: 1279px\)/);
 });
 
 test('Arduino Day 2026 editorial content is Markdown-backed', () => {

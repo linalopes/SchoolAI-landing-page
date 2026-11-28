@@ -2565,7 +2565,6 @@
     .editorial-aside { position: static; max-width: 320px; }
     .editorial-main { padding-top: 100px; }
     .archive-grid { grid-template-columns: 1fr; }
-    .publications-grid { grid-template-columns: 1fr; }
     .workstations-grid { grid-template-columns: 1fr; }
     .workstation-card { grid-template-columns: 1fr; }
     .workstation-card-media { min-height: 180px; }
@@ -2576,7 +2575,8 @@
     .gallery-photos-grid { grid-template-columns: 1fr; }
   }
 
-  /* ── PUBLICATIONS ── */
+  /* ── PUBLICATIONS ──
+     Base two-column grid must precede the mobile override so ≤900px stays single-column. */
   .visually-hidden {
     position: absolute;
     width: 1px;
@@ -2619,9 +2619,7 @@
     flex-direction: column;
     justify-content: flex-end;
     gap: var(--space-2);
-    background:
-      linear-gradient(160deg, rgba(234, 125, 255, 0.18), transparent 55%),
-      var(--deep-purple);
+    background: var(--deep-purple);
     color: var(--white);
   }
   .publication-cover-format {
@@ -2638,11 +2636,12 @@
   .publication-cover-year {
     font-family: 'Courier Prime', monospace;
     font-size: 14px;
-    opacity: 0.7;
+    color: rgba(255, 255, 255, 0.78);
     margin: 0;
   }
   .publication-meta {
-    color: var(--pink);
+    /* Magenta link token (~6.3:1 on white); brand pink fails AA on light grounds. */
+    color: var(--color-link);
     margin-bottom: var(--space-2);
   }
   .publication-title {
@@ -2665,7 +2664,7 @@
     font-family: 'Courier Prime', monospace;
     font-size: 14px;
     letter-spacing: 0.02em;
-    opacity: 0.85;
+    color: rgba(34, 17, 62, 0.72);
   }
   .publication-actions {
     display: flex;
@@ -2678,7 +2677,17 @@
     font-family: 'Courier Prime', monospace;
     font-size: 14px;
     letter-spacing: 0.04em;
-    color: var(--deep-purple);
+    color: var(--color-link);
     text-decoration: underline;
     text-underline-offset: 4px;
+    text-decoration-color: var(--color-link-underline);
+  }
+  .publication-secondary-link:hover {
+    color: var(--color-link-hover);
+    text-decoration-color: var(--color-link-hover);
+  }
+  @media (max-width: 900px) {
+    .publications-grid {
+      grid-template-columns: 1fr;
+    }
   }
