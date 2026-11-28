@@ -6,8 +6,10 @@ All public website copy is English. Two systems control content:
 
 | System | What you change | How it reaches the site |
 |---|---|---|
-| **Google Sheets** | Hero, events, research archive, workstations, contributors, wishlist records | Browser refresh soon after save; daily snapshot at 06:00 UTC; optional manual snapshot refresh |
-| **Markdown on GitHub** | Institutional pages, rates, payments, footer, address, wishlist page labels | Commit to `main` → automatic deploy |
+| **Google Sheets** | Hero, events, research archive, workstations, contributors, wishlist **records** (six feeds only) | Browser refresh soon after save; daily snapshot at 06:00 UTC; optional manual snapshot refresh |
+| **Markdown on GitHub** | Institutional pages, Current/Past Programmes, **publication records**, historical event pages, interactive experiment copy, gallery rates, payments, footer, address, wishlist **page labels** | Commit to `main` → automatic deploy |
+
+Publications do **not** use a Google Sheets feed.
 
 Never put private names, private emails, donation amounts or draft-only secrets into the published spreadsheet. The sheet is public even when `published` is FALSE.
 
@@ -134,14 +136,23 @@ You can edit files in the browser:
 ### Add a publication
 
 1. Create a Markdown file under [`src/content/publications/`](https://github.com/linalopes/SchoolAI-landing-page/tree/main/src/content/publications) (for example `my-publication.md`).  
-2. Set `title`, `year`, `format`, `description`, `origin`, `primary_url`, `primary_cta`, `order` and `published: true`.  
-3. Add an authentic cover via optional public HTTPS `cover_url` + `cover_alt`. Leave `cover_url` empty for a typographic fallback — do not commit new editorial image binaries to Git.  
-4. Mark `primary_external: true` when the destination is outside this site.  
-5. Optionally add `github_url`, `related_activity_url` / `related_research_url` (and labels). Only set `license` when verified.  
-6. Keep page introduction copy in [publications.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/publications.md). Do not create a detail page when the destination already is the publication.  
-7. Commit to `main` and wait for Deploy production site. Set `published: false` to hide a draft.
+2. **Required fields:** `title`, `year`, `format`, `description`, `origin`, `primary_url`, `primary_cta`, `order`, `published`.  
+3. **Format** is flexible editorial wording (for example Interactive Publication, Research Board, Tutorial, Essay).  
+4. **Cover:** optional public HTTPS `cover_url` + meaningful `cover_alt`. Leave `cover_url` empty for the typographic fallback — do not commit new editorial image binaries or QA screenshots to Git.  
+5. Mark `primary_external: true` when the destination is outside this site.  
+6. **Optional:** `github_url` / `github_label`, `related_activity_url` / `related_activity_label`, `related_research_url` / `related_research_label`. Set `license` only when verified; public accessibility does not mean permission to reuse.  
+7. Keep page introduction copy in [publications.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/pages/publications.md). Do not create a detail page when the destination already is the publication.  
+8. Lower `order` values appear first. Set `published: false` to hide a draft.  
+9. Commit to `main` and wait for Deploy production site.
 
-Distinguish publications from Research Archive entries, Programme activities and historical event pages.
+**Launch publications (do not invent extra metadata):**
+
+| Entry | Format | Destination |
+|---|---|---|
+| [peppers-ghost.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/publications/peppers-ghost.md) | Interactive Publication | `/peppers-ghost.html` on this site |
+| [paper-as-interface.md](https://github.com/linalopes/SchoolAI-landing-page/blob/main/src/content/publications/paper-as-interface.md) | Research Board | Independent Vercel app + GitHub; contextual link from Arduino Day |
+
+Preserve independent repositories and deployments. Distinguish publications from Research Archive entries, Programme activities and historical event pages.
 
 ### Replace the Current Programme or add a Past Programme
 

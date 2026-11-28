@@ -2,7 +2,9 @@
 
 > **Archival notice.** Documents in this folder record planning and decisions from the Website 2027 migration. They are preserved for historical context only.
 >
-> The migration project closed with release **`v2.1.0`** (26 November 2026). Temporary Git branch `website-2027` was retired after verification that it contained no commits missing from `main`. References to that branch inside archived documents remain as historical wording.
+> The Website 2027 migration project closed with release **`v2.1.0`** (26 November 2026). Temporary Git branch `website-2027` was retired after verification that it contained no commits missing from `main`. References to that branch inside archived documents remain as historical wording.
+>
+> Post-baseline maintenance on `main` (including Publications and legacy `.html` consolidations prepared as **`v2.2.0`**) is documented in active docs and [CHANGELOG.md](../../CHANGELOG.md) — not in this archive.
 >
 > They must **not** be treated as current implementation requirements.
 >

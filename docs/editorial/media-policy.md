@@ -21,6 +21,8 @@ Brand patterns may load from https://github.com/linalopes/SchoolAI-brand-kit.
 
 - Hero, archive, workstations and wishlist images: HTTPS URLs in Google Sheets.  
 - Gallery photographs: HTTPS URLs in `src/content/pages/inverted-gallery.md`.  
+- **Publication covers:** optional HTTPS `cover_url` (+ `cover_alt`) in `src/content/publications/*.md`. Same rules as other editorial images — stable public HTTPS, meaningful alt text, no new binaries in Git.  
+- When a publication has no cover URL, the site uses a **typographic Brand Kit fallback**. That fallback is intentional and is not an implementation defect.  
 - Always provide meaningful `alt` text when an image is supplied (wishlist validation requires alt when `image_url` is set).
 
 ## Legacy inventory (compatibility)
@@ -33,7 +35,7 @@ Brand patterns may load from https://github.com/linalopes/SchoolAI-brand-kit.
 | `/imgs/space/*` | Used by `/space3d.html` and related history pages | Externalise carefully; preserve URLs until checked |
 | `/history/*.pdf` | Historical screenshots | Leave until owner approves deletion |
 
-Do not migrate, delete or rename legacy media during documentation-only work. Do not commit QA screenshots to Git.
+Do not migrate, delete or rename legacy media during documentation-only work. Do not commit QA screenshots to Git (`tmp/` is gitignored).
 
 ## Future externalisation steps
 
