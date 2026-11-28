@@ -2,11 +2,11 @@
 
 Verified against Git history and release tags. Intermediate commits that were never tagged are summarised without inventing version numbers.
 
-Git release tags (`v2.0.0`, `v2.1.0`, proposed `v2.2.0`) are distinct from the npm package version (`2027.1.0`), which tracks the Website 2027 product line.
+Git release tags (`v2.0.0`, `v2.1.0`, `v2.2.0`) are distinct from the npm package version (`2027.1.0`), which tracks the Website 2027 product line.
 
-## [v2.2.0] — pending GitHub release — School of Tomorrow’s AI — Website 2027: Publications & Legacy Consolidation
+## [v2.2.0] — 2026-11-28 — School of Tomorrow’s AI — Website 2027: Publications & Legacy Consolidation
 
-**Status:** Implementation merged to `main` (PRs #1–#4). Documentation handover prepared. **Do not publish the GitHub release tag until owner approval.**
+**Status:** Published. Closes the Website 2027 structural development cycle after PRs #1–#5.
 
 ### Summary
 

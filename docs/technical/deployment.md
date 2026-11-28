@@ -10,7 +10,7 @@
 | Hosting | GitHub Pages via GitHub Actions |
 | Domain / HTTPS | `schoolai.linalopes.info`, HTTPS enforced |
 | Current tagged release | `v2.1.0` — School of Tomorrow’s AI — Website 2027 |
-| Prepared next release | `v2.2.0` — Publications & Legacy Consolidation (see CHANGELOG; publish GitHub release only with owner approval) |
+| Current release | `v2.2.0` — Publications & Legacy Consolidation (see CHANGELOG) |
 | Original Astro cutover | `v2.0.0` → commit `035d60a` |
 | Legacy HTML archive | Branch `legacy-html-2026`, tag `v1.0.0-legacy`, commit `0a84b8c` |
 | Migration branch | `website-2027` retired at `v2.1.0` (history preserved in `main`) |

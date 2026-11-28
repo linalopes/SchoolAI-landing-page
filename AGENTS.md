@@ -10,7 +10,7 @@
 
 ## Production status
 
-The institutional Astro website is **live on `main`**. Website 2027 structural development is **complete** (Astro cutover `v2.0.0`, institutional baseline `v2.1.0`, Publications and legacy consolidation prepared as **`v2.2.0`** pending owner publication of the GitHub release tag).
+The institutional Astro website is **live on `main`**. Website 2027 structural development is **complete** and formally closed (Astro cutover `v2.0.0`, institutional baseline `v2.1.0`, Publications and legacy consolidation **`v2.2.0`**).
 
 - Do **not** restart migration phases or describe production as unfinished.  
 - Temporary migration branch `website-2027` was retired; treat `docs/archive/` as historical context only.  

@@ -6,7 +6,7 @@ Production implementation of the School of Tomorrow’s AI institutional website
 - **Branch:** `main`  
 - **Astro cutover:** `v2.0.0`  
 - **Institutional baseline:** `v2.1.0`  
-- **Publications & legacy consolidation:** prepared as `v2.2.0` (GitHub release pending owner publication)
+- **Publications & legacy consolidation:** released as `v2.2.0`
 
 ## Stack
 
