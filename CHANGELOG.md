@@ -6,6 +6,17 @@ Git release tags (`v2.0.0`, `v2.1.0`) are distinct from the npm package version 
 
 ## Unreleased maintenance
 
+### Pepper’s Ghost — Astro migration
+
+- Migrated `/peppers-ghost.html` from standalone `public/` HTML to Markdown (`src/content/pages/peppers-ghost.md`) + Astro presentation + `src/scripts/peppers-ghost.ts`.  
+- Preserved the public URL via `scripts/flatten-html-routes.mjs`.  
+- Keeps CodeMirror / textarea editor, four example sketches, sandboxed p5.js iframe execution, Ghost Mode, calibration ranges and original `localStorage` keys.  
+- Fabrication template remains at `/imgs/pepper_ghost_pyramid_template_6cm.svg`. Fragment anchors `#studio`, `#use`, `#template`, `#calibrate`, `#how`, `#history` preserved.  
+- No new navigation entry or Programme discovery link (owner decides placement separately).  
+- Follow-up: isolate page sections from global `section` padding; page-only `viewport-fit=cover`; cancel superseded provisional iframe runs; never treat startup timeout as success; harden fullscreen promise handling and message validation.  
+- Follow-up: page-scoped safe-area padding for SiteNav / footer / editorial clearance under `viewport-fit=cover` (Ghost Mode canvas remains unpadded).  
+- Owner approved after physical mobile-device testing (2026-11-28); discovery link deferred.
+
 ### Programme integration — Current and Past Programmes
 
 - Extended `/programme/` with Markdown-driven Current Programme (Artificial Emotion, January–June 2027) and Past Programmes (Room for Interaction, 2026).  

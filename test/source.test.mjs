@@ -352,12 +352,12 @@ test('validation workflow does not deploy', () => {
 test('legacy public paths remain', () => {
   for (const path of [
     'public/space3d.html',
-    'public/peppers-ghost.html',
     'public/CNAME',
     'public/imgs/favicon.svg',
     'public/imgs/lina.jpg',
     'public/imgs/contact-twint.png',
     'public/imgs/stripe.png',
+    'public/imgs/pepper_ghost_pyramid_template_6cm.svg',
     'public/imgs/space/biolab.webp',
     'public/history/space3d.html',
   ]) {
@@ -367,13 +367,19 @@ test('legacy public paths remain', () => {
   assert.equal(existsSync(join(root, 'public/arduino-day-2026.html')), false);
   assert.equal(existsSync(join(root, 'public/room-for-interaction.html')), false);
   assert.equal(existsSync(join(root, 'public/room-for-interaction.json')), false);
+  assert.equal(existsSync(join(root, 'public/peppers-ghost.html')), false);
   assert.equal(statSync(join(root, 'src/pages/arduino-day-2026.astro')).isFile(), true);
   assert.equal(statSync(join(root, 'src/content/pages/arduino-day-2026.md')).isFile(), true);
   assert.equal(statSync(join(root, 'src/pages/room-for-interaction.astro')).isFile(), true);
   assert.equal(statSync(join(root, 'src/pages/room-for-interaction.json.ts')).isFile(), true);
   assert.equal(statSync(join(root, 'src/content/pages/room-for-interaction.md')).isFile(), true);
+  assert.equal(statSync(join(root, 'src/pages/peppers-ghost.astro')).isFile(), true);
+  assert.equal(statSync(join(root, 'src/content/pages/peppers-ghost.md')).isFile(), true);
+  assert.equal(statSync(join(root, 'src/scripts/peppers-ghost.ts')).isFile(), true);
+  assert.equal(statSync(join(root, 'src/components/experiments/PeppersGhostPage.astro')).isFile(), true);
   assert.match(read('scripts/flatten-html-routes.mjs'), /arduino-day-2026/);
   assert.match(read('scripts/flatten-html-routes.mjs'), /room-for-interaction/);
+  assert.match(read('scripts/flatten-html-routes.mjs'), /peppers-ghost/);
   assert.match(read('package.json'), /flatten-html-routes/);
 });
 
@@ -400,6 +406,67 @@ test('Arduino Day hero keeps #hero fragment while isolating homepage #hero CSS',
   assert.doesNotMatch(css, /(?:^|\n)\s*#hero\s*\{/);
   assert.match(read('src/components/home/Hero.astro'), /id="hero"/);
   assert.doesNotMatch(read('src/components/home/Hero.astro'), /ad-hero/);
+});
+
+test("Pepper's Ghost is Markdown-backed with preserved experiment contracts", () => {
+  const md = read('src/content/pages/peppers-ghost.md');
+  const page = read('src/components/experiments/PeppersGhostPage.astro');
+  const script = read('src/scripts/peppers-ghost.ts');
+  const route = read('src/pages/peppers-ghost.astro');
+  const baseLayout = read('src/layouts/BaseLayout.astro');
+  const editorialLayout = read('src/layouts/EditorialLayout.astro');
+  assert.match(md, /peppers_ghost:/);
+  assert.match(md, /Open studio experiment/);
+  assert.match(md, /Make your own ghost/);
+  assert.match(md, /John Henry Pepper/);
+  assert.match(md, /Henry Dircks/);
+  assert.match(md, /pepper_ghost_pyramid_template_6cm\.svg/);
+  for (const id of ['orb', 'creature', 'particles', 'text']) {
+    assert.match(md, new RegExp(`id: ${id}`));
+    assert.match(script, new RegExp(`${id}:`));
+  }
+  for (const anchor of ['#studio', '#use', '#template', '#calibrate', '#how', '#history']) {
+    assert.match(page, new RegExp(`id="${anchor.slice(1)}"`));
+  }
+  assert.match(page, /sandbox|startPeppersGhost/);
+  assert.match(page, /\.peppers-ghost section\s*\{[^}]*padding:\s*0/s);
+  assert.match(page, /body:has\(\.peppers-ghost\):not\(\.ghost-mode\) #nav/);
+  assert.match(page, /body:has\(\.peppers-ghost\):not\(\.ghost-mode\) footer/);
+  assert.match(page, /body:has\(\.peppers-ghost\) \.editorial-main/);
+  assert.match(page, /safe-area-inset-top/);
+  assert.match(page, /safe-area-inset-bottom/);
+  assert.match(
+    page,
+    /#ghost-stage\s*\{[^}]*padding:\s*0|body\.ghost-mode[\s\S]*?#ghost-stage\s*\{[^}]*padding:\s*0/s,
+  );
+  assert.doesNotMatch(
+    page,
+    /body\.ghost-mode[\s\S]*?#ghost-stage\s*\{[^}]*padding:[^;]*safe-area-inset/s,
+  );
+  assert.match(script, /sandbox', 'allow-scripts'|sandbox", "allow-scripts"/);
+  assert.doesNotMatch(script, /allow-same-origin/);
+  assert.match(script, /peppers-ghost-code/);
+  assert.match(script, /peppers-ghost-example/);
+  assert.match(script, /peppers-ghost-scale-v2/);
+  assert.match(script, /peppers-ghost-distance-v2/);
+  assert.match(script, /p5@1\.11\.3/);
+  assert.match(script, /scale: 0\.85/);
+  assert.match(script, /imageDistance: 0\.35/);
+  assert.match(script, /runGeneration|cancelActiveRun|abortActiveRun/);
+  assert.match(script, /took too long to start/);
+  assert.doesNotMatch(
+    script,
+    /keepPreviousOnError && currentIframe\) \{\s*finishFail[\s\S]*?\} else \{\s*finishOk/,
+  );
+  assert.match(script, /isGhostFrameMessage/);
+  assert.match(script, /settleFullscreenCall/);
+  assert.match(route, /canonicalPath="\/peppers-ghost\.html"/);
+  assert.match(route, /viewportFitCover=\{true\}/);
+  assert.match(editorialLayout, /viewportFitCover/);
+  assert.match(baseLayout, /viewport-fit=cover/);
+  assert.match(baseLayout, /viewportFitCover/);
+  assert.match(page, /SiteNav|EditorialLayout|peppers-ghost/);
+  assert.match(page, /data-peppers-ghost/);
 });
 
 test('Room for Interaction is Markdown-backed, archived, and hero-isolated', () => {

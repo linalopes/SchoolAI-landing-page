@@ -563,6 +563,85 @@ const pages = defineCollection({
           .min(1),
       })
       .optional(),
+
+    peppers_ghost: z
+      .object({
+        hero: z.object({
+          kicker: z.string(),
+          title: z.string(),
+          subtitle: z.string(),
+          paragraphs: z.array(z.string()).min(1),
+        }),
+        steps_aria: z.string(),
+        steps: z
+          .array(
+            z.object({
+              number: z.string(),
+              text: z.string(),
+            }),
+          )
+          .min(1),
+        studio: z.object({
+          title: z.string(),
+          lede: z.string(),
+          examples_aria: z.string(),
+          examples: z
+            .array(
+              z.object({
+                id: z.string(),
+                label: z.string(),
+              }),
+            )
+            .min(1),
+          editor_aria_label: z.string(),
+          error_title: z.string(),
+          error_hint: z.string(),
+          run_label: z.string(),
+          reset_label: z.string(),
+          copy_label: z.string(),
+          copy_done_label: z.string(),
+          preview_hint: z.string(),
+          ghost_button: z.string(),
+          orient_hint: z.string(),
+          replace_confirm: z.string(),
+          exit_aria_label: z.string(),
+        }),
+        use: z.object({
+          title: z.string(),
+          steps: z.array(z.string()).min(1),
+          note: z.string(),
+        }),
+        template: z.object({
+          title: z.string(),
+          lede: z.string(),
+          download_label: z.string(),
+          download_href: z.string(),
+          download_filename: z.string(),
+          meta: z.string(),
+        }),
+        calibrate: z.object({
+          title: z.string(),
+          lede: z.string(),
+          size_label: z.string(),
+          distance_label: z.string(),
+          reset_label: z.string(),
+        }),
+        how: z.object({
+          title: z.string(),
+          lede: z.string(),
+        }),
+        history: z.object({
+          title: z.string(),
+          paragraphs: z.array(z.string()).min(1),
+        }),
+        credits: z.object({
+          built_prefix: z.string(),
+          school_name: z.string(),
+          school_href: z.string(),
+          body: z.string(),
+        }),
+      })
+      .optional(),
   }),
 });
 

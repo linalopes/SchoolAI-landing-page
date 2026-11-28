@@ -63,7 +63,7 @@ src/
   data/           # site.ts, navigation.ts (not narrative copy)
   styles/         # tokens, typography, global
   scripts/        # Client bootstrap (nav, feeds, newsletter)
-public/           # Remaining legacy HTML (Pepper’s Ghost, 3D tour), CNAME, QR assets, robots, sitemap
+public/           # Remaining legacy HTML (3D tour), CNAME, QR assets, fabrication SVG, robots, sitemap
 scripts/          # refresh-feeds.ts, flatten-html-routes.mjs (legacy `.html` URL emit)
 .github/workflows/
 docs/
@@ -71,13 +71,24 @@ docs/
 
 ## Editorial separation
 
-- **Markdown** — institutional copy, CTAs, SEO, rental rates, payments, footer, location, wishlist labels, Programme current/past programme features, Arduino Day 2026 event page, Room for Interaction archive page.  
+- **Markdown** — institutional copy, CTAs, SEO, rental rates, payments, footer, location, wishlist labels, Programme current/past programme features, Arduino Day 2026 event page, Room for Interaction archive page, Pepper’s Ghost experiment labels and editorial sections.  
 - **Sheets** — hero, events, archive, workstations, contributors, wishlist **records**.  
 - **Astro / TypeScript** — presentation and validation only. Do not hardcode editable copy.
 
 ### Legacy `.html` Astro routes
 
-`/arduino-day-2026.html` and `/room-for-interaction.html` are generated from Markdown + Astro, then flattened by `scripts/flatten-html-routes.mjs` so the public URLs stay root-level `.html` files (Programme sheet links and sitemap unchanged). Room for Interaction also emits `/room-for-interaction.json` from the same Markdown source for compatibility. Remaining standalone HTML under `public/` (Pepper’s Ghost, 3D tour) is intentionally untouched.
+`/arduino-day-2026.html`, `/room-for-interaction.html` and `/peppers-ghost.html` are generated from Markdown + Astro, then flattened by `scripts/flatten-html-routes.mjs` so the public URLs stay root-level `.html` files (Programme sheet links and sitemap unchanged). Room for Interaction also emits `/room-for-interaction.json` from the same Markdown source for compatibility. Remaining standalone HTML under `public/` (3D tour) is intentionally untouched.
+
+### Pepper’s Ghost experiment
+
+| Layer | Location |
+|---|---|
+| Editorial copy / UI labels | `src/content/pages/peppers-ghost.md` (`peppers_ghost` frontmatter) |
+| Presentation | `src/pages/peppers-ghost.astro` + `src/components/experiments/PeppersGhostPage.astro` |
+| Application logic | `src/scripts/peppers-ghost.ts` (p5.js iframe runner, CodeMirror editor, Ghost Mode, calibration) |
+| Fabrication asset | `public/imgs/pepper_ghost_pyramid_template_6cm.svg` (functional template; original URL preserved) |
+
+Sketches run inside a sandboxed iframe (`sandbox="allow-scripts"` only). Example sketch source and optical defaults live in the script module so visitor `localStorage` keys (`peppers-ghost-code`, `peppers-ghost-example`, `peppers-ghost-scale-v2`, `peppers-ghost-distance-v2`) stay compatible. External runtime dependencies: p5@1.11.3 (jsDelivr) and CodeMirror 6 (esm.sh), with a plain textarea fallback. The page opts into `viewport-fit=cover` via `EditorialLayout` / `BaseLayout` (`viewportFitCover`) for Ghost Mode on notched phones; other routes keep the default viewport meta. Page sections reset institutional `section` padding under `.peppers-ghost`. Shared nav/footer receive page-scoped `safe-area-inset` padding via `body:has(.peppers-ghost)`; the Ghost Mode stage stays unpadded so the four-view optical centre is unchanged.
 
 ## Feeds
 

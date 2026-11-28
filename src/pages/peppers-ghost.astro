@@ -1,0 +1,17 @@
+---
+import EditorialLayout from '../layouts/EditorialLayout.astro';
+import PeppersGhostPage from '../components/experiments/PeppersGhostPage.astro';
+import { requirePage } from '../lib/content';
+
+const entry = await requirePage('peppers-ghost');
+const pageTitle = entry.data.title;
+const description = entry.data.description;
+---
+<EditorialLayout
+  title={pageTitle}
+  description={description}
+  canonicalPath="/peppers-ghost.html"
+  viewportFitCover={true}
+>
+  <PeppersGhostPage entry={entry} />
+</EditorialLayout>

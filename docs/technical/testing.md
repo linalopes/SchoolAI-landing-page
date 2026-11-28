@@ -22,8 +22,11 @@ Node **≥ 22.23.4**. Prefer `npm ci` for a clean install.
 - Contributors grouping and Markdown labels  
 - Footer composition and canonical location  
 - TWINT / Stripe assets and Payment Link  
-- Legacy public HTML paths (Pepper’s Ghost, 3D tour)  
-- Astro-generated `/arduino-day-2026.html` and `/room-for-interaction.html` (flattened routes; Markdown-backed)  
+- Legacy public HTML paths (3D tour) and functional fabrication SVG  
+- Astro-generated `/arduino-day-2026.html`, `/room-for-interaction.html` and `/peppers-ghost.html` (flattened routes; Markdown-backed)  
+- Pepper’s Ghost section anchors, iframe sandbox, localStorage key names, example sketch ids, `viewport-fit=cover`, page-scoped safe-area chrome  
+
+
 - Room for Interaction JSON compatibility endpoint and archived workshop statuses  
 - Homepage `#hero` isolation from Arduino Day / Room for Interaction heroes  
 - Programme section order and Markdown-driven Current / Past Programme CTAs  
@@ -54,3 +57,7 @@ Use after substantive UI or feed changes:
 ## Visual review
 
 The owner completed the final visual review of the institutional website (including footer, workstation photographs and Research Wishlist) on 26 November 2026. Project closure release: **`v2.1.0`**. QA screenshots must not be committed to Git (`tmp/` is gitignored). Automated tests do not certify full WCAG compliance.
+
+### Pepper’s Ghost (2026-11-28)
+
+Owner approved PR #3 after successful testing on a **physical mobile device** (application UI, Ghost Mode chrome, and interactive editor behaviour). That confirmation does **not** certify the physical optical illusion with a transparent pyramid unless separately stated by the owner. Discovery / navigation placement remains a separate owner decision.

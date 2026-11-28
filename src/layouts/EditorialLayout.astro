@@ -8,11 +8,18 @@ interface Props {
   description?: string;
   image?: string | null;
   canonicalPath?: string;
+  viewportFitCover?: boolean;
 }
 
-const { title, description, image = null, canonicalPath } = Astro.props;
+const { title, description, image = null, canonicalPath, viewportFitCover = false } = Astro.props;
 ---
-<BaseLayout title={title} description={description} image={image} canonicalPath={canonicalPath}>
+<BaseLayout
+  title={title}
+  description={description}
+  image={image}
+  canonicalPath={canonicalPath}
+  viewportFitCover={viewportFitCover}
+>
   <SiteNav />
   <main class="editorial-main">
     <slot />

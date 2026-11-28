@@ -72,4 +72,4 @@ No new editorial photographs or research binaries in Git. Use public HTTPS URLs.
 
 ## Routes
 
-`/` · `/about/` · `/research/` · `/atelier/` · `/programme/` · `/inverted-gallery/` · `/collaborate/` · `/collaborate/wishlist/` · legacy HTML under `public/`
+`/` · `/about/` · `/research/` · `/atelier/` · `/programme/` · `/inverted-gallery/` · `/collaborate/` · `/collaborate/wishlist/` · flattened legacy `.html` routes (Arduino Day, Room for Interaction, Pepper’s Ghost) · 3D tour under `public/`
